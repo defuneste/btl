@@ -4,27 +4,118 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc …). I have a PhD in Geography and Environmental studies (here) from the University of Paris.\nThis blog exists to help me remember and learn stuff.\nMastodon"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "objectID": "about.html#about",
+    "href": "about.html#about",
+    "title": "About",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc …). I have a PhD in Geography and Environmental studies (here) from the University of Paris.\nThis blog exists to help me remember and learn stuff.\nMastodon"
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
+    "href": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
+    "title": "Using Go Map to contribute to OSM",
     "section": "",
-    "text": "This is a post with executable code."
+    "text": "I was a bit intimidated to contribute to OSM and it took me time to do it. I needed to move to another country, get a correct smartphone (I was for a long time a Nokia 3310 user) and have some baby to move around in a stroller to decide myself! If you were like me, hesitating, you should not and I will try to explain why and how you can contribute."
+  },
+  {
+    "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html#footnotes",
+    "href": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html#footnotes",
+    "title": "Using Go Map to contribute to OSM",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nSee this nice blog post on the history of “global street maps”↩︎"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "",
+    "text": "The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.\nI was quite interested in the last episode geospatial consulting – as a business and a career and wanted to share some of the little gems this episode has to offer.\nThe episode was an interview with Todd Slind (VP of Technology) at Locana.co about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.\nBefore going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following Geospatial Connections with another Locana employe and I feel those contributions are great!"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatial Consulting as Business",
+    "text": "Geospatial Consulting as Business\n\n“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind\n\nA lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.\nThis dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.\nBoth markets were defined as:\n\nMature Market:\n\nStandardize: allow “off-the-shelf solutions”\n\nPresence of a robust consultancy ecosystem (with competition)\n\nInformed consumers\n\n\n\nLess Mature Market:\n\nProblems are still unclear\n\nNeed for more custom development / more IT\nMore constraints from the environment (ex: low bandwidth)\nNeed to build a common language\n\nThe best way to build a strong core is to practice and build experience."
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatail consulting as a career",
+    "text": "Geospatail consulting as a career\nThis leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.\nAccording to Todd Slind, a great consultant should have:\n- Curiosity/creativity as a self-starter\n- Can “interface” with clients (importance of speaking the same language)\n- Is able to have ownership over their own personal development\nIf a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new shiny developments (sedona, arrow) but the better question is “where and how to apply them to solve problems?”\nI also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.\nStrangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!"
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
+    "title": "R is (also) a graph calculator",
+    "section": "",
+    "text": "I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time ago!). I find a nice free book and practice with it. A lot can be done with pen + paper but sometimes you need to represent an equation in a Cartesian plane.\nR is perfect for that (even if it is not a Computer algebra system) but I am always forgetting some specific ways to do it!\nFirst we do a simple function:\n\\[y = \\sqrt[3](1 - x^2)\\]\nsimple_function &lt;- function(x){\n    temp = (1 - x*x)\n    # R is using natural log so you need to adjust a bit, ie if you use negative\n    # value you will get NaN :\n    # kind of same idea of doing cube_root(-1) * cube_root(abs(x))\n    sign(temp)*abs(temp)**(1/3)\n}\nsimple_function(-5:5)\n\n [1] -2.884499 -2.466212 -2.000000 -1.442250  0.000000  1.000000  0.000000\n [8] -1.442250 -2.000000 -2.466212 -2.884499\nThen you have (as far as I know) 3 options!"
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
+    "title": "R is (also) a graph calculator",
+    "section": "Vector and plot:",
+    "text": "Vector and plot:\nHere this is simple we generate a sequence of values and apply our function on it.\n\nx &lt;- -5:5\ny &lt;- simple_function(x)\nplot(x, y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n# if you prefer it can also go in data frame because both vectors have the same length\n#df &lt;- data.frame(x = x,\n#                 y = simple_function(x))\n\nThis is good but if you pay attention you can see that using type = \"b\" we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:\n\nx &lt;- seq(from = -5, to = 5, by = .1)\ny &lt;- simple_function(x)\nplot(x , y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n\nThis is a bit better!"
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
+    "title": "R is (also) a graph calculator",
+    "section": "curve!",
+    "text": "curve!\nThe base-R packagegraphics provide us with a lot of very cool functions and one of it is curve(). It can take a function or an expression.\n\ncurve(simple_function, from = -5, to = 5,\n      ylab = \"y\", col = 2) # some small tuning is still needed\n\n\n\n\n\n\n\n\nEasy and simple."
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
+    "title": "R is (also) a graph calculator",
+    "section": "ggplot!",
+    "text": "ggplot!\nObviously, we can also do it with ggplot::stat_function():\n\nlibrary(ggplot2)\n# I was lazy and just reused x\nggplot(data.frame(x), aes(x = x)) +\n    stat_function(fun = simple_function, colour = 2) +\n    theme_bw()"
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html",
+    "title": "Learning Data Science Meme",
+    "section": "",
+    "text": "I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:\n/rant on"
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "title": "Learning Data Science Meme",
+    "section": "Where am I?",
+    "text": "Where am I?\nAs a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.\nLike every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "title": "Learning Data Science Meme",
+    "section": "Good points",
+    "text": "Good points\nI think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "title": "Learning Data Science Meme",
+    "section": "Bad stuffs",
+    "text": "Bad stuffs\nI will have fewer problems with the meme if it did not mention IQ (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a journey than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.\nI guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "title": "Learning Data Science Meme",
+    "section": "Summing it up",
+    "text": "Summing it up\nIf you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.\n/rant off"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "btl",
+    "title": "Olivier Leroy",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJun 2, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 30, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Mapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
   }
 ]

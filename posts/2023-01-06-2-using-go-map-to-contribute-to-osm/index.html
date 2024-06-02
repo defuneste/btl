@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Olivier Leroy">
+<meta name="dcterms.date" content="2023-01-06">
 
-<title>Olivier Leroy</title>
+<title>Olivier Leroy - Using Go Map to contribute to OSM</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +68,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Olivier Leroy</span>
     </a>
   </div>
@@ -149,7 +91,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -172,188 +114,108 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Olivier Leroy</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Using Go Map to contribute to OSM</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">OSM</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Olivier Leroy </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 6, 2023</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="GIS">GIS <span class="quarto-category-count">(1)</span></div><div class="category" data-category="OSM">OSM <span class="quarto-category-count">(2)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="learning">learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="meme">meme <span class="quarto-category-count">(1)</span></div><div class="category" data-category="plot">plot <span class="quarto-category-count">(1)</span></div><div class="category" data-category="podcast">podcast <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>I was a bit intimidated to contribute to OSM and it took me time to do it. I needed to move to another country, get a correct smartphone (I was for a long time a Nokia 3310 user) and have some baby to move around in a stroller to decide myself! If you were like me, hesitating, you should not and I will try to explain why and how you can contribute.</p>
+<section id="a-very-quick-introduction-to-openstreetmap" class="level1">
+<h1>A very quick introduction to OpenStreetMap!</h1>
+<p>OSM stand for <a href="https://www.openstreetmap.org">OpenStreetMap</a> a project of plenty of communities to provide a map (and a database) of the world. Unlike other projects (Google map, Apple map or the one from ESRI)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> this project is driven by contributors: everyone can contribute to the democracy of the project, completing the map and have discussion on the categories to map (“folksonomy”).</p>
+</section>
+<section id="why-should-i-contribute" class="level1">
+<h1>Why should I contribute?</h1>
+<p>Everyone can have their own reasons. Here are mines:</p>
+<ul>
+<li><p>I use the data so it is normal to contribute back! I am old enough to have the need to write a letter to my country’s national cartographic agency to get some data for my research. It took time and a lot of papers. It is now better (probably thanks to OpenStreetMap and Open Data activists) but we face the same problem with private company map (albeit it is easier: they just ask you your credit card). OpenStreetMap data is great even if you need to work, a bit, for it. This data also brings interesting questions and challenges.</p></li>
+<li><p>OpenStreetMap use another <a href="https://dev.overpass-api.de/overpass-doc/en/preface/osm_data_model.html">data model</a> and as a GIS professional you should be familiar with it.</p></li>
+<li><p>Mapping is fun! Yes, you can go on a walk and see the world differently, pay a bit more attention to all the objects we are depending on and what they tell us about us.</p></li>
+</ul>
+</section>
+<section id="go-map" class="level1">
+<h1>Go Map!!</h1>
+<p>They are plenty of ways to contribute to OSM. Of course you can map but you can also contribute to the <a href="https://wiki.openstreetmap.org/wiki/Main_Page">wiki</a> or help with <a href="https://github.com/openstreetmap">codes</a> and this is not exhaustive.</p>
+<p>On the mapping side, you can use a smartphone or mapping in front of your computer (and plenty of options are also available here). I will focus on using a smartphone and an IOS mostly because I like to walk or bike. Oh yes, to contribute you need an OSM account (just go to the website and register).</p>
+<p><strong>Disclaimer</strong>: I have an old smartphone (an iPhone 6) and I was not the first user. Go Map works perfectly fine on it but you should have a good enough battery.</p>
+<p><a href="https://apps.apple.com/us/app/go-map/id592990211">Go Map!!</a> is on the App Store, once you have downloaded it you will need to provide it your OSM account.</p>
+<p>Go Map is a fairly complete editor but you do not need to use all of its functionalities and you will <strong>learn as you practice</strong> with it.</p>
+</section>
+<section id="start-easy-do-some-poi" class="level1">
+<h1>Start easy: do some POI!</h1>
+<p>POI: stand for Point Of Interest, in OSM jargon it is a “node”, basically a point with some “tags” (OSM works with a <em>key:value system</em>). Why should I start with it?</p>
+<p>First, I find it is easy on smartphones to only edit or add points. You can, of course, draw roads (“way”) and buildings (“closed way”) but it requires more knowledge and I find this is easier to do with other OSM editors (<a href="https://wiki.openstreetmap.org/wiki/ID">iD</a> or <a href="https://josm.openstreetmap.de/">JOSM</a>).</p>
+<p>Second, POI use a simpler data model: you just need to add a point and pick at least one tag.</p>
+<p>Third, OSM need POI. POI can be an address, a shop, a bicycle parking, a waste basket, etc.</p>
+<p>This is what Go Map!! look like, here with already plenty of POI:</p>
+<p><img src="poi.png" class="img-fluid"></p>
+<p>If you use click on the blue arrow on top of the right corner, the screen will zoom on your position (yes you need to allow location on your smartphone). You can “unclick” it if needed.</p>
+<p>Do you see the yellow star at the center of your screen? If you press the blue big <code>plus</code> (top right side) it will add a node (<code>new_object</code>) and <strong>tag</strong>/<strong>add note</strong> buttons will appear:</p>
+<p><img src="adding_node.png" class="img-fluid"></p>
+<p>You can then pick a tag and add it. A new window will be available with some options to help you put the correct tag and information. To find the tag you can use the search bar (it helps having checked the wiki to find the correct tag before) or pick the few last tag you already have used (Here it was a bicycle parking).</p>
+<p><img src="pick_bike_pking.png" class="img-fluid"></p>
+<p>Then you are sent to a new window with other common tags related to the POI you are adding (or not if you have no idea):</p>
+<p><img src="more_tag.png" class="img-fluid"></p>
+<p>Here the parking is not covered and does not have a fee.</p>
+<p>Finally, you can commit using a small cloud button on in the bottom right. You will have a window that reviews the change (here adding a note with few <code>key:value</code>) you can also a changeset comment sometimes useful for other mapper.</p>
+<p><img src="commit.png" class="img-fluid"></p>
+<p>That is it you have contributed to OSM!</p>
+</section>
+<section id="tldr" class="level1">
+<h1>TL:DR!</h1>
+<p>1 - Download Go Map!<br>
+2 - Create an OSM account<br>
+3 - Walk and find an easy POI that you can add<br>
+4 - While you add it sees what is in the map and what is not<br>
+5 - Read the wiki/check on how other added other things around you<br>
+6 - Go back to 3</p>
+<p>Remember OSM is a collective project always moving it could not be “perfect” or not how you think it should be but to improve it you can discuss it with others. This is not an option with other proprietary map.</p>
 
 
+</section>
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="podcast,GIS" data-listing-date-sort="1673672400000" data-listing-file-modified-sort="1717341923286" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="516">
-<div class="thumbnail">
-<p><a href="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html" class="no-external"></a></p><a href="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html" class="no-external">
-<p><img src="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/mapscaping-logo.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html" class="no-external">Mapscaping: geospatial consulting – as a business and a career</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('podcast'); return false;">
-podcast
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('GIS'); return false;">
-GIS
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html" class="no-external">The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html" class="no-external">
-<div class="listing-date">
-Jan 14, 2023
-</div>
-<div class="listing-author">
-Olivier Leroy
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="R,plot,OSM" data-listing-date-sort="1673326800000" data-listing-file-modified-sort="1717341643776" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="373">
-<div class="thumbnail">
-<p><a href="./posts/2023-01-10-r-is-also-a-graph-calculator/index.html" class="no-external"></a></p><a href="./posts/2023-01-10-r-is-also-a-graph-calculator/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/2023-01-10-r-is-also-a-graph-calculator/index_files/figure-html/unnamed-chunk-2-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/2023-01-10-r-is-also-a-graph-calculator/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2023-01-10-r-is-also-a-graph-calculator/index.html" class="no-external">R is (also) a graph calculator</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2023-01-10-r-is-also-a-graph-calculator/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('plot'); return false;">
-plot
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('OSM'); return false;">
-OSM
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2023-01-10-r-is-also-a-graph-calculator/index.html" class="no-external">I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2023-01-10-r-is-also-a-graph-calculator/index.html" class="no-external">
-<div class="listing-date">
-Jan 10, 2023
-</div>
-<div class="listing-author">
-Olivier Leroy
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="OSM" data-listing-date-sort="1672981200000" data-listing-file-modified-sort="1717341435199" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="939">
-<div class="thumbnail">
-<p><a href="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html" class="no-external"></a></p><a href="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html" class="no-external">
-<p><img src="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/image-2.jpg" class="thumbnail-image"></p>
-</a><p><a href="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html" class="no-external">Using Go Map to contribute to OSM</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('OSM'); return false;">
-OSM
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html" class="no-external">I was a bit intimidated to contribute to OSM and it took me time to do it. I needed to move to another country, get a correct smartphone (I was for a long time a Nokia 3310…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html" class="no-external">
-<div class="listing-date">
-Jan 6, 2023
-</div>
-<div class="listing-author">
-Olivier Leroy
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="learning,meme" data-listing-date-sort="1672894800000" data-listing-file-modified-sort="1717341197334" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="376">
-<div class="thumbnail">
-<p><a href="./posts/2023-01-05-learning-ds-meme/index.html" class="no-external"></a></p><a href="./posts/2023-01-05-learning-ds-meme/index.html" class="no-external">
-<p><img src="./posts/2023-01-05-learning-ds-meme/meme.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/2023-01-05-learning-ds-meme/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2023-01-05-learning-ds-meme/index.html" class="no-external">Learning Data Science Meme</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2023-01-05-learning-ds-meme/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('learning'); return false;">
-learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('meme'); return false;">
-meme
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2023-01-05-learning-ds-meme/index.html" class="no-external">I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2023-01-05-learning-ds-meme/index.html" class="no-external">
-<div class="listing-date">
-Jan 5, 2023
-</div>
-<div class="listing-author">
-Olivier Leroy
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>See this nice <a href="https://maphappenings.com/2023/01/03/overture-maps-foundation/">blog post</a> on the history of “global street maps”<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

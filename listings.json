@@ -2,8 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
+      "/posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+      "/posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
+      "/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
+      "/posts/2023-01-05-learning-ds-meme/index.html"
     ]
   }
 ]
