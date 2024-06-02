@@ -4,16 +4,22 @@ image: profile.jpg
 about:
   template: jolla
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com
+    - icon: mastodon
+      text: mastodon
+      href: https://fosstodon.org/@defuneste
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://www.linkedin.com/in/olivier-leroy-r/
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://github.com/defuneste
 
 ---
 
-About this blog
+## About
+
+I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc ...).  I have a PhD in Geography and Environmental studies ([here](https://www.theses.fr/2017USPCC139)) from the University of Paris.
+
+This blog exists to help me remember and learn stuff.
+
+<a rel="me" href="https://fosstodon.org/@defuneste">Mastodon</a>

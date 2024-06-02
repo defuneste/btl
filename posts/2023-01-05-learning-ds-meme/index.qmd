@@ -1,0 +1,35 @@
+---
+title: "Learning Data Science Meme"
+author: "Olivier Leroy"
+date: "2023-01-05"
+categories: [learning, meme]
+image: "meme.png"
+---
+
+I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one: 
+
+![](meme.png)
+
+/rant on
+
+## Where am I?
+
+As a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.   
+
+Like every meme you can find plenty of interpretations (and I like that). Let's start with something good then we will go with the bad stuff.
+
+## Good points
+
+I think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the "stupid guy" and the "smart one". 
+
+## Bad stuffs
+
+I will have fewer problems with the meme if it did not mention **IQ** (yup I am one of the view guys how read axis label). I feel it imply that the "stupid guy" will never be a smart one while I think this Gaussian is more a **journey** than some typology of people (based on IQ ...). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.
+
+I guess you could say that, at the end, "senior" people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a "senior" or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the "second best one") and to do that they probably learned by experimenting with other tools. 
+
+## Summing it up
+
+If you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome. 
+
+/rant off

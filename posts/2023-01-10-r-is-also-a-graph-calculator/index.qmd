@@ -1,0 +1,75 @@
+---
+title: "R is (also) a graph calculator"
+author: Olivier Leroy
+date: "2023-01-10"
+categories: [R, plot, OSM]
+description: ''
+draft: false
+---
+
+I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time ago!). I find a nice [free book](https://www.stitz-zeager.com/index.html) and practice with it. A lot can be done with pen + paper but sometimes you need to represent an equation in a Cartesian plane.
+
+R is perfect for that (even if it is not a [Computer algebra system](https://en.wikipedia.org/wiki/Computer_algebra_system)) but I am always forgetting some specific ways to do it!
+
+First we do a simple function:
+
+$$y = \sqrt[3](1 - x^2)$$
+
+```{r}
+simple_function <- function(x){
+    temp = (1 - x*x)
+    # R is using natural log so you need to adjust a bit, ie if you use negative
+    # value you will get NaN :
+    # kind of same idea of doing cube_root(-1) * cube_root(abs(x))
+    sign(temp)*abs(temp)**(1/3)
+}
+simple_function(-5:5)
+```
+
+Then you have (as far as I know) 3 options!
+
+## Vector and plot:
+
+Here this is simple we generate a sequence of values and apply our function on it.
+
+```{r}
+x <- -5:5
+y <- simple_function(x)
+plot(x, y, type = "b", col = 2)
+# if you prefer it can also go in data frame because both vectors have the same length
+#df <- data.frame(x = x,
+#                 y = simple_function(x))
+```
+
+This is good but if you pay attention you can see that using `type = "b"` we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:
+
+```{r}
+x <- seq(from = -5, to = 5, by = .1)
+y <- simple_function(x)
+plot(x , y, type = "b", col = 2)
+```
+
+This is a bit better!
+
+## curve!
+
+The base-R package`graphics` provide us with a lot of very cool functions and one of it is [`curve()`](https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html). It can take a function or an expression.
+
+```{r}
+curve(simple_function, from = -5, to = 5,
+      ylab = "y", col = 2) # some small tuning is still needed
+```
+
+Easy and simple.
+
+## ggplot!
+
+Obviously, we can also do it with [`ggplot::stat_function()`](https://ggplot2.tidyverse.org/reference/geom_function.html):
+
+```{r}
+library(ggplot2)
+# I was lazy and just reused x
+ggplot(data.frame(x), aes(x = x)) +
+    stat_function(fun = simple_function, colour = 2) +
+    theme_bw()
+```
