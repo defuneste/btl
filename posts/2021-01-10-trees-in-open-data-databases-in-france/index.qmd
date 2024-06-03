@@ -1,0 +1,100 @@
+---
+title: 'Trees in Open Data Databases in France'
+author: 'Olivier Leroy'
+date: '2021-01-10'
+slug: []
+tags:
+  - urban forest
+  - survey
+  - tree
+description: ''
+draft: false
+output:
+  html_document:
+    keep_md: yes
+always_allow_html: true
+---
+
+
+I collect tree data sets and here are some links to open data from France. I will update the list  when I find more! 
+
+You can find out more about my work on my [github](https://github.com/defuneste/open_data_tree). To extract the trees from the files I needed to do a bit of data wrangling. 
+
+## Guingamp
+
+Typical lat/long in field. 
+
+
+```r
+guingamp <- sf::st_read("sources/Arbres de la Ville de Guingamp.csv")
+guingamp <- sf::st_as_sf(guingamp, coords = c("longitude", "latitude"), crs = 4326)
+```
+
+
+## Ecoline 
+
+Isolated trees are only the ones with "Arbre isolé" in `ele_txt` field.
+
+
+```r
+iau_ecoline <- sf::st_read("sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json")
+iau_ecoline <- iau_ecoline[iau_ecoline$ele_txt == "Arbre isolé",]
+```
+
+
+## Nancy metropolis
+
+Nancy is a bit more tricky. Each city has a directory where you can found isolated trees (`ARBRE_ISOLE.shp`). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this. 
+
+
+
+```r
+nancy <- sapply(list.files(pattern = "ARBRE_ISOLE.shp$", recursive = T), sf::st_read) # read all the file 
+houdemont <- nancy[6] # we get Houdemont's data
+houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`$Z <- NA # add the missing data
+houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp` <- 
+    houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`[    # reorgonize it
+        ,c("HAUTEUR",  "DIAMETRE", "TYPE", "CCOCOM", "Z",  "geometry")
+    ]
+nancy <- do.call(rbind, nancy[-6]) # one file from every cities except Houdemont 
+nancy <- rbind(nancy, houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`) # adding Houdemont
+```
+
+
+## List of data sets
+
+
+| Name         | Data      |
+| :------------- |  -----------: |
+|  ["L'arbre à Paris"](https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.typeemplacement&disjunctive.arrondissement&disjunctive.libellefrancais&disjunctive.genre&disjunctive.espece&disjunctive.varieteoucultivar&disjunctive.stadedeveloppement&disjunctive.remarquable)  | [GeoJson](https://opendata.paris.fr/explore/dataset/les-arbres/download/?format=geojson&timezone=Europe/Berlin&lang=fr)    |
+| ["Arbres d'alignement de la Métropole de Lyon"](https://data.grandlyon.com/jeux-de-donnees/arbres-alignement-metropole-lyon/info) | [shp](https://download.data.grandlyon.com/ws/grandlyon/abr_arbres_alignement.abrarbre.shp?srsname=EPSG:4326)  |
+| ["Patrimoine arboré de Bordeaux"](https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/information/) | [GeoJson](https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/download/?format=geojson&timezone=Europe/Berlin&lang=fr) | 
+|["Cartographie des arbres communaux" (Nice)](http://opendata.nicecotedazur.org/data/dataset/cartographie-des-arbres-communaux) |[GeoJson](http://opendata.nicecotedazur.org/data/storage/f/2020-08-12T09%3A41%3A09.512Z/ev-arbre-opendata-2020.geojson)|
+|["Les arbres de Grenoble"](https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-grenoble) | [GeoJson](https://entrepot.metropolegrenoble.fr/opendata/38185-GRE/EspacePublic/json/ARBRES_TERRITOIRE_VDG_EPSG4326.json) |
+| ["Arbres d'alignement de Montpellier"](https://data.montpellier3m.fr/dataset/arbres-dalignement-de-montpellier) | [GeoJson](https://data.montpellier3m.fr/sites/default/files/ressources/MMM_MTP_ArbresAlign.json) |
+|["Arbres" (Grand Paris Seine Ouest)](https://data.seineouest.fr/explore/dataset/arbres-v2/information/?disjunctive.commune&disjunctive.site&disjunctive.situation&disjunctive.genespvar&disjunctive.feuil_coni&disjunctive.caduc_pers&disjunctive.forme&disjunctive.particular) | [GeoJson](https://data.seineouest.fr/explore/dataset/arbres-v2/download/?format=geojson&timezone=Europe/Berlin&lang=fr) |
+|["Arbres" (Agen)](https://data.agen.fr/explore/dataset/arbres/information/) | [GeoJson](https://data.agen.fr/explore/dataset/arbres/download/?format=geojson&timezone=Europe/Berlin&lang=fr)|
+|["ARBRES" (Agglo du Saint-Quentinois)](https://opendata.agglo-saintquentinois.fr/datasets/aaf5c6a2a3cc49da84c8cc60b97c3507_0) | [GeoJson](https://www.data.gouv.fr/fr/datasets/r/66e810ac-c2d2-435e-a08d-efe967903604) |
+| ["Arbres remarquables" (Metz)](https://www.data.gouv.fr/fr/datasets/arbres-remarquables-1/) | [shp](https://www.data.gouv.fr/fr/datasets/r/77d95d55-75ea-4fad-8ec7-4221f2fe6eaa) |
+|["Arbres d'alignement"(Seine-Saint-Denis)](https://www.data.gouv.fr/fr/datasets/arbres-dalignement-1/) | [GeoJson](https://www.data.gouv.fr/fr/datasets/r/473172e0-de5c-4b62-a0e2-065204fe9db8) |
+|["Arbres d'alignements - Ville de Versailles"](https://data.iledefrance.fr/explore/dataset/arbres-dalignements/information/) | [GeoJson](https://data.iledefrance.fr/explore/dataset/arbres-dalignements/download/?format=geojson&timezone=Europe/Berlin&lang=fr) |
+|["Arbres dans les parcs de la ville de Versailles"](https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/information/) | [GeoJson](https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/download/?format=geojson&timezone=Europe/Berlin&lang=fr) |
+|["Arbres d’alignement" (Nevers)](https://www.data.gouv.fr/fr/datasets/arbres-dalignement-2/) | [shp](https://www.data.gouv.fr/fr/datasets/r/dbdc2068-ee22-474d-8a42-261554482a4f) |
+|["Arbres d’ornement" (Nevers)](https://www.data.gouv.fr/fr/datasets/arbres-dornement/) | [shp](https://www.data.gouv.fr/fr/datasets/r/956d47c3-d907-43f3-a2ed-d70bb251463f) |
+|["Arbres d'alignement - Toulouse"](https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/information/)  | [GeoJson](https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/download/?format=geojson&timezone=Europe/Berlin&lang=fr)| 
+|["Arbres - Ville d'Orléans"](https://data.orleans-metropole.fr/explore/dataset/espace_publicev_arbres/information/) | [shp](https://www.data.gouv.fr/fr/datasets/r/804b8b61-9f8f-4a0d-8524-35ea5d6e265f) | 
+| ["Les arbres de Saint-Egrève"](https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-saint-egreve) | [shp](https://www.data.gouv.fr/fr/datasets/r/2bda9508-27e5-4de6-aba3-fdb0d9059a22) | 
+| ["Arbres d'alignement - Bayonne"](https://geo.data.gouv.fr/fr/datasets/e257334df108256a4e05eb16768a05870da263d4) | [GeoJson](https://www.data.gouv.fr/fr/datasets/r/3ed45467-0bcc-4049-8aa4-3c0e8fc921ab)| 
+| ["Arbres d'alignement sur la voirie départementale"](https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/information/?disjunctive.commune&disjunctive.num_rd&disjunctive.essence_scient&disjunctive.essence_commun&disjunctive.classe_age&disjunctive.statut_emp&sort=id_arbre) | [GeoJson](https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/download/?format=geojson&timezone=Europe/Berlin&lang=fr)| 
+| ["Arbres d'ornement des espaces verts de la Ville de Rennes"](https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/) | [GeoJson](https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e) | 
+| ["Arbres d'alignement en accompagnement de voirie sur la ville de Rennes"](https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/) | [GeoJson](https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e) |
+|["Caractéristiques des arbres d'alignements gérés par la Ville de Mulhouse"](https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/information/?sort=com_nom)  | [GeoJson](https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/download/?format=geojson&timezone=Europe/Berlin&lang=fr) | 
+|["Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains"](https://catalogue.datara.gouv.fr/geosource/panierDownloadFrontalParametrage?LAYERIDTS=27262455)| |
+| "Arbres de la Ville de Guingamp" | [GeoJson](https://datarmor.cotesdarmor.fr/dataserver/cg22/data/Arbres_Guingamp?&$format=json)| 
+|["Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne"](https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/information/)| [GeoJson](https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/download/?format=geojson&timezone=Europe/Berlin&lang=fr)| 
+|["Inventaire arboré de Grand Paris Sud"](https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/information/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJwb2xhciIsImZ1bmMiOiJDT1VOVCIsInlBeGlzIjoiY29kZV9pbnNlZSIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6InJhbmdlLUFjY2VudCJ9XSwieEF4aXMiOiJlc3NfZmNhaXMiLCJtYXhwb2ludHMiOjUwLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJwYXRyaW1vaW5lLWFyYm9yZSIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D) | [GeoJson](https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/download/?format=geojson&timezone=Europe/Berlin&lang=fr) | 
+|["Cadastre vert - Les arbres" (Hauts-de-Seine)](https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/information/?disjunctive.commune) |  [GeoJson](https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/download/?format=geojson&timezone=Europe/Berlin&lang=fr)| 
+|["Arbres Alignement sur la CAPP (Pau)"](https://opendata.agglo-pau.fr/index.php/fiche?idQ=23) | | 
+|["Éléments fixes ponctuels de la couche Ecoline d'Île-de-France"](https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/information/) | [GeoJson](https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/download/?format=geojson&timezone=Europe/Berlin&lang=fr)  | 
+|["Restitution topo 3D" (Nancy)](http://opendata.grandnancy.eu/jeux-de-donnees/detail-dune-fiche-de-donnees/?tx_icsoddatastore_pi1%5Bkeywords%5D=arbre&tx_icsoddatastore_pi1%5Buid%5D=66&tx_icsoddatastore_pi1%5BreturnID%5D=447) | [shp](http://opendata.grandnancy.eu/?eID=ics_od_datastoredownload&file=174)|
+

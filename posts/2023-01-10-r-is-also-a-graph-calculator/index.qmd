@@ -2,7 +2,7 @@
 title: "R is (also) a graph calculator"
 author: Olivier Leroy
 date: "2023-01-10"
-categories: [R, plot, OSM]
+categories: [R, plot, ggplot2]
 description: ''
 draft: false
 ---
