@@ -28,25 +28,39 @@
     "text": "Footnotes\n\n\nSee this nice blog post on the history of “global street maps”↩︎"
   },
   {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
+    "title": "Trees in Open Data Databases in France",
     "section": "",
-    "text": "The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.\nI was quite interested in the last episode geospatial consulting – as a business and a career and wanted to share some of the little gems this episode has to offer.\nThe episode was an interview with Todd Slind (VP of Technology) at Locana.co about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.\nBefore going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following Geospatial Connections with another Locana employe and I feel those contributions are great!"
+    "text": "I collect tree data sets and here are some links to open data from France. I will update the list when I find more!\nYou can find out more about my work on my github. To extract the trees from the files I needed to do a bit of data wrangling."
   },
   {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
-    "section": "Geospatial Consulting as Business",
-    "text": "Geospatial Consulting as Business\n\n“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind\n\nA lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.\nThis dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.\nBoth markets were defined as:\n\nMature Market:\n\nStandardize: allow “off-the-shelf solutions”\n\nPresence of a robust consultancy ecosystem (with competition)\n\nInformed consumers\n\n\n\nLess Mature Market:\n\nProblems are still unclear\n\nNeed for more custom development / more IT\nMore constraints from the environment (ex: low bandwidth)\nNeed to build a common language\n\nThe best way to build a strong core is to practice and build experience."
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Guingamp",
+    "text": "Guingamp\nTypical lat/long in field.\nguingamp &lt;- sf::st_read(\"sources/Arbres de la Ville de Guingamp.csv\")\nguingamp &lt;- sf::st_as_sf(guingamp, coords = c(\"longitude\", \"latitude\"), crs = 4326)"
   },
   {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
-    "section": "Geospatail consulting as a career",
-    "text": "Geospatail consulting as a career\nThis leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.\nAccording to Todd Slind, a great consultant should have:\n- Curiosity/creativity as a self-starter\n- Can “interface” with clients (importance of speaking the same language)\n- Is able to have ownership over their own personal development\nIf a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new shiny developments (sedona, arrow) but the better question is “where and how to apply them to solve problems?”\nI also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.\nStrangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!"
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Ecoline",
+    "text": "Ecoline\nIsolated trees are only the ones with “Arbre isolé” in ele_txt field.\niau_ecoline &lt;- sf::st_read(\"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json\")\niau_ecoline &lt;- iau_ecoline[iau_ecoline$ele_txt == \"Arbre isolé\",]"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Nancy metropolis",
+    "text": "Nancy metropolis\nNancy is a bit more tricky. Each city has a directory where you can found isolated trees (ARBRE_ISOLE.shp). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.\nnancy &lt;- sapply(list.files(pattern = \"ARBRE_ISOLE.shp$\", recursive = T), sf::st_read) # read all the file \nhoudemont &lt;- nancy[6] # we get Houdemont's data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`$Z &lt;- NA # add the missing data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp` &lt;- \n    houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`[    # reorgonize it\n        ,c(\"HAUTEUR\",  \"DIAMETRE\", \"TYPE\", \"CCOCOM\", \"Z\",  \"geometry\")\n    ]\nnancy &lt;- do.call(rbind, nancy[-6]) # one file from every cities except Houdemont \nnancy &lt;- rbind(nancy, houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`) # adding Houdemont"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
+    "title": "Trees in Open Data Databases in France",
+    "section": "List of data sets",
+    "text": "List of data sets\n\n\n\nName\nData\n\n\n\n\n“L’arbre à Paris”\nGeoJson\n\n\n“Arbres d’alignement de la Métropole de Lyon”\nshp\n\n\n“Patrimoine arboré de Bordeaux”\nGeoJson\n\n\n“Cartographie des arbres communaux” (Nice)\nGeoJson\n\n\n“Les arbres de Grenoble”\nGeoJson\n\n\n“Arbres d’alignement de Montpellier”\nGeoJson\n\n\n“Arbres” (Grand Paris Seine Ouest)\nGeoJson\n\n\n“Arbres” (Agen)\nGeoJson\n\n\n“ARBRES” (Agglo du Saint-Quentinois)\nGeoJson\n\n\n“Arbres remarquables” (Metz)\nshp\n\n\n“Arbres d’alignement”(Seine-Saint-Denis)\nGeoJson\n\n\n“Arbres d’alignements - Ville de Versailles”\nGeoJson\n\n\n“Arbres dans les parcs de la ville de Versailles”\nGeoJson\n\n\n“Arbres d’alignement” (Nevers)\nshp\n\n\n“Arbres d’ornement” (Nevers)\nshp\n\n\n“Arbres d’alignement - Toulouse”\nGeoJson\n\n\n“Arbres - Ville d’Orléans”\nshp\n\n\n“Les arbres de Saint-Egrève”\nshp\n\n\n“Arbres d’alignement - Bayonne”\nGeoJson\n\n\n“Arbres d’alignement sur la voirie départementale”\nGeoJson\n\n\n“Arbres d’ornement des espaces verts de la Ville de Rennes”\nGeoJson\n\n\n“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”\nGeoJson\n\n\n“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”\nGeoJson\n\n\n“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”\n\n\n\n“Arbres de la Ville de Guingamp”\nGeoJson\n\n\n“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”\nGeoJson\n\n\n“Inventaire arboré de Grand Paris Sud”\nGeoJson\n\n\n“Cadastre vert - Les arbres” (Hauts-de-Seine)\nGeoJson\n\n\n“Arbres Alignement sur la CAPP (Pau)”\n\n\n\n“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”\nGeoJson\n\n\n“Restitution topo 3D” (Nancy)\nshp"
   },
   {
     "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
@@ -75,6 +89,27 @@
     "title": "R is (also) a graph calculator",
     "section": "ggplot!",
     "text": "ggplot!\nObviously, we can also do it with ggplot::stat_function():\n\nlibrary(ggplot2)\n# I was lazy and just reused x\nggplot(data.frame(x), aes(x = x)) +\n    stat_function(fun = simple_function, colour = 2) +\n    theme_bw()"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "",
+    "text": "The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.\nI was quite interested in the last episode geospatial consulting – as a business and a career and wanted to share some of the little gems this episode has to offer.\nThe episode was an interview with Todd Slind (VP of Technology) at Locana.co about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.\nBefore going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following Geospatial Connections with another Locana employe and I feel those contributions are great!"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatial Consulting as Business",
+    "text": "Geospatial Consulting as Business\n\n“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind\n\nA lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.\nThis dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.\nBoth markets were defined as:\n\nMature Market:\n\nStandardize: allow “off-the-shelf solutions”\n\nPresence of a robust consultancy ecosystem (with competition)\n\nInformed consumers\n\n\n\nLess Mature Market:\n\nProblems are still unclear\n\nNeed for more custom development / more IT\nMore constraints from the environment (ex: low bandwidth)\nNeed to build a common language\n\nThe best way to build a strong core is to practice and build experience."
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatail consulting as a career",
+    "text": "Geospatail consulting as a career\nThis leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.\nAccording to Todd Slind, a great consultant should have:\n- Curiosity/creativity as a self-starter\n- Can “interface” with clients (importance of speaking the same language)\n- Is able to have ownership over their own personal development\nIf a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new shiny developments (sedona, arrow) but the better question is “where and how to apply them to solve problems?”\nI also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.\nStrangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!"
   },
   {
     "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
@@ -116,6 +151,6 @@
     "href": "index.html",
     "title": "Olivier Leroy",
     "section": "",
-    "text": "Mapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
+    "text": "Mapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
   }
 ]
