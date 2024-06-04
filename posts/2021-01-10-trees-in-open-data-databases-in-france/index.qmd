@@ -1,18 +1,8 @@
 ---
-title: 'Trees in Open Data Databases in France'
-author: 'Olivier Leroy'
-date: '2021-01-10'
-slug: []
-tags:
-  - urban forest
-  - survey
-  - tree
-description: ''
-draft: false
-output:
-  html_document:
-    keep_md: yes
-always_allow_html: true
+title: "Trees in Open Data Databases in France"
+author: "Olivier Leroy"
+date: "2021-01-10"
+categories: ['urban forest', survey, tree]
 ---
 
 
