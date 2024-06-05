@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Olivier Leroy">
-<meta name="dcterms.date" content="2021-01-10">
+<meta name="dcterms.date" content="2021-02-12">
 
-<title>Olivier Leroy - Trees in Open Data Databases in France</title>
+<title>Olivier Leroy - Sensor Observation Service: an Introduction</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -149,11 +169,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Trees in Open Data Databases in France</h1>
+      <h1 class="title">Sensor Observation Service: an Introduction</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">urban forest</div>
-                <div class="quarto-category">survey</div>
-                <div class="quarto-category">tree</div>
+                <div class="quarto-category">Sensor</div>
+                <div class="quarto-category">Smart environment</div>
+                <div class="quarto-category">Time series</div>
               </div>
                   </div>
   </div>
@@ -171,7 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">January 10, 2021</p>
+        <p class="date">February 12, 2021</p>
       </div>
     </div>
     
@@ -190,174 +210,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>I collect tree data sets and here are some links to open data from France. I will update the list when I find more!</p>
-<p>You can find out more about my work on my <a href="https://github.com/defuneste/open_data_tree">github</a>. To extract the trees from the files I needed to do a bit of data wrangling.</p>
-<section id="guingamp" class="level2">
-<h2 class="anchored" data-anchor-id="guingamp">Guingamp</h2>
-<p>Typical lat/long in field.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>guingamp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">"sources/Arbres de la Ville de Guingamp.csv"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>guingamp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(guingamp, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Thanks to <a href="https://sist.cnrs.fr/">SIST</a> and the financial support of my lab, I was able to attend a training course on Sensor Observation Services (SOS) with one of my coworkers. It’s time to reflect a bit on what we learned!</p>
+<section id="why-do-sensors-matter-for-a-geographersocial-scientist" class="level1">
+<h1>Why do Sensors matter for a geographer/social scientist?</h1>
+<p>My previous experience with sensors was limited to academic contexts; I remember using them in forests to collect information (temperature, luminosity, etc … ). My contribution under the “research” budget included protecting the equipment from ant colonies intent on building nests on top of the electronics. With their high cost and complicated setup and maintenance, I was under the impression that the “world of sensors” will stay in academia or closely related fields.</p>
+<p>I was wrong. First, the cost of sensors has significantly dropped. Second, they are now more broadly used. Currently part of the “smart city”, they may one day be part of “smart forests” <span class="citation" data-cites="Gabrys2020">(<a href="#ref-Gabrys2020" role="doc-biblioref">Gabrys 2020</a>)</span> and are already used in the monitoring of other environments (rivers come to mind).</p>
+<p>As sensors become more common, they produce data that will be used in new ways. To this spatial expansion of monitoring, we can also add a diversification in their user bases. <a href="https://citizensense.net/">Citizens</a> and artists are also using them with a wide variety of goals.</p>
 </section>
-<section id="ecoline" class="level2">
-<h2 class="anchored" data-anchor-id="ecoline">Ecoline</h2>
-<p>Isolated trees are only the ones with “Arbre isolé” in <code>ele_txt</code> field.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iau_ecoline <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>iau_ecoline <span class="ot">&lt;-</span> iau_ecoline[iau_ecoline<span class="sc">$</span>ele_txt <span class="sc">==</span> <span class="st">"Arbre isolé"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="sos" class="level1">
+<h1>SOS?</h1>
+<p><a href="https://www.ogc.org/standards/sos">SOS</a> is a standard for a Web service promoted by the Open Geospatial Consortium (<a href="https://www.ogc.org/">OGC</a>). This standard, used to query real-time sensor data or data time series is a little less well-known than their other Web Services (for example, Web Feature Services, WFS).</p>
+<p>The SOS standard is an implementation of the <a href="https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling">O&amp;M</a> and <a href="https://en.wikipedia.org/wiki/SensorML">SensorML</a> models. The first one, O&amp;M, gives insights about the observational model (what, when and how something gets measured) and the sampling model (how these observations relate to the feature of interest). The second, SensorML, mainly describes sensors. Both of these models use XML, like SOS, but luckily, SOS can also use JSON to transfer data (and a RESTful API).</p>
+<p>It can be used to query some data but also allow new sensors to be registered and even new values to be inserted. Here, we will focus on querying. Keep in mind that we worked on stationary sensors, but mobile ones can also be implemented.</p>
 </section>
-<section id="nancy-metropolis" class="level2">
-<h2 class="anchored" data-anchor-id="nancy-metropolis">Nancy metropolis</h2>
-<p>Nancy is a bit more tricky. Each city has a directory where you can found isolated trees (<code>ARBRE_ISOLE.shp</code>). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nancy <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"ARBRE_ISOLE.shp$"</span>, <span class="at">recursive =</span> T), sf<span class="sc">::</span>st_read) <span class="co"># read all the file </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>houdemont <span class="ot">&lt;-</span> nancy[<span class="dv">6</span>] <span class="co"># we get Houdemont's data</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span><span class="sc">$</span>Z <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co"># add the missing data</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span> <span class="ot">&lt;-</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span>[    <span class="co"># reorgonize it</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        ,<span class="fu">c</span>(<span class="st">"HAUTEUR"</span>,  <span class="st">"DIAMETRE"</span>, <span class="st">"TYPE"</span>, <span class="st">"CCOCOM"</span>, <span class="st">"Z"</span>,  <span class="st">"geometry"</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>nancy <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, nancy[<span class="sc">-</span><span class="dv">6</span>]) <span class="co"># one file from every cities except Houdemont </span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>nancy <span class="ot">&lt;-</span> <span class="fu">rbind</span>(nancy, houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span>) <span class="co"># adding Houdemont</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="technical-jargon" class="level1">
+<h1>Technical Jargon</h1>
+<p>Even with a good <a href="https://en.wikipedia.org/wiki/Sensor_Observation_Service">wiki</a> page and OGC <a href="https://portal.ogc.org/files/?artifact_id=26667">documentation</a>, SOS can be a bit cryptic at first and to be fair, defining an “observation” is by no means an easy task! To help us wrap our minds around it, I will explain the technology through the example of the city of Lyon’s noise monitoring network</p>
+<p>Some insight about it can be found <a href="https://rdata-grandlyon.readthedocs.io/en/latest/services.html#sos-service-sensor-data">here</a> and on the <a href="https://www.data.gouv.fr/fr/datasets/reseau-permanent-de-mesure-de-bruit-de-la-metropole-de-lyon/">gouv web site</a>. It is in French, but I’m sure that’s not a problem for anyone ;)</p>
+<section id="observations" class="level2">
+<h2 class="anchored" data-anchor-id="observations">Observations</h2>
+<p>This network monitors noise in various places. Places are called <strong>Features of Interest</strong> (FOI), <code>featureOfInterest</code> in XML. One of them is here <code>urn:ogc:def:feature:x-istsos:1.0:Point:Berthelot</code>. This is more simple that it looks: we have an <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Name">Uniform Resource Name</a> from OGC that defines a feature in istSOS (the service we will use) version 1.0. This feature is a point and has the name (identifier) of Berthelot. Now we would like to collect observations about noise here. To do that, we will use a <strong>procedure</strong> : a way to collect observations. The procedure has a location (coordinates with a coordinate reference system) Here this is done with one sensor but it can be done with more than one or/and using some processes. Our FOI have the procedure/sensor AF01 associated (<code>urn:ogc:def:procedure:x-istsos:1.0:AF01</code>). It is monitoring at least one <strong>observed property</strong> (<code>observedProperty</code>). AF01 produce 4 of them (lday, levening, lnight). lday is a noise level, taking into account human ears in decibels, calculated during daylight hours (6am-6pm). Eventually we will get a <strong>result</strong>, let’s say 62.8 dB(A). <a href="https://en.wikipedia.org/wiki/A-weighting">dB(A)</a> is our unit of measure (<strong>uom</strong>). Time is usually expressed in ISO 8601 (<code>2021-02-06T06:00:00.000000Z</code>).</p>
+<p>Together, all of the above make an <strong>observation</strong>!</p>
+<p>Finally, <strong>offering</strong> enables you to make some logical grouping of observations.</p>
 </section>
-<section id="list-of-data-sets" class="level2">
-<h2 class="anchored" data-anchor-id="list-of-data-sets">List of data sets</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: right;">Data</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.typeemplacement&amp;disjunctive.arrondissement&amp;disjunctive.libellefrancais&amp;disjunctive.genre&amp;disjunctive.espece&amp;disjunctive.varieteoucultivar&amp;disjunctive.stadedeveloppement&amp;disjunctive.remarquable">“L’arbre à Paris”</a></td>
-<td style="text-align: right;"><a href="https://opendata.paris.fr/explore/dataset/les-arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.grandlyon.com/jeux-de-donnees/arbres-alignement-metropole-lyon/info">“Arbres d’alignement de la Métropole de Lyon”</a></td>
-<td style="text-align: right;"><a href="https://download.data.grandlyon.com/ws/grandlyon/abr_arbres_alignement.abrarbre.shp?srsname=EPSG:4326">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/information/">“Patrimoine arboré de Bordeaux”</a></td>
-<td style="text-align: right;"><a href="https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="http://opendata.nicecotedazur.org/data/dataset/cartographie-des-arbres-communaux">“Cartographie des arbres communaux” (Nice)</a></td>
-<td style="text-align: right;"><a href="http://opendata.nicecotedazur.org/data/storage/f/2020-08-12T09%3A41%3A09.512Z/ev-arbre-opendata-2020.geojson">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-grenoble">“Les arbres de Grenoble”</a></td>
-<td style="text-align: right;"><a href="https://entrepot.metropolegrenoble.fr/opendata/38185-GRE/EspacePublic/json/ARBRES_TERRITOIRE_VDG_EPSG4326.json">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.montpellier3m.fr/dataset/arbres-dalignement-de-montpellier">“Arbres d’alignement de Montpellier”</a></td>
-<td style="text-align: right;"><a href="https://data.montpellier3m.fr/sites/default/files/ressources/MMM_MTP_ArbresAlign.json">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.seineouest.fr/explore/dataset/arbres-v2/information/?disjunctive.commune&amp;disjunctive.site&amp;disjunctive.situation&amp;disjunctive.genespvar&amp;disjunctive.feuil_coni&amp;disjunctive.caduc_pers&amp;disjunctive.forme&amp;disjunctive.particular">“Arbres” (Grand Paris Seine Ouest)</a></td>
-<td style="text-align: right;"><a href="https://data.seineouest.fr/explore/dataset/arbres-v2/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.agen.fr/explore/dataset/arbres/information/">“Arbres” (Agen)</a></td>
-<td style="text-align: right;"><a href="https://data.agen.fr/explore/dataset/arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.agglo-saintquentinois.fr/datasets/aaf5c6a2a3cc49da84c8cc60b97c3507_0">“ARBRES” (Agglo du Saint-Quentinois)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/66e810ac-c2d2-435e-a08d-efe967903604">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-remarquables-1/">“Arbres remarquables” (Metz)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/77d95d55-75ea-4fad-8ec7-4221f2fe6eaa">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dalignement-1/">“Arbres d’alignement”(Seine-Saint-Denis)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/473172e0-de5c-4b62-a0e2-065204fe9db8">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dalignements/information/">“Arbres d’alignements - Ville de Versailles”</a></td>
-<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dalignements/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/information/">“Arbres dans les parcs de la ville de Versailles”</a></td>
-<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dalignement-2/">“Arbres d’alignement” (Nevers)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/dbdc2068-ee22-474d-8a42-261554482a4f">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement/">“Arbres d’ornement” (Nevers)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/956d47c3-d907-43f3-a2ed-d70bb251463f">shp</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/information/">“Arbres d’alignement - Toulouse”</a></td>
-<td style="text-align: right;"><a href="https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.orleans-metropole.fr/explore/dataset/espace_publicev_arbres/information/">“Arbres - Ville d’Orléans”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/804b8b61-9f8f-4a0d-8524-35ea5d6e265f">shp</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-saint-egreve">“Les arbres de Saint-Egrève”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/2bda9508-27e5-4de6-aba3-fdb0d9059a22">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://geo.data.gouv.fr/fr/datasets/e257334df108256a4e05eb16768a05870da263d4">“Arbres d’alignement - Bayonne”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/3ed45467-0bcc-4049-8aa4-3c0e8fc921ab">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/information/?disjunctive.commune&amp;disjunctive.num_rd&amp;disjunctive.essence_scient&amp;disjunctive.essence_commun&amp;disjunctive.classe_age&amp;disjunctive.statut_emp&amp;sort=id_arbre">“Arbres d’alignement sur la voirie départementale”</a></td>
-<td style="text-align: right;"><a href="https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/">“Arbres d’ornement des espaces verts de la Ville de Rennes”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/">“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/information/?sort=com_nom">“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”</a></td>
-<td style="text-align: right;"><a href="https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://catalogue.datara.gouv.fr/geosource/panierDownloadFrontalParametrage?LAYERIDTS=27262455">“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”</a></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">“Arbres de la Ville de Guingamp”</td>
-<td style="text-align: right;"><a href="https://datarmor.cotesdarmor.fr/dataserver/cg22/data/Arbres_Guingamp?&amp;$format=json">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/information/">“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”</a></td>
-<td style="text-align: right;"><a href="https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/information/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJwb2xhciIsImZ1bmMiOiJDT1VOVCIsInlBeGlzIjoiY29kZV9pbnNlZSIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6InJhbmdlLUFjY2VudCJ9XSwieEF4aXMiOiJlc3NfZmNhaXMiLCJtYXhwb2ludHMiOjUwLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJwYXRyaW1vaW5lLWFyYm9yZSIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D">“Inventaire arboré de Grand Paris Sud”</a></td>
-<td style="text-align: right;"><a href="https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/information/?disjunctive.commune">“Cadastre vert - Les arbres” (Hauts-de-Seine)</a></td>
-<td style="text-align: right;"><a href="https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.agglo-pau.fr/index.php/fiche?idQ=23">“Arbres Alignement sur la CAPP (Pau)”</a></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/information/">“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”</a></td>
-<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="http://opendata.grandnancy.eu/jeux-de-donnees/detail-dune-fiche-de-donnees/?tx_icsoddatastore_pi1%5Bkeywords%5D=arbre&amp;tx_icsoddatastore_pi1%5Buid%5D=66&amp;tx_icsoddatastore_pi1%5BreturnID%5D=447">“Restitution topo 3D” (Nancy)</a></td>
-<td style="text-align: right;"><a href="http://opendata.grandnancy.eu/?eID=ics_od_datastoredownload&amp;file=174">shp</a></td>
-</tr>
-</tbody>
-</table>
+<section id="making-use-of-what-we-learn" class="level2">
+<h2 class="anchored" data-anchor-id="making-use-of-what-we-learn">Making use of what we learn</h2>
+<p>The schema below is adapted from the OGC documentation (p.&nbsp;14 and 15). It shows the different steps required to collect data with an associate request. First, we need to know what kind of services are available.</p>
+<p><img src="./flowshartSOS.png" class="img-fluid"></p>
+<p>This a job for a <code>GetCapabilities</code> request:</p>
+<pre><code>https://download.data.grandlyon.com/sos/bruit?service=SOS&amp;request=GetCapabilities</code></pre>
+<p>The first part is the address: <code>https://download.data.grandlyon.com/sos/bruit</code></p>
+<p>(bruit <em>means</em> ‘noise’ in French)</p>
+<p>Then, after <code>?</code> we start the request specifying the service and the request. With this <a href="https://download.data.grandlyon.com/sos/bruit?service=SOS&amp;request=GetCapabilities">request</a> we get an XML giving us all of the information about the service and what we can do with it. A quick scroll gives us the name of the procedures we can request information from and the output format provided.</p>
+<p>We can now ask for more information about the sensor with <code>DescribeSensor</code> before getting observations.</p>
+<pre><code>https://download.data.grandlyon.com/sos/bruit?request=DescribeSensor&amp;procedure=AF01&amp;outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22&amp;service=SOS&amp;version=1.0.0</code></pre>
+<p>This one looks a bit more complicated, so let’s examine it. We will still use the same address. Then, we will request <code>DescribeSensor</code> and we will ask for the only output format available: <code>text/xml;subtype="sensorML/1.0.1"</code>. It looks a bit complicated, because some characters need to be <a href="https://en.wikipedia.org/wiki/Percent-encoding">escaped</a> (<code>outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22</code>). The last part is just asking for SOS version 1.0.</p>
+<p>This request allows us to check the <strong>AllowedTimes</strong> for our next request : <code>GetObservation</code>.</p>
+<pre><code>https://download.data.grandlyon.com/sos/bruit?service=SOS&amp;version=1.0.0&amp;request=GetObservation&amp;offering=observatoire_acoustique_grandlyon&amp;procedure=AF01&amp;eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00&amp;observedProperty=lday&amp;responseFormat=text/plain</code></pre>
+<p>Ok this result is HUGE! However, we have already built some understanding and I will explain the part that we haven’t seen yet. In SOS version 1.0, we need to specify the <strong>offering</strong> that groups our sensor (<code>offering=observatoire_acoustique_grandlyon</code>).</p>
+<p>This information comes from the <code>GetCapabilities</code>. Then, we define our <strong>procedure</strong> and set up a time interval of interest (<code>eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00</code>).</p>
+<p>After that, we specify the observed property that we’re interested in (<code>observedProperty=lday</code>) and response format (<code>responseFormat=text/plain</code>). Just as before, these two pieces of insight come from the GetCapabilities. As you may have noticed, we don’t need to add all observed property and procedure definitions, just the identifier is fine (lday vs urn:ogc:def:parameter:::noise:lday).</p>
+<p>Much more can and should be said (you can use bbox or aggregate in requests!) but let’s stop here. I hope that we can explore some ways to interact with http requests in R, soon!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>af01 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"bruit.csv"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>af01<span class="sc">$</span>V1 <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">as_datetime</span>(af01<span class="sc">$</span>V1)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(af01) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"time"</span>, <span class="st">"sensor"</span>, <span class="st">"lday"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>quickplot <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(<span class="at">data =</span> af01, ggplot2<span class="sc">::</span><span class="fu">aes</span>( <span class="at">x =</span>  time, <span class="at">y =</span> lday)) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">1</span>, <span class="at">col =</span> <span class="st">"darkred"</span>) <span class="sc">+</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                ggplot2<span class="sc">::</span><span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">90</span>)) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>quickplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/small use case with the noise data-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="references" class="level1">
+
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Gabrys2020" class="csl-entry" role="listitem">
+Gabrys, Jennifer. 2020. <span>“Smart Forests and Data Practices: From the Internet of Trees to Planetary Governance.”</span> <em>Big Data &amp; Society</em> 7 (1): 2053951720904871. <a href="https://doi.org/10.1177/2053951720904871">https://doi.org/10.1177/2053951720904871</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
