@@ -1,0 +1,19 @@
+<osm-script output="json" output-config="">
+  <union into="_">
+    <query into="_" type="node">
+      <has-kv k="amenity" modv="" v=""/>
+      <bbox-query e="7.415771484374999" into="_" n="46.68713141244413" s="43.12103377575541" w="1.7907714843749998"/>
+    </query>
+    <query into="_" type="way">
+      <has-kv k="amenity" modv="" v=""/>
+      <bbox-query e="7.415771484374999" into="_" n="46.68713141244413" s="43.12103377575541" w="1.7907714843749998"/>
+    </query>
+    <query into="_" type="relation">
+      <has-kv k="amenity" modv="" v=""/>
+      <bbox-query e="7.415771484374999" into="_" n="46.68713141244413" s="43.12103377575541" w="1.7907714843749998"/>
+    </query>
+  </union>
+  <print e="" from="_" geometry="skeleton" limit="" mode="body" n="" order="id" s="" w=""/>
+  <recurse from="_" into="_" type="down"/>
+  <print e="" from="_" geometry="skeleton" limit="" mode="skeleton" n="" order="quadtile" s="" w=""/>
+</osm-script>
