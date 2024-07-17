@@ -28,144 +28,39 @@
     "text": "Footnotes\n\n\nSee this nice blog post on the history of “global street maps”↩︎"
   },
   {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
-    "title": "Trees in Open Data Databases in France",
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html",
+    "title": "Learning Data Science Meme",
     "section": "",
-    "text": "I collect tree data sets and here are some links to open data from France. I will update the list when I find more!\nYou can find out more about my work on my github. To extract the trees from the files I needed to do a bit of data wrangling."
+    "text": "I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:\n/rant on"
   },
   {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
-    "title": "Trees in Open Data Databases in France",
-    "section": "Guingamp",
-    "text": "Guingamp\nTypical lat/long in field.\nguingamp &lt;- sf::st_read(\"sources/Arbres de la Ville de Guingamp.csv\")\nguingamp &lt;- sf::st_as_sf(guingamp, coords = c(\"longitude\", \"latitude\"), crs = 4326)"
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "title": "Learning Data Science Meme",
+    "section": "Where am I?",
+    "text": "Where am I?\nAs a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.\nLike every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff."
   },
   {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
-    "title": "Trees in Open Data Databases in France",
-    "section": "Ecoline",
-    "text": "Ecoline\nIsolated trees are only the ones with “Arbre isolé” in ele_txt field.\niau_ecoline &lt;- sf::st_read(\"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json\")\niau_ecoline &lt;- iau_ecoline[iau_ecoline$ele_txt == \"Arbre isolé\",]"
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "title": "Learning Data Science Meme",
+    "section": "Good points",
+    "text": "Good points\nI think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”."
   },
   {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
-    "title": "Trees in Open Data Databases in France",
-    "section": "Nancy metropolis",
-    "text": "Nancy metropolis\nNancy is a bit more tricky. Each city has a directory where you can found isolated trees (ARBRE_ISOLE.shp). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.\nnancy &lt;- sapply(list.files(pattern = \"ARBRE_ISOLE.shp$\", recursive = T), sf::st_read) # read all the file \nhoudemont &lt;- nancy[6] # we get Houdemont's data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`$Z &lt;- NA # add the missing data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp` &lt;- \n    houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`[    # reorgonize it\n        ,c(\"HAUTEUR\",  \"DIAMETRE\", \"TYPE\", \"CCOCOM\", \"Z\",  \"geometry\")\n    ]\nnancy &lt;- do.call(rbind, nancy[-6]) # one file from every cities except Houdemont \nnancy &lt;- rbind(nancy, houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`) # adding Houdemont"
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "title": "Learning Data Science Meme",
+    "section": "Bad stuffs",
+    "text": "Bad stuffs\nI will have fewer problems with the meme if it did not mention IQ (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a journey than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.\nI guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools."
   },
   {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
-    "title": "Trees in Open Data Databases in France",
-    "section": "List of data sets",
-    "text": "List of data sets\n\n\n\nName\nData\n\n\n\n\n“L’arbre à Paris”\nGeoJson\n\n\n“Arbres d’alignement de la Métropole de Lyon”\nshp\n\n\n“Patrimoine arboré de Bordeaux”\nGeoJson\n\n\n“Cartographie des arbres communaux” (Nice)\nGeoJson\n\n\n“Les arbres de Grenoble”\nGeoJson\n\n\n“Arbres d’alignement de Montpellier”\nGeoJson\n\n\n“Arbres” (Grand Paris Seine Ouest)\nGeoJson\n\n\n“Arbres” (Agen)\nGeoJson\n\n\n“ARBRES” (Agglo du Saint-Quentinois)\nGeoJson\n\n\n“Arbres remarquables” (Metz)\nshp\n\n\n“Arbres d’alignement”(Seine-Saint-Denis)\nGeoJson\n\n\n“Arbres d’alignements - Ville de Versailles”\nGeoJson\n\n\n“Arbres dans les parcs de la ville de Versailles”\nGeoJson\n\n\n“Arbres d’alignement” (Nevers)\nshp\n\n\n“Arbres d’ornement” (Nevers)\nshp\n\n\n“Arbres d’alignement - Toulouse”\nGeoJson\n\n\n“Arbres - Ville d’Orléans”\nshp\n\n\n“Les arbres de Saint-Egrève”\nshp\n\n\n“Arbres d’alignement - Bayonne”\nGeoJson\n\n\n“Arbres d’alignement sur la voirie départementale”\nGeoJson\n\n\n“Arbres d’ornement des espaces verts de la Ville de Rennes”\nGeoJson\n\n\n“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”\nGeoJson\n\n\n“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”\nGeoJson\n\n\n“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”\n\n\n\n“Arbres de la Ville de Guingamp”\nGeoJson\n\n\n“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”\nGeoJson\n\n\n“Inventaire arboré de Grand Paris Sud”\nGeoJson\n\n\n“Cadastre vert - Les arbres” (Hauts-de-Seine)\nGeoJson\n\n\n“Arbres Alignement sur la CAPP (Pau)”\n\n\n\n“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”\nGeoJson\n\n\n“Restitution topo 3D” (Nancy)\nshp"
-  },
-  {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
-    "section": "",
-    "text": "The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.\nI was quite interested in the last episode geospatial consulting – as a business and a career and wanted to share some of the little gems this episode has to offer.\nThe episode was an interview with Todd Slind (VP of Technology) at Locana.co about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.\nBefore going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following Geospatial Connections with another Locana employe and I feel those contributions are great!"
-  },
-  {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
-    "section": "Geospatial Consulting as Business",
-    "text": "Geospatial Consulting as Business\n\n“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind\n\nA lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.\nThis dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.\nBoth markets were defined as:\n\nMature Market:\n\nStandardize: allow “off-the-shelf solutions”\n\nPresence of a robust consultancy ecosystem (with competition)\n\nInformed consumers\n\n\n\nLess Mature Market:\n\nProblems are still unclear\n\nNeed for more custom development / more IT\nMore constraints from the environment (ex: low bandwidth)\nNeed to build a common language\n\nThe best way to build a strong core is to practice and build experience."
-  },
-  {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
-    "section": "Geospatail consulting as a career",
-    "text": "Geospatail consulting as a career\nThis leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.\nAccording to Todd Slind, a great consultant should have:\n- Curiosity/creativity as a self-starter\n- Can “interface” with clients (importance of speaking the same language)\n- Is able to have ownership over their own personal development\nIf a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new shiny developments (sedona, arrow) but the better question is “where and how to apply them to solve problems?”\nI also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.\nStrangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!"
-  },
-  {
-    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html",
-    "href": "posts/2021-03-01-sampling-allong-a-line/index.html",
-    "title": "Sampling Along a Line",
-    "section": "",
-    "text": "Recently, someone posted a question on Linkedin about sampling along some lines. It may not be obvious for everyone why anyone would like to do that so let’s provide some examples: sampling in a river every N meters, sampling species diversity along transects. The lines or segments can be used as a way to measure some kind of gradient or to follow something that can be represented as a line. A line is just a one-dimensional (1D) representation, so even if we use it in space it can represent way more stuff… like time!\nThe question had to do with QGIS and Postgis. I was a bit curious about how to do it in R and also wanted try with QGIS (later!). I used rocker/geospatial:4.0.4 with sf (0.9.0) and spastat (1.63-3) packages (and their respective dependencies). My exploration went a bit longer than expected, so I will just start with spastat then keep going."
-  },
-  {
-    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#pointsonlines",
-    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#pointsonlines",
-    "title": "Sampling Along a Line",
-    "section": "pointsOnLines",
-    "text": "pointsOnLines\nWhile looking for how to make a regular sample in a line in a spatstat, I found pointsOnLines with this nice documentation page. This looks perfect for us. Let’s try it!\nThe first line just creates some lines (“randomly”). The only difficulty is the psp function. This function creates an object of class psp or a line segment pattern. Spatstat uses its own objects and methods but it is easy to convert them as you can see in the second line where the sf package is used to write our dear friend shapefile. I commented the line because I didn’t want to run a new set of lines every time.\n\nsome_lines &lt;- spatstat.geom::psp(runif(20), runif(20), runif(20), runif(20),  window = spatstat.geom::owin()) \n# sf::st_write(sf::st_as_sf(some_lines)[-1,], \"some_lines.shp\")\nlines &lt;- sf::st_read(\"some_lines.shp\")\n\nReading layer `some_lines' from data source \n  `/Users/olivierleroy/Documents/btl/posts/2021-03-01-sampling-allong-a-line/some_lines.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 20 features and 1 field\nGeometry type: LINESTRING\nDimension:     XY\nBounding box:  xmin: 0.02009798 ymin: 0.03753605 xmax: 0.9965629 ymax: 0.9619593\nCRS:           NA\n\n\n\n#\\ label: reading them back \nsome_lines &lt;- spatstat.geom::as.psp(sf::st_geometry(lines), window = owin()) #  read them back\nplot(some_lines, main = \"Draw some lines\", col = \"grey\")\n\n\n\n\n\n\n\n\nI admit that indexing with negative 1 ([-1,]) is a bit ugly, but if you want to use the almighty shapefile you can only use one type of geometry (no one is perfect!). That’s why you have to remove the polygon that is the bbox at the first line (or use some more hipster geo format). Finally, in the third line, we read it back. Spatstat works primarily in projected coordinates and this should be kept in mind (we don’t care too much about our lack of CRS here, which would not be the case in a real-world project which could fail if you use geographic coordinate systems).\nNow we can use the pointsOnLines function to create an object of ppp type (AKA points pattern) and plot the points. We just use two arguments, the first one is our lines and the second eps is Spacing between successive points. As stated in the details section of the documentation the spacing of eps is measured in coordinate units of X”. Here we used some numbers (20) from a uniform distribution with the default arguments (min = 0 and max = 1) so eps = 0.1 was fine. I also liked to shortok default argument so I didn’t change it.\n\nsampling_points &lt;- spatstat.geom::pointsOnLines(some_lines, eps = 0.1)\nplot(some_lines, main=\"Add points!\", col = \"grey\")\nplot(sampling_points, add = TRUE, pch = \"+\", col = \"darkred\")\n\n\n\n\n\n\n\n\n\nsf::st_write(sf::st_as_sf(sampling_points)[-1,], \"sampling_points.shp\") # save them"
-  },
-  {
-    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#where-is-the-first-sample-placed-on",
-    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#where-is-the-first-sample-placed-on",
-    "title": "Sampling Along a Line",
-    "section": "Where is the first sample placed on?",
-    "text": "Where is the first sample placed on?\nOne question remains! Where should the first point in a line be placed? This is trickier than it looks: what happens when the length of a lines is not a multiple of our spacing value? Where should we start placing points?\nWe can start with a simple example : just one line. We didn’t set up any units but to make it simple, let’s use meters (m).\n\nfenetre &lt;- spatstat.geom::owin(xrange=c(-1,11), yrange=c(0,2)) # define a reusable window \nline &lt;- spatstat.geom::psp(0, 1, 10, 1,  window = fenetre)     # one line length = 10\nguide &lt;- spatstat.geom::ppp(0:10, rep(1,11), window = fenetre) # create some guides\nmid &lt;- spatstat.geom::ppp(0.5:9.5, rep(1,10), window = fenetre)# create more guides\nsamples &lt;- spatstat.geom::pointsOnLines(line, eps = 3)         # spacing of 3\nplot(line, col = \"grey\", main = \"\")                       # plot everything \nplot(guide, pch = \"|\", add = TRUE)\nplot(mid, pch = \"+\", add = TRUE, col = \"grey\")\nplot(samples, pch = 16, col = \"darkred\", add = TRUE)\n\n\n\n\n\n\n\n\nWell this innocuous question bring us something unexpected. We expected 3 samples but we got 4 and it looks like the first sample, on both sides, is located at 1 m from the end/beginning of the line (in a circular line they will be 2 m apart) but something is staring to be problematic : the only spacing of 3 is between the second and third sample, other spacing is 2.5 m. If we take a longer line (25 m like below) we get the same pattern (1m, 2.5m then 3) but with more samples spaced with 3 m.\n\nfenetre &lt;- spatstat.geom::owin(xrange=c(-1,26), yrange=c(0,2)) # define a reusable windows \nline &lt;- spatstat.geom::psp(0, 1, 25, 1,  window = fenetre)     # one line length = 10\nguide &lt;- spatstat.geom::ppp(0:25, rep(1,26), window = fenetre) # create some guides\nsamples &lt;- spatstat.geom::pointsOnLines(line, eps = 3)         # spacing of 3\nplot(line, col = \"grey\", main = \"\")                       # plot everything \nplot(guide, pch = \"|\", add = TRUE)\nplot(samples, pch = 16, col = \"darkred\", add = TRUE)\n\n\n\n\n\n\n\n\nLet’s dive into the code (thx open source!). I will skip the part that defines the function, check what arguments are used, etc.. and do a first stop at L25-L32. This part is the code for what should be done if we have too lines that are too small (length &lt;= spacing) and shortok == TRUE (our setup). We can see that with this option, a sample point will be added at the middle of our small line.\nI will then move to the part for every other (i.e., non-small) line. We can also skip the loop and the bind part and just try with one line. Below I have just reproduced L36 and 47 :\n\n# re using same example \nfenetre &lt;- spatstat.geom::owin(xrange=c(-1,11), yrange=c(0,2))\nline &lt;- spatstat.geom::psp(0, 1, 10, 1,  window = fenetre) \nlinedf    &lt;- as.data.frame(line)\neps &lt;- 3                                    # some spacing\n\nleni &lt;- spatstat.geom::lengths_psp(line)    # length of the segment : 10 \nnwhole &lt;- floor(leni/eps)                   # how many whole segments can we fit : 3\nif(leni/eps - nwhole &lt; 0.5 && nwhole &gt; 2)   # if we do 3 nwhole we have some \"leftovers\"\n    nwhole &lt;- nwhole - 1                    # I guess it is a design choice \nrump &lt;- (leni - nwhole * eps)/2             # \nbrks &lt;- c(0, rump + (0:nwhole) * eps, leni) # making bricks: 0 2 5 8 10\nnbrks &lt;- length(brks)                       # how many bricks: 5\n# points at middle of each piece\nss &lt;- (brks[-1] + brks[-nbrks])/2\ntp &lt;- ss/leni                               # make it relative\nx &lt;- with(linedf, x0 + tp * (x1-x0))        # give them coordinates\ny &lt;- with(linedf, y0 + tp * (y1-y0))\n\nThe authors have made some design choices. Instead of going for 3 points, they have gone with 4 and focused on their definition : “Given a line segment pattern, place a series of points at equal distances along each line segment.”. Points are not located at every x spacing but instead at equal distances: if we set 3 points they are not at the same distance anymore, so it seems they opted to make a compromise, as when (L9) adds a point and decreases the spacing a bit and when not doing so. I feel this is a correct choice when sampling and it remind me a lot of reflections about the all block quadra variance family and the importance of the starting point."
-  },
-  {
-    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#conclusion",
-    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#conclusion",
-    "title": "Sampling Along a Line",
-    "section": "Conclusion",
-    "text": "Conclusion\nSpatstat is definitely a statistical package at heart and you have to be thoughtful when you use it a bit outside of its main goal (as we figured out)! If you want to use it, you will have to adjust it a bit or remove the first measures at the ends of the lines.\nNext time, let’s see how sf handles this case."
-  },
-  {
-    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#footnotes",
-    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#footnotes",
-    "title": "Sampling Along a Line",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nhttps://spatstat.org/2020/12/14/spatstat-split.html↩︎"
-  },
-  {
-    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html",
-    "href": "posts/2021-01-29-sensor-observation-standard/index.html",
-    "title": "Sensor Observation Service: an Introduction",
-    "section": "",
-    "text": "Thanks to SIST and the financial support of my lab, I was able to attend a training course on Sensor Observation Services (SOS) with one of my coworkers. It’s time to reflect a bit on what we learned!"
-  },
-  {
-    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
-    "href": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
-    "title": "Sensor Observation Service: an Introduction",
-    "section": "Observations",
-    "text": "Observations\nThis network monitors noise in various places. Places are called Features of Interest (FOI), featureOfInterest in XML. One of them is here urn:ogc:def:feature:x-istsos:1.0:Point:Berthelot. This is more simple that it looks: we have an Uniform Resource Name from OGC that defines a feature in istSOS (the service we will use) version 1.0. This feature is a point and has the name (identifier) of Berthelot. Now we would like to collect observations about noise here. To do that, we will use a procedure : a way to collect observations. The procedure has a location (coordinates with a coordinate reference system) Here this is done with one sensor but it can be done with more than one or/and using some processes. Our FOI have the procedure/sensor AF01 associated (urn:ogc:def:procedure:x-istsos:1.0:AF01). It is monitoring at least one observed property (observedProperty). AF01 produce 4 of them (lday, levening, lnight). lday is a noise level, taking into account human ears in decibels, calculated during daylight hours (6am-6pm). Eventually we will get a result, let’s say 62.8 dB(A). dB(A) is our unit of measure (uom). Time is usually expressed in ISO 8601 (2021-02-06T06:00:00.000000Z).\nTogether, all of the above make an observation!\nFinally, offering enables you to make some logical grouping of observations."
-  },
-  {
-    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
-    "href": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
-    "title": "Sensor Observation Service: an Introduction",
-    "section": "Making use of what we learn",
-    "text": "Making use of what we learn\nThe schema below is adapted from the OGC documentation (p. 14 and 15). It shows the different steps required to collect data with an associate request. First, we need to know what kind of services are available.\n\nThis a job for a GetCapabilities request:\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&request=GetCapabilities\nThe first part is the address: https://download.data.grandlyon.com/sos/bruit\n(bruit means ‘noise’ in French)\nThen, after ? we start the request specifying the service and the request. With this request we get an XML giving us all of the information about the service and what we can do with it. A quick scroll gives us the name of the procedures we can request information from and the output format provided.\nWe can now ask for more information about the sensor with DescribeSensor before getting observations.\nhttps://download.data.grandlyon.com/sos/bruit?request=DescribeSensor&procedure=AF01&outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22&service=SOS&version=1.0.0\nThis one looks a bit more complicated, so let’s examine it. We will still use the same address. Then, we will request DescribeSensor and we will ask for the only output format available: text/xml;subtype=\"sensorML/1.0.1\". It looks a bit complicated, because some characters need to be escaped (outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22). The last part is just asking for SOS version 1.0.\nThis request allows us to check the AllowedTimes for our next request : GetObservation.\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&version=1.0.0&request=GetObservation&offering=observatoire_acoustique_grandlyon&procedure=AF01&eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00&observedProperty=lday&responseFormat=text/plain\nOk this result is HUGE! However, we have already built some understanding and I will explain the part that we haven’t seen yet. In SOS version 1.0, we need to specify the offering that groups our sensor (offering=observatoire_acoustique_grandlyon).\nThis information comes from the GetCapabilities. Then, we define our procedure and set up a time interval of interest (eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00).\nAfter that, we specify the observed property that we’re interested in (observedProperty=lday) and response format (responseFormat=text/plain). Just as before, these two pieces of insight come from the GetCapabilities. As you may have noticed, we don’t need to add all observed property and procedure definitions, just the identifier is fine (lday vs urn:ogc:def:parameter:::noise:lday).\nMuch more can and should be said (you can use bbox or aggregate in requests!) but let’s stop here. I hope that we can explore some ways to interact with http requests in R, soon!\n\naf01 &lt;- read.csv(\"bruit.csv\", header = FALSE)\naf01$V1 &lt;- lubridate::as_datetime(af01$V1)\nnames(af01) &lt;- c(\"time\", \"sensor\", \"lday\")\nquickplot &lt;- ggplot2::ggplot(data = af01, ggplot2::aes( x =  time, y = lday)) +\n                ggplot2::geom_point(alpha = .1, col = \"darkred\") + \n                ggplot2::ylim(c(50, 90)) +\n                ggplot2::theme_bw()\nquickplot"
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
-    "title": "R is (also) a graph calculator",
-    "section": "",
-    "text": "I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time ago!). I find a nice free book and practice with it. A lot can be done with pen + paper but sometimes you need to represent an equation in a Cartesian plane.\nR is perfect for that (even if it is not a Computer algebra system) but I am always forgetting some specific ways to do it!\nFirst we do a simple function:\n\\[y = \\sqrt[3](1 - x^2)\\]\nsimple_function &lt;- function(x){\n    temp = (1 - x*x)\n    # R is using natural log so you need to adjust a bit, ie if you use negative\n    # value you will get NaN :\n    # kind of same idea of doing cube_root(-1) * cube_root(abs(x))\n    sign(temp)*abs(temp)**(1/3)\n}\nsimple_function(-5:5)\n\n [1] -2.884499 -2.466212 -2.000000 -1.442250  0.000000  1.000000  0.000000\n [8] -1.442250 -2.000000 -2.466212 -2.884499\nThen you have (as far as I know) 3 options!"
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
-    "title": "R is (also) a graph calculator",
-    "section": "Vector and plot:",
-    "text": "Vector and plot:\nHere this is simple we generate a sequence of values and apply our function on it.\n\nx &lt;- -5:5\ny &lt;- simple_function(x)\nplot(x, y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n# if you prefer it can also go in data frame because both vectors have the same length\n#df &lt;- data.frame(x = x,\n#                 y = simple_function(x))\n\nThis is good but if you pay attention you can see that using type = \"b\" we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:\n\nx &lt;- seq(from = -5, to = 5, by = .1)\ny &lt;- simple_function(x)\nplot(x , y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n\nThis is a bit better!"
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
-    "title": "R is (also) a graph calculator",
-    "section": "curve!",
-    "text": "curve!\nThe base-R packagegraphics provide us with a lot of very cool functions and one of it is curve(). It can take a function or an expression.\n\ncurve(simple_function, from = -5, to = 5,\n      ylab = \"y\", col = 2) # some small tuning is still needed\n\n\n\n\n\n\n\n\nEasy and simple."
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
-    "title": "R is (also) a graph calculator",
-    "section": "ggplot!",
-    "text": "ggplot!\nObviously, we can also do it with ggplot::stat_function():\n\nlibrary(ggplot2)\n# I was lazy and just reused x\nggplot(data.frame(x), aes(x = x)) +\n    stat_function(fun = simple_function, colour = 2) +\n    theme_bw()"
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "title": "Learning Data Science Meme",
+    "section": "Summing it up",
+    "text": "Summing it up\nIf you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.\n/rant off"
   },
   {
     "objectID": "posts/2021-10-23-wonderfull-of-overpass-turbo/index.html",
@@ -203,45 +98,178 @@
     "text": "Footnotes\n\n\nsee also https://en.wikipedia.org/wiki/Protocol_Buffers↩︎\nMark Padgham, Bob Rudis, Robin Lovelace, Maëlle Salmon (2017). osmdata Journal of Open Source Software, 2(14). URL https://doi.org/10.21105/joss.00305↩︎\nsee here for instructions↩︎"
   },
   {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html",
-    "title": "Learning Data Science Meme",
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
+    "title": "R is (also) a graph calculator",
     "section": "",
-    "text": "I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:\n/rant on"
+    "text": "I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time ago!). I find a nice free book and practice with it. A lot can be done with pen + paper but sometimes you need to represent an equation in a Cartesian plane.\nR is perfect for that (even if it is not a Computer algebra system) but I am always forgetting some specific ways to do it!\nFirst we do a simple function:\n\\[y = \\sqrt[3](1 - x^2)\\]\nsimple_function &lt;- function(x){\n    temp = (1 - x*x)\n    # R is using natural log so you need to adjust a bit, ie if you use negative\n    # value you will get NaN :\n    # kind of same idea of doing cube_root(-1) * cube_root(abs(x))\n    sign(temp)*abs(temp)**(1/3)\n}\nsimple_function(-5:5)\n\n [1] -2.884499 -2.466212 -2.000000 -1.442250  0.000000  1.000000  0.000000\n [8] -1.442250 -2.000000 -2.466212 -2.884499\nThen you have (as far as I know) 3 options!"
   },
   {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
-    "title": "Learning Data Science Meme",
-    "section": "Where am I?",
-    "text": "Where am I?\nAs a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.\nLike every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff."
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
+    "title": "R is (also) a graph calculator",
+    "section": "Vector and plot:",
+    "text": "Vector and plot:\nHere this is simple we generate a sequence of values and apply our function on it.\n\nx &lt;- -5:5\ny &lt;- simple_function(x)\nplot(x, y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n# if you prefer it can also go in data frame because both vectors have the same length\n#df &lt;- data.frame(x = x,\n#                 y = simple_function(x))\n\nThis is good but if you pay attention you can see that using type = \"b\" we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:\n\nx &lt;- seq(from = -5, to = 5, by = .1)\ny &lt;- simple_function(x)\nplot(x , y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n\nThis is a bit better!"
   },
   {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
-    "title": "Learning Data Science Meme",
-    "section": "Good points",
-    "text": "Good points\nI think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”."
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
+    "title": "R is (also) a graph calculator",
+    "section": "curve!",
+    "text": "curve!\nThe base-R packagegraphics provide us with a lot of very cool functions and one of it is curve(). It can take a function or an expression.\n\ncurve(simple_function, from = -5, to = 5,\n      ylab = \"y\", col = 2) # some small tuning is still needed\n\n\n\n\n\n\n\n\nEasy and simple."
   },
   {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
-    "title": "Learning Data Science Meme",
-    "section": "Bad stuffs",
-    "text": "Bad stuffs\nI will have fewer problems with the meme if it did not mention IQ (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a journey than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.\nI guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools."
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
+    "title": "R is (also) a graph calculator",
+    "section": "ggplot!",
+    "text": "ggplot!\nObviously, we can also do it with ggplot::stat_function():\n\nlibrary(ggplot2)\n# I was lazy and just reused x\nggplot(data.frame(x), aes(x = x)) +\n    stat_function(fun = simple_function, colour = 2) +\n    theme_bw()"
   },
   {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
-    "title": "Learning Data Science Meme",
-    "section": "Summing it up",
-    "text": "Summing it up\nIf you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.\n/rant off"
+    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html",
+    "href": "posts/2021-01-29-sensor-observation-standard/index.html",
+    "title": "Sensor Observation Service: an Introduction",
+    "section": "",
+    "text": "Thanks to SIST and the financial support of my lab, I was able to attend a training course on Sensor Observation Services (SOS) with one of my coworkers. It’s time to reflect a bit on what we learned!"
+  },
+  {
+    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
+    "href": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
+    "title": "Sensor Observation Service: an Introduction",
+    "section": "Observations",
+    "text": "Observations\nThis network monitors noise in various places. Places are called Features of Interest (FOI), featureOfInterest in XML. One of them is here urn:ogc:def:feature:x-istsos:1.0:Point:Berthelot. This is more simple that it looks: we have an Uniform Resource Name from OGC that defines a feature in istSOS (the service we will use) version 1.0. This feature is a point and has the name (identifier) of Berthelot. Now we would like to collect observations about noise here. To do that, we will use a procedure : a way to collect observations. The procedure has a location (coordinates with a coordinate reference system) Here this is done with one sensor but it can be done with more than one or/and using some processes. Our FOI have the procedure/sensor AF01 associated (urn:ogc:def:procedure:x-istsos:1.0:AF01). It is monitoring at least one observed property (observedProperty). AF01 produce 4 of them (lday, levening, lnight). lday is a noise level, taking into account human ears in decibels, calculated during daylight hours (6am-6pm). Eventually we will get a result, let’s say 62.8 dB(A). dB(A) is our unit of measure (uom). Time is usually expressed in ISO 8601 (2021-02-06T06:00:00.000000Z).\nTogether, all of the above make an observation!\nFinally, offering enables you to make some logical grouping of observations."
+  },
+  {
+    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
+    "href": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
+    "title": "Sensor Observation Service: an Introduction",
+    "section": "Making use of what we learn",
+    "text": "Making use of what we learn\nThe schema below is adapted from the OGC documentation (p. 14 and 15). It shows the different steps required to collect data with an associate request. First, we need to know what kind of services are available.\n\nThis a job for a GetCapabilities request:\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&request=GetCapabilities\nThe first part is the address: https://download.data.grandlyon.com/sos/bruit\n(bruit means ‘noise’ in French)\nThen, after ? we start the request specifying the service and the request. With this request we get an XML giving us all of the information about the service and what we can do with it. A quick scroll gives us the name of the procedures we can request information from and the output format provided.\nWe can now ask for more information about the sensor with DescribeSensor before getting observations.\nhttps://download.data.grandlyon.com/sos/bruit?request=DescribeSensor&procedure=AF01&outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22&service=SOS&version=1.0.0\nThis one looks a bit more complicated, so let’s examine it. We will still use the same address. Then, we will request DescribeSensor and we will ask for the only output format available: text/xml;subtype=\"sensorML/1.0.1\". It looks a bit complicated, because some characters need to be escaped (outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22). The last part is just asking for SOS version 1.0.\nThis request allows us to check the AllowedTimes for our next request : GetObservation.\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&version=1.0.0&request=GetObservation&offering=observatoire_acoustique_grandlyon&procedure=AF01&eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00&observedProperty=lday&responseFormat=text/plain\nOk this result is HUGE! However, we have already built some understanding and I will explain the part that we haven’t seen yet. In SOS version 1.0, we need to specify the offering that groups our sensor (offering=observatoire_acoustique_grandlyon).\nThis information comes from the GetCapabilities. Then, we define our procedure and set up a time interval of interest (eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00).\nAfter that, we specify the observed property that we’re interested in (observedProperty=lday) and response format (responseFormat=text/plain). Just as before, these two pieces of insight come from the GetCapabilities. As you may have noticed, we don’t need to add all observed property and procedure definitions, just the identifier is fine (lday vs urn:ogc:def:parameter:::noise:lday).\nMuch more can and should be said (you can use bbox or aggregate in requests!) but let’s stop here. I hope that we can explore some ways to interact with http requests in R, soon!\n\naf01 &lt;- read.csv(\"bruit.csv\", header = FALSE)\naf01$V1 &lt;- lubridate::as_datetime(af01$V1)\nnames(af01) &lt;- c(\"time\", \"sensor\", \"lday\")\nquickplot &lt;- ggplot2::ggplot(data = af01, ggplot2::aes( x =  time, y = lday)) +\n                ggplot2::geom_point(alpha = .1, col = \"darkred\") + \n                ggplot2::ylim(c(50, 90)) +\n                ggplot2::theme_bw()\nquickplot"
+  },
+  {
+    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html",
+    "href": "posts/2021-03-01-sampling-allong-a-line/index.html",
+    "title": "Sampling Along a Line",
+    "section": "",
+    "text": "Recently, someone posted a question on Linkedin about sampling along some lines. It may not be obvious for everyone why anyone would like to do that so let’s provide some examples: sampling in a river every N meters, sampling species diversity along transects. The lines or segments can be used as a way to measure some kind of gradient or to follow something that can be represented as a line. A line is just a one-dimensional (1D) representation, so even if we use it in space it can represent way more stuff… like time!\nThe question had to do with QGIS and Postgis. I was a bit curious about how to do it in R and also wanted try with QGIS (later!). I used rocker/geospatial:4.0.4 with sf (0.9.0) and spastat (1.63-3) packages (and their respective dependencies). My exploration went a bit longer than expected, so I will just start with spastat then keep going."
+  },
+  {
+    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#pointsonlines",
+    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#pointsonlines",
+    "title": "Sampling Along a Line",
+    "section": "pointsOnLines",
+    "text": "pointsOnLines\nWhile looking for how to make a regular sample in a line in a spatstat, I found pointsOnLines with this nice documentation page. This looks perfect for us. Let’s try it!\nThe first line just creates some lines (“randomly”). The only difficulty is the psp function. This function creates an object of class psp or a line segment pattern. Spatstat uses its own objects and methods but it is easy to convert them as you can see in the second line where the sf package is used to write our dear friend shapefile. I commented the line because I didn’t want to run a new set of lines every time.\n\nsome_lines &lt;- spatstat.geom::psp(runif(20), runif(20), runif(20), runif(20),  window = spatstat.geom::owin()) \n# sf::st_write(sf::st_as_sf(some_lines)[-1,], \"some_lines.shp\")\nlines &lt;- sf::st_read(\"some_lines.shp\")\n\nReading layer `some_lines' from data source \n  `/Users/olivierleroy/Documents/btl/posts/2021-03-01-sampling-allong-a-line/some_lines.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 20 features and 1 field\nGeometry type: LINESTRING\nDimension:     XY\nBounding box:  xmin: 0.02009798 ymin: 0.03753605 xmax: 0.9965629 ymax: 0.9619593\nCRS:           NA\n\n\n\n#\\ label: reading them back \nsome_lines &lt;- spatstat.geom::as.psp(sf::st_geometry(lines), window = owin()) #  read them back\nplot(some_lines, main = \"Draw some lines\", col = \"grey\")\n\n\n\n\n\n\n\n\nI admit that indexing with negative 1 ([-1,]) is a bit ugly, but if you want to use the almighty shapefile you can only use one type of geometry (no one is perfect!). That’s why you have to remove the polygon that is the bbox at the first line (or use some more hipster geo format). Finally, in the third line, we read it back. Spatstat works primarily in projected coordinates and this should be kept in mind (we don’t care too much about our lack of CRS here, which would not be the case in a real-world project which could fail if you use geographic coordinate systems).\nNow we can use the pointsOnLines function to create an object of ppp type (AKA points pattern) and plot the points. We just use two arguments, the first one is our lines and the second eps is Spacing between successive points. As stated in the details section of the documentation the spacing of eps is measured in coordinate units of X”. Here we used some numbers (20) from a uniform distribution with the default arguments (min = 0 and max = 1) so eps = 0.1 was fine. I also liked to shortok default argument so I didn’t change it.\n\nsampling_points &lt;- spatstat.geom::pointsOnLines(some_lines, eps = 0.1)\nplot(some_lines, main=\"Add points!\", col = \"grey\")\nplot(sampling_points, add = TRUE, pch = \"+\", col = \"darkred\")\n\n\n\n\n\n\n\n\n\nsf::st_write(sf::st_as_sf(sampling_points)[-1,], \"sampling_points.shp\") # save them"
+  },
+  {
+    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#where-is-the-first-sample-placed-on",
+    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#where-is-the-first-sample-placed-on",
+    "title": "Sampling Along a Line",
+    "section": "Where is the first sample placed on?",
+    "text": "Where is the first sample placed on?\nOne question remains! Where should the first point in a line be placed? This is trickier than it looks: what happens when the length of a lines is not a multiple of our spacing value? Where should we start placing points?\nWe can start with a simple example : just one line. We didn’t set up any units but to make it simple, let’s use meters (m).\n\nfenetre &lt;- spatstat.geom::owin(xrange=c(-1,11), yrange=c(0,2)) # define a reusable window \nline &lt;- spatstat.geom::psp(0, 1, 10, 1,  window = fenetre)     # one line length = 10\nguide &lt;- spatstat.geom::ppp(0:10, rep(1,11), window = fenetre) # create some guides\nmid &lt;- spatstat.geom::ppp(0.5:9.5, rep(1,10), window = fenetre)# create more guides\nsamples &lt;- spatstat.geom::pointsOnLines(line, eps = 3)         # spacing of 3\nplot(line, col = \"grey\", main = \"\")                       # plot everything \nplot(guide, pch = \"|\", add = TRUE)\nplot(mid, pch = \"+\", add = TRUE, col = \"grey\")\nplot(samples, pch = 16, col = \"darkred\", add = TRUE)\n\n\n\n\n\n\n\n\nWell this innocuous question bring us something unexpected. We expected 3 samples but we got 4 and it looks like the first sample, on both sides, is located at 1 m from the end/beginning of the line (in a circular line they will be 2 m apart) but something is staring to be problematic : the only spacing of 3 is between the second and third sample, other spacing is 2.5 m. If we take a longer line (25 m like below) we get the same pattern (1m, 2.5m then 3) but with more samples spaced with 3 m.\n\nfenetre &lt;- spatstat.geom::owin(xrange=c(-1,26), yrange=c(0,2)) # define a reusable windows \nline &lt;- spatstat.geom::psp(0, 1, 25, 1,  window = fenetre)     # one line length = 10\nguide &lt;- spatstat.geom::ppp(0:25, rep(1,26), window = fenetre) # create some guides\nsamples &lt;- spatstat.geom::pointsOnLines(line, eps = 3)         # spacing of 3\nplot(line, col = \"grey\", main = \"\")                       # plot everything \nplot(guide, pch = \"|\", add = TRUE)\nplot(samples, pch = 16, col = \"darkred\", add = TRUE)\n\n\n\n\n\n\n\n\nLet’s dive into the code (thx open source!). I will skip the part that defines the function, check what arguments are used, etc.. and do a first stop at L25-L32. This part is the code for what should be done if we have too lines that are too small (length &lt;= spacing) and shortok == TRUE (our setup). We can see that with this option, a sample point will be added at the middle of our small line.\nI will then move to the part for every other (i.e., non-small) line. We can also skip the loop and the bind part and just try with one line. Below I have just reproduced L36 and 47 :\n\n# re using same example \nfenetre &lt;- spatstat.geom::owin(xrange=c(-1,11), yrange=c(0,2))\nline &lt;- spatstat.geom::psp(0, 1, 10, 1,  window = fenetre) \nlinedf    &lt;- as.data.frame(line)\neps &lt;- 3                                    # some spacing\n\nleni &lt;- spatstat.geom::lengths_psp(line)    # length of the segment : 10 \nnwhole &lt;- floor(leni/eps)                   # how many whole segments can we fit : 3\nif(leni/eps - nwhole &lt; 0.5 && nwhole &gt; 2)   # if we do 3 nwhole we have some \"leftovers\"\n    nwhole &lt;- nwhole - 1                    # I guess it is a design choice \nrump &lt;- (leni - nwhole * eps)/2             # \nbrks &lt;- c(0, rump + (0:nwhole) * eps, leni) # making bricks: 0 2 5 8 10\nnbrks &lt;- length(brks)                       # how many bricks: 5\n# points at middle of each piece\nss &lt;- (brks[-1] + brks[-nbrks])/2\ntp &lt;- ss/leni                               # make it relative\nx &lt;- with(linedf, x0 + tp * (x1-x0))        # give them coordinates\ny &lt;- with(linedf, y0 + tp * (y1-y0))\n\nThe authors have made some design choices. Instead of going for 3 points, they have gone with 4 and focused on their definition : “Given a line segment pattern, place a series of points at equal distances along each line segment.”. Points are not located at every x spacing but instead at equal distances: if we set 3 points they are not at the same distance anymore, so it seems they opted to make a compromise, as when (L9) adds a point and decreases the spacing a bit and when not doing so. I feel this is a correct choice when sampling and it remind me a lot of reflections about the all block quadra variance family and the importance of the starting point."
+  },
+  {
+    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#conclusion",
+    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#conclusion",
+    "title": "Sampling Along a Line",
+    "section": "Conclusion",
+    "text": "Conclusion\nSpatstat is definitely a statistical package at heart and you have to be thoughtful when you use it a bit outside of its main goal (as we figured out)! If you want to use it, you will have to adjust it a bit or remove the first measures at the ends of the lines.\nNext time, let’s see how sf handles this case."
+  },
+  {
+    "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html#footnotes",
+    "href": "posts/2021-03-01-sampling-allong-a-line/index.html#footnotes",
+    "title": "Sampling Along a Line",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://spatstat.org/2020/12/14/spatstat-split.html↩︎"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "",
+    "text": "The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.\nI was quite interested in the last episode geospatial consulting – as a business and a career and wanted to share some of the little gems this episode has to offer.\nThe episode was an interview with Todd Slind (VP of Technology) at Locana.co about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.\nBefore going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following Geospatial Connections with another Locana employe and I feel those contributions are great!"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatial Consulting as Business",
+    "text": "Geospatial Consulting as Business\n\n“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind\n\nA lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.\nThis dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.\nBoth markets were defined as:\n\nMature Market:\n\nStandardize: allow “off-the-shelf solutions”\n\nPresence of a robust consultancy ecosystem (with competition)\n\nInformed consumers\n\n\n\nLess Mature Market:\n\nProblems are still unclear\n\nNeed for more custom development / more IT\nMore constraints from the environment (ex: low bandwidth)\nNeed to build a common language\n\nThe best way to build a strong core is to practice and build experience."
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatail consulting as a career",
+    "text": "Geospatail consulting as a career\nThis leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.\nAccording to Todd Slind, a great consultant should have:\n- Curiosity/creativity as a self-starter\n- Can “interface” with clients (importance of speaking the same language)\n- Is able to have ownership over their own personal development\nIf a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new shiny developments (sedona, arrow) but the better question is “where and how to apply them to solve problems?”\nI also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.\nStrangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
+    "title": "Trees in Open Data Databases in France",
+    "section": "",
+    "text": "I collect tree data sets and here are some links to open data from France. I will update the list when I find more!\nYou can find out more about my work on my github. To extract the trees from the files I needed to do a bit of data wrangling."
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Guingamp",
+    "text": "Guingamp\nTypical lat/long in field.\nguingamp &lt;- sf::st_read(\"sources/Arbres de la Ville de Guingamp.csv\")\nguingamp &lt;- sf::st_as_sf(guingamp, coords = c(\"longitude\", \"latitude\"), crs = 4326)"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Ecoline",
+    "text": "Ecoline\nIsolated trees are only the ones with “Arbre isolé” in ele_txt field.\niau_ecoline &lt;- sf::st_read(\"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json\")\niau_ecoline &lt;- iau_ecoline[iau_ecoline$ele_txt == \"Arbre isolé\",]"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Nancy metropolis",
+    "text": "Nancy metropolis\nNancy is a bit more tricky. Each city has a directory where you can found isolated trees (ARBRE_ISOLE.shp). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.\nnancy &lt;- sapply(list.files(pattern = \"ARBRE_ISOLE.shp$\", recursive = T), sf::st_read) # read all the file \nhoudemont &lt;- nancy[6] # we get Houdemont's data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`$Z &lt;- NA # add the missing data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp` &lt;- \n    houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`[    # reorgonize it\n        ,c(\"HAUTEUR\",  \"DIAMETRE\", \"TYPE\", \"CCOCOM\", \"Z\",  \"geometry\")\n    ]\nnancy &lt;- do.call(rbind, nancy[-6]) # one file from every cities except Houdemont \nnancy &lt;- rbind(nancy, houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`) # adding Houdemont"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
+    "title": "Trees in Open Data Databases in France",
+    "section": "List of data sets",
+    "text": "List of data sets\n\n\n\nName\nData\n\n\n\n\n“L’arbre à Paris”\nGeoJson\n\n\n“Arbres d’alignement de la Métropole de Lyon”\nshp\n\n\n“Patrimoine arboré de Bordeaux”\nGeoJson\n\n\n“Cartographie des arbres communaux” (Nice)\nGeoJson\n\n\n“Les arbres de Grenoble”\nGeoJson\n\n\n“Arbres d’alignement de Montpellier”\nGeoJson\n\n\n“Arbres” (Grand Paris Seine Ouest)\nGeoJson\n\n\n“Arbres” (Agen)\nGeoJson\n\n\n“ARBRES” (Agglo du Saint-Quentinois)\nGeoJson\n\n\n“Arbres remarquables” (Metz)\nshp\n\n\n“Arbres d’alignement”(Seine-Saint-Denis)\nGeoJson\n\n\n“Arbres d’alignements - Ville de Versailles”\nGeoJson\n\n\n“Arbres dans les parcs de la ville de Versailles”\nGeoJson\n\n\n“Arbres d’alignement” (Nevers)\nshp\n\n\n“Arbres d’ornement” (Nevers)\nshp\n\n\n“Arbres d’alignement - Toulouse”\nGeoJson\n\n\n“Arbres - Ville d’Orléans”\nshp\n\n\n“Les arbres de Saint-Egrève”\nshp\n\n\n“Arbres d’alignement - Bayonne”\nGeoJson\n\n\n“Arbres d’alignement sur la voirie départementale”\nGeoJson\n\n\n“Arbres d’ornement des espaces verts de la Ville de Rennes”\nGeoJson\n\n\n“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”\nGeoJson\n\n\n“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”\nGeoJson\n\n\n“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”\n\n\n\n“Arbres de la Ville de Guingamp”\nGeoJson\n\n\n“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”\nGeoJson\n\n\n“Inventaire arboré de Grand Paris Sud”\nGeoJson\n\n\n“Cadastre vert - Les arbres” (Hauts-de-Seine)\nGeoJson\n\n\n“Arbres Alignement sur la CAPP (Pau)”\n\n\n\n“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”\nGeoJson\n\n\n“Restitution topo 3D” (Nancy)\nshp"
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html",
+    "title": "Toying with DE-9IM",
+    "section": "",
+    "text": "This little text below is from a reply I posted to issue. I tried to help a bit and I learned a lot at the same time!\nThe discussion topic was the st_relate function in the sf great package. this function implements the Dimensionally Extended 9-Intersection Model (DE-9IM) 1 or intersection matrix.\nGeometries can be polygons, lines and points. Polygons, two dimensional objects, are delimited by their boundaries (a line) and they can have an interior (an area) and an exterior (another area). Other geometries will mostly have lower dimensions in boundary and interior.\nThis is a nice representation from wikipedia:\nHere is the matrix of all of the possible options:\nEach part of the matrix can get a value. The value is related to the dimensions of the returned object.\nThis flattened matrix will look like this: “212101212”. This is called a pattern.\nThis matrix can be used in two ways: describe a relation between polygons or specify a type or relation you are interested in. As a result: you can use st_relate in two different ways:"
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#compute-the-de-9im-relations-between-two-objects",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html#compute-the-de-9im-relations-between-two-objects",
+    "title": "Toying with DE-9IM",
+    "section": "Compute the DE-9IM relations between two objects",
+    "text": "Compute the DE-9IM relations between two objects\nTo have an easier time reading the pattern, let’s make a quick function:\n\npattern_de_9im =  \"2FFF1FFF2\"\n\nmatrix_de_9im = function(pattern) {\n    string = unlist(strsplit(pattern , \"\"))\n    matrix_de_9im = matrix(string, nrow = 3, byrow = TRUE)\n    colnames(matrix_de_9im) = c(\"I\", \"B\", \"E\")\n    row.names(matrix_de_9im) = c(\"I\", \"B\", \"E\")\n    return(matrix_de_9im)\n}\n\nmatrix_de_9im(pattern_de_9im)\n\n  I   B   E  \nI \"2\" \"F\" \"F\"\nB \"F\" \"1\" \"F\"\nE \"F\" \"F\" \"2\"\n\n\nI will enhance an example from the sf documentation.\n\nlibrary(sf)\n\nLinking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE\n\n# 4 polygones to start \npol1 = st_polygon(list(rbind(c(0,0),c(1,0),c(1,1),c(0,1),c(0,0)))) - 0.5\npol2 = pol1 + 1\npol3 = pol1 + 1.5\npol4 = st_polygon(list(rbind(c(-1,0.5),c(-1,1.5),c(0,1.5),c(0,0.5),c(-1,0.5))))\n\nsquares = sf::st_sf(data.frame(name = LETTERS[1:4],\n           sf::st_sfc(pol1, pol2, pol3, pol4))\n          )\n\nplot(squares)\n\n\n\n\n\n\n\n\nHere we can see how each square relates to the others:\n\nmy_first_st_relate = sf::st_relate(squares, squares)\ncolnames(my_first_st_relate) = squares$name\nrow.names(my_first_st_relate) = squares$name\nmy_first_st_relate\n\n  A           B           C           D          \nA \"2FFF1FFF2\" \"FF2F01212\" \"FF2FF1212\" \"FF2F11212\"\nB \"FF2F01212\" \"2FFF1FFF2\" \"212101212\" \"FF2FF1212\"\nC \"FF2FF1212\" \"212101212\" \"2FFF1FFF2\" \"FF2FF1212\"\nD \"FF2F11212\" \"FF2FF1212\" \"FF2FF1212\" \"2FFF1FFF2\"\n\n\nWe are producing a symmetrical matrix and you just need to focus on half of it. The first column describes how the A square is related to the other squares.\nFirst line, first column [A,A] describes how the same square relates to itself:\n\nmatrix_de_9im(my_first_st_relate[\"A\",\"A\"])\n\n  I   B   E  \nI \"2\" \"F\" \"F\"\nB \"F\" \"1\" \"F\"\nE \"F\" \"F\" \"2\"\n\n\nThey share the same interior, same boundary and same exterior.\nLet’s see a more complicated case: square B with C:\n\nmatrix_de_9im(my_first_st_relate[\"B\",\"C\"])\n\n  I   B   E  \nI \"2\" \"1\" \"2\"\nB \"1\" \"0\" \"1\"\nE \"2\" \"1\" \"2\"\n\n\nThey share a part of their interior, their interior covers a part of their boundaries, a part of each interior is also an exterior of the other and their boundaries are related on two points.\nFeel free to experiment with the other squares!"
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#check-matching-patterns",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html#check-matching-patterns",
+    "title": "Toying with DE-9IM",
+    "section": "Check matching patterns",
+    "text": "Check matching patterns\nNow that we are familiar with the pattern, we can search the matrix for particular patterns. The fact that patterns are just strings allows us to also use regular expressions or other string tricks. Here, for example, we can return every pair-wise relation that shares a boundary.\n\n# . represent every single character \nmatrix(grepl(pattern = \"....1....\", my_first_st_relate),\n       nrow = 4, byrow = TRUE) \n\n      [,1]  [,2]  [,3]  [,4]\n[1,]  TRUE FALSE FALSE  TRUE\n[2,] FALSE  TRUE FALSE FALSE\n[3,] FALSE FALSE  TRUE FALSE\n[4,]  TRUE FALSE FALSE  TRUE\n\n\nWe can also translate spatial predicates with the DE-9IM pattern: see the Wikipedia page.\nWe can achieve the same result thanks to the pattern argument of the st_relate function. The syntax of the pattern changes a bit, you need to replace . (that means every single character) with * to match DE-9IM rules.\n\nsf::st_relate(squares, squares,  pattern = \"****1****\",  sparse = FALSE)\n\n      [,1]  [,2]  [,3]  [,4]\n[1,]  TRUE FALSE FALSE  TRUE\n[2,] FALSE  TRUE FALSE FALSE\n[3,] FALSE FALSE  TRUE FALSE\n[4,]  TRUE FALSE FALSE  TRUE\n\n\nWith sparse = FALSE it will return the matrix. If you change it to TRUE you get a a sparse geometry binary predicate in the form of a list (cf. chapter 4 of Geocomputation with R)\n\nsf::st_relate(squares, squares,  pattern = \"****1****\",  sparse = TRUE)\n\nSparse geometry binary predicate list of length 4, where the predicate\nwas `relate_pattern'\n 1: 1, 4\n 2: 2\n 3: 3\n 4: 1, 4\n\n\nYou can do a lot with this tool! My commentary on an issue lead Robin to write a nice introduction to DE-9IM."
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#footnotes",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html#footnotes",
+    "title": "Toying with DE-9IM",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nEgenhofer M. J., Herring J. R. (1995) Categorizing binary topoligical relationships between regions, lines, and points in geographic databases. Technical Report, Department of Surveying Engineering, University of Maine, Orono, ME.↩︎\nHsu, L. S., Obe, R. (2021). PostGIS in Action, Third Edition. États-Unis: Manning. p269↩︎"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Olivier Leroy",
     "section": "",
-    "text": "Mapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nThe Wonderfull World of Overpass Turbo\n\n\n\n\n\n\nOSM\n\n\n\nSome tips for Overpass Turbo\n\n\n\n\n\nOct 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSampling Along a Line\n\n\n\n\n\n\nSampling\n\n\nSpatstat\n\n\n\nfirst part : Spatstat\n\n\n\n\n\nApr 8, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSensor Observation Service: an Introduction\n\n\n\n\n\n\nSensor\n\n\nSmart environment\n\n\nTime series\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\nurban forest\n\n\nsurvey\n\n\ntree\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
+    "text": "Mapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nToying with DE-9IM\n\n\n\n\n\n\nr\n\n\nsf\n\n\n\nexploring st_relate\n\n\n\n\n\nDec 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nThe Wonderfull World of Overpass Turbo\n\n\n\n\n\n\nOSM\n\n\n\nSome tips for Overpass Turbo\n\n\n\n\n\nOct 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSampling Along a Line\n\n\n\n\n\n\nSampling\n\n\nSpatstat\n\n\n\nfirst part : Spatstat\n\n\n\n\n\nApr 8, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSensor Observation Service: an Introduction\n\n\n\n\n\n\nSensor\n\n\nSmart environment\n\n\nTime series\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\nurban forest\n\n\nsurvey\n\n\ntree\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
   }
 ]
