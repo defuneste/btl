@@ -7,13 +7,6 @@
     "text": "I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc …). I have a PhD in Geography and Environmental studies (here) from the University of Paris.\nThis blog exists to help me remember and learn stuff.\nMastodon"
   },
   {
-    "objectID": "about.html#about",
-    "href": "about.html#about",
-    "title": "About",
-    "section": "",
-    "text": "I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc …). I have a PhD in Geography and Environmental studies (here) from the University of Paris.\nThis blog exists to help me remember and learn stuff.\nMastodon"
-  },
-  {
     "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
     "href": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
     "title": "Using Go Map to contribute to OSM",
@@ -268,7 +261,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Olivier Leroy",
+    "title": "Posts",
     "section": "",
     "text": "Mapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nToying with DE-9IM\n\n\n\n\n\n\nR\n\n\nsf\n\n\n\nexploring st_relate\n\n\n\n\n\nDec 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nThe Wonderfull World of Overpass Turbo\n\n\n\n\n\n\nOSM\n\n\n\nSome tips for Overpass Turbo\n\n\n\n\n\nOct 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSampling Along a Line\n\n\n\n\n\n\nSampling\n\n\nSpatstat\n\n\n\nfirst part : Spatstat\n\n\n\n\n\nApr 8, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSensor Observation Service: an Introduction\n\n\n\n\n\n\nSensor\n\n\nSmart environment\n\n\nTime series\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\nurban forest\n\n\nsurvey\n\n\ntree\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
   }
