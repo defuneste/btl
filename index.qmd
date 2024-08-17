@@ -1,5 +1,5 @@
 ---
-title: "Olivier Leroy"
+title: "Posts"
 listing:
   contents: posts
   sort: "date desc"

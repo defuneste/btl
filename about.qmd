@@ -16,8 +16,6 @@ about:
 
 ---
 
-## About
-
 I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc ...).  I have a PhD in Geography and Environmental studies ([here](https://www.theses.fr/2017USPCC139)) from the University of Paris.
 
 This blog exists to help me remember and learn stuff.
