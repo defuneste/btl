@@ -2,7 +2,7 @@
 title: 'Toying with DE-9IM'
 author: Olivier Leroy
 date: '2021-12-23'
-categories: [r, sf] 
+categories: [R, sf] 
 description: 'exploring st_relate'
 draft: false
 ---
