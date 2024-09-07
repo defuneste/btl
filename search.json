@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc …). I have a PhD in Geography and Environmental studies (here) from the University of Paris.\nThis blog exists to help me remember and learn stuff.\nMastodon"
+    "text": "Hi! I am a Senior Data Engineer for the Center On Rural Innovation where I help data scientists and software engineers make sense of data and use it to help rural communities throughout America.\nPreviously, I worked as a geographer researching topics related to trees and the environmental, including studies on agroforestry, urban settings, virtual trees, tree identification applications and databases, etc.\nI hold a Ph.D. in Geography and Environmental Studies from the University of Paris.\nBranch Twig Leaf is a blog exploring new approaches to spatial data as well as trees in digital humanities and social science research.\nMastodon"
   },
   {
     "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
@@ -21,39 +21,18 @@
     "text": "Footnotes\n\n\nSee this nice blog post on the history of “global street maps”↩︎"
   },
   {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html",
-    "title": "Learning Data Science Meme",
+    "objectID": "posts/2024-03-10-awesome-jq/index.html",
+    "href": "posts/2024-03-10-awesome-jq/index.html",
+    "title": "Awesome jq and GeoJSON",
     "section": "",
-    "text": "I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:\n/rant on"
+    "text": "I wrote a blog post about using jq for filtering geojson.\n\nIf you are manipulating a lot of GeoJSON features/objects and want a quick CLI tool to filter and slice them, you should give jq a try! Since there are not many tutorials that exist on using jq to manage objects in the GeoJSON family, we hope that these few tricks will help you on your learning journey.\n\nYou can find the post on CORI’s Map and data analytics team blog."
   },
   {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
-    "title": "Learning Data Science Meme",
-    "section": "Where am I?",
-    "text": "Where am I?\nAs a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.\nLike every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff."
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
-    "title": "Learning Data Science Meme",
-    "section": "Good points",
-    "text": "Good points\nI think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”."
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
-    "title": "Learning Data Science Meme",
-    "section": "Bad stuffs",
-    "text": "Bad stuffs\nI will have fewer problems with the meme if it did not mention IQ (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a journey than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.\nI guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools."
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
-    "title": "Learning Data Science Meme",
-    "section": "Summing it up",
-    "text": "Summing it up\nIf you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.\n/rant off"
+    "objectID": "posts/2024-07-14-from-elephant-to-duck/index.html",
+    "href": "posts/2024-07-14-from-elephant-to-duck/index.html",
+    "title": "From elephant to duck!",
+    "section": "",
+    "text": "With John Hall we wrote a blog post about moving a table from postgres to a parquet file using duckdb.\n\nThere are a lot of conversations — understandably — on the use of Apache Parquet, Apache Arrow and DuckDB. […] Let’s see an example of how they can be used to convert a table in a PostgresSQL database to a parquet file:\n\nYou can find the post on CORI’s Map and data analytics team blog."
   },
   {
     "objectID": "posts/2021-10-23-wonderfull-of-overpass-turbo/index.html",
@@ -231,6 +210,41 @@
     "text": "List of data sets\n\n\n\nName\nData\n\n\n\n\n“L’arbre à Paris”\nGeoJson\n\n\n“Arbres d’alignement de la Métropole de Lyon”\nshp\n\n\n“Patrimoine arboré de Bordeaux”\nGeoJson\n\n\n“Cartographie des arbres communaux” (Nice)\nGeoJson\n\n\n“Les arbres de Grenoble”\nGeoJson\n\n\n“Arbres d’alignement de Montpellier”\nGeoJson\n\n\n“Arbres” (Grand Paris Seine Ouest)\nGeoJson\n\n\n“Arbres” (Agen)\nGeoJson\n\n\n“ARBRES” (Agglo du Saint-Quentinois)\nGeoJson\n\n\n“Arbres remarquables” (Metz)\nshp\n\n\n“Arbres d’alignement”(Seine-Saint-Denis)\nGeoJson\n\n\n“Arbres d’alignements - Ville de Versailles”\nGeoJson\n\n\n“Arbres dans les parcs de la ville de Versailles”\nGeoJson\n\n\n“Arbres d’alignement” (Nevers)\nshp\n\n\n“Arbres d’ornement” (Nevers)\nshp\n\n\n“Arbres d’alignement - Toulouse”\nGeoJson\n\n\n“Arbres - Ville d’Orléans”\nshp\n\n\n“Les arbres de Saint-Egrève”\nshp\n\n\n“Arbres d’alignement - Bayonne”\nGeoJson\n\n\n“Arbres d’alignement sur la voirie départementale”\nGeoJson\n\n\n“Arbres d’ornement des espaces verts de la Ville de Rennes”\nGeoJson\n\n\n“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”\nGeoJson\n\n\n“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”\nGeoJson\n\n\n“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”\n\n\n\n“Arbres de la Ville de Guingamp”\nGeoJson\n\n\n“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”\nGeoJson\n\n\n“Inventaire arboré de Grand Paris Sud”\nGeoJson\n\n\n“Cadastre vert - Les arbres” (Hauts-de-Seine)\nGeoJson\n\n\n“Arbres Alignement sur la CAPP (Pau)”\n\n\n\n“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”\nGeoJson\n\n\n“Restitution topo 3D” (Nancy)\nshp"
   },
   {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html",
+    "title": "Learning Data Science Meme",
+    "section": "",
+    "text": "I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:\n/rant on"
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "title": "Learning Data Science Meme",
+    "section": "Where am I?",
+    "text": "Where am I?\nAs a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.\nLike every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "title": "Learning Data Science Meme",
+    "section": "Good points",
+    "text": "Good points\nI think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "title": "Learning Data Science Meme",
+    "section": "Bad stuffs",
+    "text": "Bad stuffs\nI will have fewer problems with the meme if it did not mention IQ (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a journey than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.\nI guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "title": "Learning Data Science Meme",
+    "section": "Summing it up",
+    "text": "Summing it up\nIf you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.\n/rant off"
+  },
+  {
     "objectID": "posts/2021-12-23-toying-with-de9im/index.html",
     "href": "posts/2021-12-23-toying-with-de9im/index.html",
     "title": "Toying with DE-9IM",
@@ -263,6 +277,6 @@
     "href": "index.html",
     "title": "Posts",
     "section": "",
-    "text": "Mapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nToying with DE-9IM\n\n\n\n\n\n\nR\n\n\nsf\n\n\n\nexploring st_relate\n\n\n\n\n\nDec 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nThe Wonderfull World of Overpass Turbo\n\n\n\n\n\n\nOSM\n\n\n\nSome tips for Overpass Turbo\n\n\n\n\n\nOct 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSampling Along a Line\n\n\n\n\n\n\nSampling\n\n\nSpatstat\n\n\n\nfirst part : Spatstat\n\n\n\n\n\nApr 8, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSensor Observation Service: an Introduction\n\n\n\n\n\n\nSensor\n\n\nSmart environment\n\n\nTime series\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\nurban forest\n\n\nsurvey\n\n\ntree\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
+    "text": "From elephant to duck!\n\n\n\n\n\n\nDuckDB\n\n\nR\n\n\nSQL\n\n\nPG\n\n\n\n\n\n\n\n\n\nMar 10, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nAwesome jq and GeoJSON\n\n\n\n\n\n\ngeojson\n\n\njq\n\n\nCLI\n\n\nGIS\n\n\n\n\n\n\n\n\n\nMar 10, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nMapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nToying with DE-9IM\n\n\n\n\n\n\nR\n\n\nsf\n\n\n\nexploring st_relate\n\n\n\n\n\nDec 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nThe Wonderfull World of Overpass Turbo\n\n\n\n\n\n\nOSM\n\n\n\nSome tips for Overpass Turbo\n\n\n\n\n\nOct 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSampling Along a Line\n\n\n\n\n\n\nSampling\n\n\nSpatstat\n\n\n\nfirst part : Spatstat\n\n\n\n\n\nApr 8, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSensor Observation Service: an Introduction\n\n\n\n\n\n\nSensor\n\n\nSmart environment\n\n\nTime series\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\nurban forest\n\n\nsurvey\n\n\ntree\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
   }
 ]

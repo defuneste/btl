@@ -2,15 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://branchtwigleaf.com/about.html</loc>
-    <lastmod>2024-08-17T20:30:43.269Z</lastmod>
+    <lastmod>2024-09-07T18:58:13.747Z</lastmod>
   </url>
   <url>
     <loc>https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html</loc>
     <lastmod>2024-06-02T15:17:15.199Z</lastmod>
   </url>
   <url>
-    <loc>https://branchtwigleaf.com/posts/2023-01-05-learning-ds-meme/index.html</loc>
-    <lastmod>2024-06-02T15:13:17.334Z</lastmod>
+    <loc>https://branchtwigleaf.com/posts/2024-03-10-awesome-jq/index.html</loc>
+    <lastmod>2024-09-07T18:58:13.748Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/index.html</loc>
+    <lastmod>2024-09-07T18:58:13.749Z</lastmod>
   </url>
   <url>
     <loc>https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/index.html</loc>
@@ -35,6 +39,10 @@
   <url>
     <loc>https://branchtwigleaf.com/posts/2021-01-10-trees-in-open-data-databases-in-france/index.html</loc>
     <lastmod>2024-06-03T15:57:39.115Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2023-01-05-learning-ds-meme/index.html</loc>
+    <lastmod>2024-06-02T15:13:17.334Z</lastmod>
   </url>
   <url>
     <loc>https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/index.html</loc>
