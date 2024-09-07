@@ -10,6 +10,12 @@ website:
         href: https://github.com/defuneste
       - icon: mastodon
         href: https://fosstodon.org/@defuneste
+      - icon: linkedin
+        href: https://www.linkedin.com/in/olivier-leroy-r/
+  page-footer: 
+    right:
+    - icon: github
+      href: https://github.com/defuneste/btl
 format:
   html:
     theme: United
