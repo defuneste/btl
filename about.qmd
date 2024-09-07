@@ -16,8 +16,13 @@ about:
 
 ---
 
-I am a geographer: that means I care about spaces and places. I work on topics related to trees or environmental studies (trees in agroforestry, trees in urban settings, virtual trees, etc ...).  I have a PhD in Geography and Environmental studies ([here](https://www.theses.fr/2017USPCC139)) from the University of Paris.
+Hi! I am a Senior Data Engineer for the [Center On Rural Innovation](https://ruralinnovation.us/) where I help data scientists and software engineers make sense of data and use it to help rural communities throughout America.
 
-This blog exists to help me remember and learn stuff.
+Previously, I worked as a geographer researching topics related to trees and the environmental, including studies on agroforestry, urban settings, virtual trees, tree identification applications and databases, etc. 
+
+I hold a [Ph.D. in Geography and Environmental Studies](https://www.theses.fr/2017USPCC139) from the University of Paris.
+
+
+Branch Twig Leaf is a blog exploring new approaches to spatial data as well as trees in digital humanities and social science research.
 
 <a rel="me" href="https://fosstodon.org/@defuneste">Mastodon</a>
