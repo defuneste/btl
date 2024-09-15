@@ -1,0 +1,9 @@
+---
+title: 'Testing function factories to improve Data Base read and write functions'
+author: 'Olivier Leroy'
+categories:
+draft: true
+image: "image.png"
+---
+
+blabal

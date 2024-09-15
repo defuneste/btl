@@ -1,7 +1,7 @@
 ---
 title: 'From elephant to duck!'
 author: Olivier Leroy
-date: '2024-03-10'
+date: '2024-07-14'
 categories: [DuckDB, R, SQL, PG]
 description: ''
 image: "DuckDB_postgre_SQL_Logo.png"
