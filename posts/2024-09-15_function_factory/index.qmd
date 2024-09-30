@@ -1,9 +1,223 @@
 ---
-title: 'Testing function factories to improve Data Base read and write functions'
+title: 'Function factories to improve Database read and write'
 author: 'Olivier Leroy'
-categories:
-draft: true
+categories: [R, PG, 'Functional programming']
 image: "image.png"
+date: '2024-09-15'
 ---
 
-blabal
+Like a lot of organizations, my team uses databases (DB) to organize and centralize data.
+To simplify the team's life and make our code less redundant, we use functions, in an internal R package, that manage connecting to the DB, writing and reading to it (see Emily Riederer’s website for a great post about that idea[^internal-package]).
+
+[^internal-package]: Emily Riederer. January 21, 2021, [https://www.emilyriederer.com/post/team-of-packages/](https://www.emilyriederer.com/post/team-of-packages/)
+
+I think those functions are great and remove a lot of "boilerplate code" that everyone needs to write.
+After one year of using them and tinkering with them a bit, I think including them in a function factory could enhance them.
+
+A function factory is a function that returns a function. My goal is not to present them here but I hope that the use case I want to apply to them to can illustrate their power!
+
+You can find out more about them in the excellent Advanced R [^advancedR] or for a more targeted use in a RAP [^RAP].
+
+[^advancedR]: Wickham, Hadley. 2015. Advanced R. Boca Raton, FL: CRC Press. [http://www.crcnetbase.com/isbn/9781466586970](http://www.crcnetbase.com/isbn/9781466586970) and [https://adv-r.hadley.nz/function-factories.html](https://adv-r.hadley.nz/function-factories.html)
+
+[^RAP]: Rodrigues, Bruno. 2023. Building Reproducible Analytical Pipelines with R.  [https://raps-with-r.dev/](https://raps-with-r.dev/).
+
+I will first give you some understanding of our process, then present how function factories may help.
+
+##  Our setup:
+
+Usually we organize our works in a project and a schema stores all tables related to a project.
+
+To be able to access the DB, you need to provide some information (address, port, DB name, credentials, etc ..).
+
+Our connect DB function is very close to what Emily is advocating
+
+```{r}
+#| label: get_database_conn
+#| eval: false
+get_database_conn <- function() {
+
+conn <-
+  DBI::dbConnect(
+	drv = odbc::odbc(),
+	driver = "driver name here",
+	server = "server string here",
+	UID = Sys.getenv("DB_USER"),
+	PWD = Sys.getenv("DB_PASS"),
+	port = "port number here"
+  )
+
+return(conn)
+}
+```
+
+The main difference (outside of drivers and slightly different default arguments related to our infrastructure) is that we are using the `options` argument from `dbConnect` to specify the search path, specifying that the first schema should be used. (see for PG's documentation for more [here](https://www.postgresql.org/docs/17/ddl-schemas.html#DDL-SCHEMAS-PATH))
+
+Hence our function look like this:
+
+```{r}
+#| label: get_db_conn
+#| eval: false
+get_db_con <- function(schema) {
+
+con <-
+  DBI::dbConnect(
+	# [...] similar stuff
+	options = sprintf("-c search_path=%s", paste0(c(schema,
+        	"\"$user\"", "and_more_specific_stuff")))
+  )
+return(con)
+
+}
+```
+
+
+Once you have your connection object, you can use it to read a table in memory (usually with a function derived from `DBI::dbReadTable`), write a table to the DB (`DBI::dbWriteTable`), get the result of a specific query (`DBI::dbGetQuery`) or even execute a statement (`DBI::dbExecute`). [DBI](https://dbi.r-dbi.org/)[^DBI] is truly a work of art!
+
+::: {.callout-tip}
+Specifying Postgresql `search_path` allow some nice listing with `DBI::dbListTables(con)`  
+:::
+
+[^DBI]: R Special Interest Group on Databases (R-SIG-DB), Wickham H, Müller K (2024). DBI: R Database Interface. R package version 1.2.3, [https://github.com/r-dbi/DBI](https://github.com/r-dbi/DBI), [https://dbi.r-dbi.org](https://dbi.r-dbi.org).
+
+A typical workflow would be like this:
+
+```{r}
+#| label: typical-workflow
+#| eval: false
+
+con <- get_db_con("my_project_bill") # granted the schema exist
+
+some_data <- DBI::dbReadTable(con, "a_table")
+other_data <- DBI::dbReadTable(con, "other_table")
+
+# Do some cool stuff with the data
+
+DBI::dbWriteTable(con, "new_shiny_table", new_table)
+
+DBI::dbDisconnect(con)
+
+```
+
+
+## First step: 	 code
+
+With few lines, it is not very problematic but "Do some cool stuff" can be hundreds of lines (or more), they can take more than one session to be made (it could be useful for the data to be cached). This means that code could be functionalized a bit and used in targeted pipeline.
+
+A first attempt look like this:
+
+```{r}
+#| label: basic-read-write
+#| eval: false
+get_table <- function(schema, table){
+   con <- get_db_con(schema)
+   on.exit(DBI::dbDisconnect(con), add = TRUE)
+	# add = TRUE is not that needed here
+	# but Hadley Wickham recommend it
+   dat <- DBI::dbReadTable(con, table)
+   return(dat)
+}
+
+write_table <- function(schema, name, table, ...) {
+   con <- get_db_con(schema)
+   on.exit(DBI::dbDisconnect(con), add = TRUE)
+   dat <- DBI::dbdbWriteTable(con, name, table, ...)
+   return(dat)
+}
+```
+
+::: {.callout-note}
+We used `...` because usually writing to the DB is a bit more complicated and we could use some argument like `overwrite` for example.
+:::
+
+Those functions are a good start. Now we have:
+
+```{r}
+#| label: typical-workflow-2
+#| eval: false
+
+some_data <- get_table("my_project_bill", "a_table")
+other_data <- get_table("my_project_bill", "other_table")
+
+# Do some cool stuff with the data
+
+write_table("my_project_bill", "new_shiny_table", new_table)
+```
+
+From my experience, those functions will mostly be stored in `utility.R` files somewhere and "sourced".
+
+By using a function we get some added benefit:
+
+- `on.exit()` helps us remember to close the connection
+
+- we can add `message()` and use some assertions (`stopifnot()`) inside those functions to make our work more robust
+
+- slightly less "not very useful" code exposed, remember "Do some cool stuff with the data" is the important part, getting and sending data should be abstracted
+
+- we are starting to capitalize code
+
+
+## Second try: use function factory
+
+There are at least two things that are a bit problematic with our first attempt.
+
+The first is that `"my_project_bill"` is repeated a lot.
+We could be tempted to use some config file, but here I like to follow Miles McBain[^data-reuse]’ advice and not do it.
+The other problem is that we probably have multiple projects that need to write and read tables then we will probably need to write or, worse, copy paste some variation of the same code and copy paste is like a virus (well I guess now we can say "I am ~~copy/pasting code~~ using AI")
+
+[^data-reuse]: McBain. 2024, March 11. Before I Sleep: Patterns and anti-patterns of data analysis reuse. Retrieved from [https://milesmcbain.com/posts/data-analysis-reuse/](https://milesmcbain.com/posts/data-analysis-reuse/)
+
+Our need is to produce code that is generating functions so here it seems function factory would be nice:
+
+```{r}
+#| label: factory-read-write
+#| eval: false
+
+# what is a nice naming convention for function factory
+create_get_table <- function(schema) {
+	force(schema)
+	function(table_name) {
+    	con <- get_db_con(schema)
+    	on.exit(DBI::dbDisconnect(con), add = TRUE)
+    	DBI::dbReadTable(con, table_name)
+	}
+}
+
+create_write_table <- function(schema) {
+	force(schema)
+	function(table_name, dat, ...) {
+    	con <- get_db_con(schema)
+    	on.exit(DBI::dbDisconnect(con), add = TRUE)
+    	DBI::dbWriteTable(con, table_name, dat)
+	}
+}
+```
+
+
+Now we can start our workflow like this:
+
+```{r}
+#| label: typical-workflow-3
+#| eval: false
+
+get_proj_bill_table <- create_get_table("my_project_bill")
+write_proj_bill_table <- create_write_table("my_project_bill")
+
+some_data <- get_proj_bill_table("a_table")
+other_data <- get_proj_bill_table("other_table")
+
+# Do some cool stuff with the data
+
+write_proj_bill_table("new_shiny_table", new_table)
+```
+
+
+We have:
+
+- removed the need of a sourced file (avoiding weird debugging),  
+
+- decreased the clutter of using boilerplate code (those functions can be put in the same internal package than our `get_db_con`)
+
+In this article, I am only covering “read” and “write” functionality so this can be helpful to colleagues who are more fluent in R or Python than SQL and prefer doing the EDA in those languages (which are way better for generating quick feedback loops and visual data inspection/visualization).
+
+I am curious how other orgs are implementing internal packages to read and write functions: what are you using in your internal packages to simplify access to databases?  
