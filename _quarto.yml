@@ -3,6 +3,8 @@ project:
 
 website:
   title: "Olivier Leroy"
+  site-url: https://branchtwigleaf.com
+  description: "Message in a bottle for me"
   navbar:
     right:
       - about.qmd
