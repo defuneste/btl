@@ -1,0 +1,3015 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Olivier Leroy</title>
+<link>https://branchtwigleaf.com/</link>
+<atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
+<description>Message in a bottle for me</description>
+<generator>quarto-1.4.552</generator>
+<lastBuildDate>Sun, 15 Sep 2024 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Function factories to improve Database read and write</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2024-09-15_function_factory/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Like a lot of organizations, my team uses databases (DB) to organize and centralize data. To simplify the team’s life and make our code less redundant, we use functions, in an internal R package, that manage connecting to the DB, writing and reading to it (see Emily Riederer’s website for a great post about that idea<sup>1</sup>).</p>
+<p>I think those functions are great and remove a lot of “boilerplate code” that everyone needs to write. After one year of using them and tinkering with them a bit, I think including them in a function factory could enhance them.</p>
+<p>A function factory is a function that returns a function. My goal is not to present them here but I hope that the use case I want to apply to them to can illustrate their power!</p>
+<p>You can find out more about them in the excellent Advanced R <sup>2</sup> or for a more targeted use in a RAP <sup>3</sup>.</p>
+<p>I will first give you some understanding of our process, then present how function factories may help.</p>
+<section id="our-setup" class="level2">
+<h2 class="anchored" data-anchor-id="our-setup">Our setup:</h2>
+<p>Usually we organize our works in a project and a schema stores all tables related to a project.</p>
+<p>To be able to access the DB, you need to provide some information (address, port, DB name, credentials, etc ..).</p>
+<p>Our connect DB function is very close to what Emily is advocating</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">get_database_conn <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">conn <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span></span>
+<span id="cb1-4">  DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbConnect</span>(</span>
+<span id="cb1-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">drv =</span> odbc<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">odbc</span>(),</span>
+<span id="cb1-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">driver =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"driver name here"</span>,</span>
+<span id="cb1-7">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">server =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"server string here"</span>,</span>
+<span id="cb1-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">UID =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DB_USER"</span>),</span>
+<span id="cb1-9">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">PWD =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DB_PASS"</span>),</span>
+<span id="cb1-10">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">port =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"port number here"</span></span>
+<span id="cb1-11">  )</span>
+<span id="cb1-12"></span>
+<span id="cb1-13"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(conn)</span>
+<span id="cb1-14">}</span></code></pre></div>
+</div>
+<p>The main difference (outside of drivers and slightly different default arguments related to our infrastructure) is that we are using the <code>options</code> argument from <code>dbConnect</code> to specify the search path, specifying that the first schema should be used. (see for PG’s documentation for more <a href="https://www.postgresql.org/docs/17/ddl-schemas.html#DDL-SCHEMAS-PATH">here</a>)</p>
+<p>Hence our function look like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">get_db_con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(schema) {</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span></span>
+<span id="cb2-4">  DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbConnect</span>(</span>
+<span id="cb2-5">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># [...] similar stuff</span></span>
+<span id="cb2-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">options =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sprintf</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-c search_path=%s"</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(schema,</span>
+<span id="cb2-7">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\"</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">$user</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\"</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"and_more_specific_stuff"</span>)))</span>
+<span id="cb2-8">  )</span>
+<span id="cb2-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(con)</span>
+<span id="cb2-10"></span>
+<span id="cb2-11">}</span></code></pre></div>
+</div>
+<p>Once you have your connection object, you can use it to read a table in memory (usually with a function derived from <code>DBI::dbReadTable</code>), write a table to the DB (<code>DBI::dbWriteTable</code>), get the result of a specific query (<code>DBI::dbGetQuery</code>) or even execute a statement (<code>DBI::dbExecute</code>). <a href="https://dbi.r-dbi.org/">DBI</a><sup>4</sup> is truly a work of art!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Specifying Postgresql <code>search_path</code> allow some nice listing with <code>DBI::dbListTables(con)</code></p>
+</div>
+</div>
+<p>A typical workflow would be like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_db_con</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_project_bill"</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># granted the schema exist</span></span>
+<span id="cb3-2"></span>
+<span id="cb3-3">some_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbReadTable</span>(con, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a_table"</span>)</span>
+<span id="cb3-4">other_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbReadTable</span>(con, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"other_table"</span>)</span>
+<span id="cb3-5"></span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Do some cool stuff with the data</span></span>
+<span id="cb3-7"></span>
+<span id="cb3-8">DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbWriteTable</span>(con, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"new_shiny_table"</span>, new_table)</span>
+<span id="cb3-9"></span>
+<span id="cb3-10">DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbDisconnect</span>(con)</span></code></pre></div>
+</div>
+</section>
+<section id="first-step-code" class="level2">
+<h2 class="anchored" data-anchor-id="first-step-code">First step: code</h2>
+<p>With few lines, it is not very problematic but “Do some cool stuff” can be hundreds of lines (or more), they can take more than one session to be made (it could be useful for the data to be cached). This means that code could be functionalized a bit and used in targeted pipeline.</p>
+<p>A first attempt look like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">get_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(schema, table){</span>
+<span id="cb4-2">   con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_db_con</span>(schema)</span>
+<span id="cb4-3">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">on.exit</span>(DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbDisconnect</span>(con), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb4-4">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># add = TRUE is not that needed here</span></span>
+<span id="cb4-5">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># but Hadley Wickham recommend it</span></span>
+<span id="cb4-6">   dat <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbReadTable</span>(con, table)</span>
+<span id="cb4-7">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(dat)</span>
+<span id="cb4-8">}</span>
+<span id="cb4-9"></span>
+<span id="cb4-10">write_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(schema, name, table, ...) {</span>
+<span id="cb4-11">   con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_db_con</span>(schema)</span>
+<span id="cb4-12">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">on.exit</span>(DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbDisconnect</span>(con), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb4-13">   dat <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbdbWriteTable</span>(con, name, table, ...)</span>
+<span id="cb4-14">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(dat)</span>
+<span id="cb4-15">}</span></code></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We used <code>...</code> because usually writing to the DB is a bit more complicated and we could use some argument like <code>overwrite</code> for example.</p>
+</div>
+</div>
+<p>Those functions are a good start. Now we have:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">some_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_project_bill"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a_table"</span>)</span>
+<span id="cb5-2">other_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_project_bill"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"other_table"</span>)</span>
+<span id="cb5-3"></span>
+<span id="cb5-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Do some cool stuff with the data</span></span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">write_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_project_bill"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></div>
+</div>
+<p>From my experience, those functions will mostly be stored in <code>utility.R</code> files somewhere and “sourced”.</p>
+<p>By using a function we get some added benefit:</p>
+<ul>
+<li><p><code>on.exit()</code> helps us remember to close the connection</p></li>
+<li><p>we can add <code>message()</code> and use some assertions (<code>stopifnot()</code>) inside those functions to make our work more robust</p></li>
+<li><p>slightly less “not very useful” code exposed, remember “Do some cool stuff with the data” is the important part, getting and sending data should be abstracted</p></li>
+<li><p>we are starting to capitalize code</p></li>
+</ul>
+</section>
+<section id="second-try-use-function-factory" class="level2">
+<h2 class="anchored" data-anchor-id="second-try-use-function-factory">Second try: use function factory</h2>
+<p>There are at least two things that are a bit problematic with our first attempt.</p>
+<p>The first is that <code>"my_project_bill"</code> is repeated a lot. We could be tempted to use some config file, but here I like to follow Miles McBain<sup>5</sup>’ advice and not do it. The other problem is that we probably have multiple projects that need to write and read tables then we will probably need to write or, worse, copy paste some variation of the same code and copy paste is like a virus (well I guess now we can say “I am <del>copy/pasting code</del> using AI”)</p>
+<p>Our need is to produce code that is generating functions so here it seems function factory would be nice:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># what is a nice naming convention for function factory</span></span>
+<span id="cb6-2">create_get_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(schema) {</span>
+<span id="cb6-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">force</span>(schema)</span>
+<span id="cb6-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(table_name) {</span>
+<span id="cb6-5">        con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_db_con</span>(schema)</span>
+<span id="cb6-6">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">on.exit</span>(DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbDisconnect</span>(con), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb6-7">        DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbReadTable</span>(con, table_name)</span>
+<span id="cb6-8">    }</span>
+<span id="cb6-9">}</span>
+<span id="cb6-10"></span>
+<span id="cb6-11">create_write_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(schema) {</span>
+<span id="cb6-12">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">force</span>(schema)</span>
+<span id="cb6-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(table_name, dat, ...) {</span>
+<span id="cb6-14">        con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_db_con</span>(schema)</span>
+<span id="cb6-15">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">on.exit</span>(DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbDisconnect</span>(con), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb6-16">        DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbWriteTable</span>(con, table_name, dat)</span>
+<span id="cb6-17">    }</span>
+<span id="cb6-18">}</span></code></pre></div>
+</div>
+<p>Now we can start our workflow like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">get_proj_bill_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_get_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_project_bill"</span>)</span>
+<span id="cb7-2">write_proj_bill_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_write_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_project_bill"</span>)</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">some_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_proj_bill_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a_table"</span>)</span>
+<span id="cb7-5">other_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_proj_bill_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"other_table"</span>)</span>
+<span id="cb7-6"></span>
+<span id="cb7-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Do some cool stuff with the data</span></span>
+<span id="cb7-8"></span>
+<span id="cb7-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">write_proj_bill_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></div>
+</div>
+<p>We have:</p>
+<ul>
+<li><p>removed the need of a sourced file (avoiding weird debugging),</p></li>
+<li><p>decreased the clutter of using boilerplate code (those functions can be put in the same internal package than our <code>get_db_con</code>)</p></li>
+</ul>
+<p>In this article, I am only covering “read” and “write” functionality so this can be helpful to colleagues who are more fluent in R or Python than SQL and prefer doing the EDA in those languages (which are way better for generating quick feedback loops and visual data inspection/visualization).</p>
+<p>I am curious how other orgs are implementing internal packages to read and write functions: what are you using in your internal packages to simplify access to databases?</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Emily Riederer. January 21, 2021, <a href="https://www.emilyriederer.com/post/team-of-packages/">https://www.emilyriederer.com/post/team-of-packages/</a>↩︎</p></li>
+<li id="fn2"><p>Wickham, Hadley. 2015. Advanced R. Boca Raton, FL: CRC Press. <a href="http://www.crcnetbase.com/isbn/9781466586970">http://www.crcnetbase.com/isbn/9781466586970</a> and <a href="https://adv-r.hadley.nz/function-factories.html">https://adv-r.hadley.nz/function-factories.html</a>↩︎</p></li>
+<li id="fn3"><p>Rodrigues, Bruno. 2023. Building Reproducible Analytical Pipelines with R. <a href="https://raps-with-r.dev/">https://raps-with-r.dev/</a>.↩︎</p></li>
+<li id="fn4"><p>R Special Interest Group on Databases (R-SIG-DB), Wickham H, Müller K (2024). DBI: R Database Interface. R package version 1.2.3, <a href="https://github.com/r-dbi/DBI">https://github.com/r-dbi/DBI</a>, <a href="https://dbi.r-dbi.org">https://dbi.r-dbi.org</a>.↩︎</p></li>
+<li id="fn5"><p>McBain. 2024, March 11. Before I Sleep: Patterns and anti-patterns of data analysis reuse. Retrieved from <a href="https://milesmcbain.com/posts/data-analysis-reuse/">https://milesmcbain.com/posts/data-analysis-reuse/</a>↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>R</category>
+  <category>PG</category>
+  <category>Functional programming</category>
+  <guid>https://branchtwigleaf.com/posts/2024-09-15_function_factory/</guid>
+  <pubDate>Sun, 15 Sep 2024 04:00:00 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2024-09-15_function_factory/image.png" medium="image" type="image/png" height="192" width="144"/>
+</item>
+<item>
+  <title>From elephant to duck!</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>With <a href="https://real-currents.com/dev/">John Hall</a> we wrote a blog post about moving a table from postgres to a parquet file using duckdb.</p>
+<blockquote class="blockquote">
+<p>There are a lot of conversations — understandably — on the use of Apache Parquet, Apache Arrow and DuckDB. […] Let’s see an example of how they can be used to convert a table in a PostgresSQL database to a parquet file:</p>
+</blockquote>
+<p>You can find the post on CORI’s Map and data analytics team <a href="https://ruralinnovation.github.io/blog/posts/pg_duckdb/">blog</a>.</p>
+
+
+
+ ]]></description>
+  <category>DuckDB</category>
+  <category>R</category>
+  <category>SQL</category>
+  <category>PG</category>
+  <guid>https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/</guid>
+  <pubDate>Sun, 14 Jul 2024 04:00:00 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/DuckDB_postgre_SQL_Logo.png" medium="image" type="image/png" height="112" width="144"/>
+</item>
+<item>
+  <title>Awesome jq and GeoJSON</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2024-03-10-awesome-jq/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I wrote a blog post about using <code>jq</code> for filtering geojson.</p>
+<blockquote class="blockquote">
+<p>If you are manipulating a lot of GeoJSON features/objects and want a quick CLI tool to filter and slice them, you should give jq a try! Since there are not many tutorials that exist on using jq to manage objects in the GeoJSON family, we hope that these few tricks will help you on your learning journey.</p>
+</blockquote>
+<p>You can find the post on CORI’s Map and data analytics team <a href="https://ruralinnovation.github.io/blog/posts/awesomejq/">blog</a>.</p>
+
+
+
+ ]]></description>
+  <category>geojson</category>
+  <category>jq</category>
+  <category>CLI</category>
+  <category>GIS</category>
+  <guid>https://branchtwigleaf.com/posts/2024-03-10-awesome-jq/</guid>
+  <pubDate>Sun, 10 Mar 2024 05:00:00 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2024-03-10-awesome-jq/jq.svg" medium="image" type="image/svg+xml"/>
+</item>
+<item>
+  <title>Mapscaping: geospatial consulting – as a business and a career</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>The <a href="https://mapscaping.com/">Mapscaping Podcast</a> is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.</p>
+<p>I was quite interested in the last episode <a href="https://mapscaping.com/podcast/geospatial-consulting-as-a-business-and-a-career/">geospatial consulting – as a business and a career</a> and wanted to share some of the little gems this episode has to offer.</p>
+<p>The episode was an interview with <a href="https://mobile.twitter.com/slindy23"><strong>Todd Slind</strong></a> (VP of Technology) at <a href="https://www.locana.co/">Locana.co</a> about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.</p>
+<p>Before going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following <a href="https://twitter.com/i/communities/1514335561745580050">Geospatial Connections</a> with another <a href="https://twitter.com/buxton_bruce">Locana employe</a> and I feel those contributions are great!</p>
+<section id="geospatial-consulting-as-business" class="level2">
+<h2 class="anchored" data-anchor-id="geospatial-consulting-as-business">Geospatial Consulting as Business</h2>
+<blockquote class="blockquote">
+<p>“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind</p>
+</blockquote>
+<p>A lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.</p>
+<p>This dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.</p>
+<p>Both markets were defined as:</p>
+<section id="mature-market" class="level4">
+<h4 class="anchored" data-anchor-id="mature-market">Mature Market:</h4>
+<ul>
+<li>Standardize: allow “off-the-shelf solutions”<br>
+</li>
+<li>Presence of a robust consultancy ecosystem (with competition)<br>
+</li>
+<li>Informed consumers</li>
+</ul>
+</section>
+<section id="less-mature-market" class="level4">
+<h4 class="anchored" data-anchor-id="less-mature-market">Less Mature Market:</h4>
+<ul>
+<li>Problems are still unclear<br>
+</li>
+<li>Need for more custom development / more IT</li>
+<li>More constraints from the environment (ex: low bandwidth)</li>
+<li>Need to build a common language</li>
+</ul>
+<p>The best way to build a strong core is to practice and build experience.</p>
+</section>
+</section>
+<section id="geospatail-consulting-as-a-career" class="level2">
+<h2 class="anchored" data-anchor-id="geospatail-consulting-as-a-career">Geospatail consulting as a career</h2>
+<p>This leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.</p>
+<p>According to Todd Slind, a great consultant should have:<br>
+- Curiosity/creativity as a self-starter<br>
+- Can “interface” with clients (importance of speaking the same language)<br>
+- Is able to have ownership over their own personal development</p>
+<p>If a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new <em>shiny</em> developments (<a href="https://sedona.apache.org/1.3.1-incubating/">sedona</a>, <a href="https://arrow.apache.org/">arrow</a>) but the better question is “where and how to apply them to solve problems?”</p>
+<p>I also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.</p>
+<p>Strangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>podcast</category>
+  <category>GIS</category>
+  <guid>https://branchtwigleaf.com/posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/</guid>
+  <pubDate>Sat, 14 Jan 2023 05:00:00 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/mapscaping-logo.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+<item>
+  <title>R is (also) a graph calculator</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time ago!). I find a nice <a href="https://www.stitz-zeager.com/index.html">free book</a> and practice with it. A lot can be done with pen + paper but sometimes you need to represent an equation in a Cartesian plane.</p>
+<p>R is perfect for that (even if it is not a <a href="https://en.wikipedia.org/wiki/Computer_algebra_system">Computer algebra system</a>) but I am always forgetting some specific ways to do it!</p>
+<p>First we do a simple function:</p>
+<p><img src="https://latex.codecogs.com/png.latex?y%20=%20%5Csqrt%5B3%5D(1%20-%20x%5E2)"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">simple_function <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(x){</span>
+<span id="cb1-2">    temp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x)</span>
+<span id="cb1-3">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># R is using natural log so you need to adjust a bit, ie if you use negative</span></span>
+<span id="cb1-4">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># value you will get NaN :</span></span>
+<span id="cb1-5">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># kind of same idea of doing cube_root(-1) * cube_root(abs(x))</span></span>
+<span id="cb1-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sign</span>(temp)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(temp)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb1-7">}</span>
+<span id="cb1-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">simple_function</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] -2.884499 -2.466212 -2.000000 -1.442250  0.000000  1.000000  0.000000
+ [8] -1.442250 -2.000000 -2.466212 -2.884499</code></pre>
+</div>
+</div>
+<p>Then you have (as far as I know) 3 options!</p>
+<section id="vector-and-plot" class="level2">
+<h2 class="anchored" data-anchor-id="vector-and-plot">Vector and plot:</h2>
+<p>Here this is simple we generate a sequence of values and apply our function on it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span id="cb3-2">y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">simple_function</span>(x)</span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"b"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># if you prefer it can also go in data frame because both vectors have the same length</span></span>
+<span id="cb4-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#df &lt;- data.frame(x = x,</span></span>
+<span id="cb4-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#                 y = simple_function(x))</span></span></code></pre></div>
+</div>
+<p>This is good but if you pay attention you can see that using <code>type = "b"</code> we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">from =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">to =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> .<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb5-2">y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">simple_function</span>(x)</span>
+<span id="cb5-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(x , y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"b"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is a bit better!</p>
+</section>
+<section id="curve" class="level2">
+<h2 class="anchored" data-anchor-id="curve">curve!</h2>
+<p>The base-R package<code>graphics</code> provide us with a lot of very cool functions and one of it is <a href="https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html"><code>curve()</code></a>. It can take a function or an expression.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(simple_function, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">from =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">to =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>,</span>
+<span id="cb6-2">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># some small tuning is still needed</span></span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Easy and simple.</p>
+</section>
+<section id="ggplot" class="level2">
+<h2 class="anchored" data-anchor-id="ggplot">ggplot!</h2>
+<p>Obviously, we can also do it with <a href="https://ggplot2.tidyverse.org/reference/geom_function.html"><code>ggplot::stat_function()</code></a>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb7-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># I was lazy and just reused x</span></span>
+<span id="cb7-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(x), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> x)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stat_function</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fun =</span> simple_function, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb7-5">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>()</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>R</category>
+  <category>plot</category>
+  <category>ggplot2</category>
+  <guid>https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/</guid>
+  <pubDate>Tue, 10 Jan 2023 05:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Using Go Map to contribute to OSM</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I was a bit intimidated to contribute to OSM and it took me time to do it. I needed to move to another country, get a correct smartphone (I was for a long time a Nokia 3310 user) and have some baby to move around in a stroller to decide myself! If you were like me, hesitating, you should not and I will try to explain why and how you can contribute.</p>
+<section id="a-very-quick-introduction-to-openstreetmap" class="level1">
+<h1>A very quick introduction to OpenStreetMap!</h1>
+<p>OSM stand for <a href="https://www.openstreetmap.org">OpenStreetMap</a> a project of plenty of communities to provide a map (and a database) of the world. Unlike other projects (Google map, Apple map or the one from ESRI)<sup>1</sup> this project is driven by contributors: everyone can contribute to the democracy of the project, completing the map and have discussion on the categories to map (“folksonomy”).</p>
+</section>
+<section id="why-should-i-contribute" class="level1">
+<h1>Why should I contribute?</h1>
+<p>Everyone can have their own reasons. Here are mines:</p>
+<ul>
+<li><p>I use the data so it is normal to contribute back! I am old enough to have the need to write a letter to my country’s national cartographic agency to get some data for my research. It took time and a lot of papers. It is now better (probably thanks to OpenStreetMap and Open Data activists) but we face the same problem with private company map (albeit it is easier: they just ask you your credit card). OpenStreetMap data is great even if you need to work, a bit, for it. This data also brings interesting questions and challenges.</p></li>
+<li><p>OpenStreetMap use another <a href="https://dev.overpass-api.de/overpass-doc/en/preface/osm_data_model.html">data model</a> and as a GIS professional you should be familiar with it.</p></li>
+<li><p>Mapping is fun! Yes, you can go on a walk and see the world differently, pay a bit more attention to all the objects we are depending on and what they tell us about us.</p></li>
+</ul>
+</section>
+<section id="go-map" class="level1">
+<h1>Go Map!!</h1>
+<p>They are plenty of ways to contribute to OSM. Of course you can map but you can also contribute to the <a href="https://wiki.openstreetmap.org/wiki/Main_Page">wiki</a> or help with <a href="https://github.com/openstreetmap">codes</a> and this is not exhaustive.</p>
+<p>On the mapping side, you can use a smartphone or mapping in front of your computer (and plenty of options are also available here). I will focus on using a smartphone and an IOS mostly because I like to walk or bike. Oh yes, to contribute you need an OSM account (just go to the website and register).</p>
+<p><strong>Disclaimer</strong>: I have an old smartphone (an iPhone 6) and I was not the first user. Go Map works perfectly fine on it but you should have a good enough battery.</p>
+<p><a href="https://apps.apple.com/us/app/go-map/id592990211">Go Map!!</a> is on the App Store, once you have downloaded it you will need to provide it your OSM account.</p>
+<p>Go Map is a fairly complete editor but you do not need to use all of its functionalities and you will <strong>learn as you practice</strong> with it.</p>
+</section>
+<section id="start-easy-do-some-poi" class="level1">
+<h1>Start easy: do some POI!</h1>
+<p>POI: stand for Point Of Interest, in OSM jargon it is a “node”, basically a point with some “tags” (OSM works with a <em>key:value system</em>). Why should I start with it?</p>
+<p>First, I find it is easy on smartphones to only edit or add points. You can, of course, draw roads (“way”) and buildings (“closed way”) but it requires more knowledge and I find this is easier to do with other OSM editors (<a href="https://wiki.openstreetmap.org/wiki/ID">iD</a> or <a href="https://josm.openstreetmap.de/">JOSM</a>).</p>
+<p>Second, POI use a simpler data model: you just need to add a point and pick at least one tag.</p>
+<p>Third, OSM need POI. POI can be an address, a shop, a bicycle parking, a waste basket, etc.</p>
+<p>This is what Go Map!! look like, here with already plenty of POI:</p>
+<p><img src="https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/poi.png" class="img-fluid"></p>
+<p>If you use click on the blue arrow on top of the right corner, the screen will zoom on your position (yes you need to allow location on your smartphone). You can “unclick” it if needed.</p>
+<p>Do you see the yellow star at the center of your screen? If you press the blue big <code>plus</code> (top right side) it will add a node (<code>new_object</code>) and <strong>tag</strong>/<strong>add note</strong> buttons will appear:</p>
+<p><img src="https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/adding_node.png" class="img-fluid"></p>
+<p>You can then pick a tag and add it. A new window will be available with some options to help you put the correct tag and information. To find the tag you can use the search bar (it helps having checked the wiki to find the correct tag before) or pick the few last tag you already have used (Here it was a bicycle parking).</p>
+<p><img src="https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/pick_bike_pking.png" class="img-fluid"></p>
+<p>Then you are sent to a new window with other common tags related to the POI you are adding (or not if you have no idea):</p>
+<p><img src="https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/more_tag.png" class="img-fluid"></p>
+<p>Here the parking is not covered and does not have a fee.</p>
+<p>Finally, you can commit using a small cloud button on in the bottom right. You will have a window that reviews the change (here adding a note with few <code>key:value</code>) you can also a changeset comment sometimes useful for other mapper.</p>
+<p><img src="https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/commit.png" class="img-fluid"></p>
+<p>That is it you have contributed to OSM!</p>
+</section>
+<section id="tldr" class="level1">
+<h1>TL:DR!</h1>
+<p>1 - Download Go Map!<br>
+2 - Create an OSM account<br>
+3 - Walk and find an easy POI that you can add<br>
+4 - While you add it sees what is in the map and what is not<br>
+5 - Read the wiki/check on how other added other things around you<br>
+6 - Go back to 3</p>
+<p>Remember OSM is a collective project always moving it could not be “perfect” or not how you think it should be but to improve it you can discuss it with others. This is not an option with other proprietary map.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>See this nice <a href="https://maphappenings.com/2023/01/03/overture-maps-foundation/">blog post</a> on the history of “global street maps”↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>OSM</category>
+  <guid>https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/</guid>
+  <pubDate>Fri, 06 Jan 2023 05:00:00 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/image-2.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Learning Data Science Meme</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2023-01-05-learning-ds-meme/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:</p>
+<p><img src="https://branchtwigleaf.com/posts/2023-01-05-learning-ds-meme/meme.png" class="img-fluid"></p>
+<p>/rant on</p>
+<section id="where-am-i" class="level2">
+<h2 class="anchored" data-anchor-id="where-am-i">Where am I?</h2>
+<p>As a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.</p>
+<p>Like every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff.</p>
+</section>
+<section id="good-points" class="level2">
+<h2 class="anchored" data-anchor-id="good-points">Good points</h2>
+<p>I think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”.</p>
+</section>
+<section id="bad-stuffs" class="level2">
+<h2 class="anchored" data-anchor-id="bad-stuffs">Bad stuffs</h2>
+<p>I will have fewer problems with the meme if it did not mention <strong>IQ</strong> (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a <strong>journey</strong> than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.</p>
+<p>I guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools.</p>
+</section>
+<section id="summing-it-up" class="level2">
+<h2 class="anchored" data-anchor-id="summing-it-up">Summing it up</h2>
+<p>If you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.</p>
+<p>/rant off</p>
+
+
+</section>
+
+ ]]></description>
+  <category>learning</category>
+  <category>meme</category>
+  <guid>https://branchtwigleaf.com/posts/2023-01-05-learning-ds-meme/</guid>
+  <pubDate>Thu, 05 Jan 2023 05:00:00 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2023-01-05-learning-ds-meme/meme.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
+<item>
+  <title>Toying with DE-9IM</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This little text below is from a reply I posted to <a href="https://github.com/Robinlovelace/geocompr/issues/699">issue</a>. I tried to help a bit and I learned a lot at the same time!</p>
+<p>The discussion topic was the <code>st_relate</code> function in the <code>sf</code> great package. this function implements the <a href="https://en.wikipedia.org/wiki/DE-9IM">Dimensionally Extended 9-Intersection Model (DE-9IM)</a> <sup>1</sup> or intersection matrix.</p>
+<blockquote class="blockquote">
+<p>The intersection matrix is a 3 x 3 matrix that defines all possible pair-wise combinations of exterior, boundary and interior when two geometries interact.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The intersection matrix is the foundation of most geometric relationships supported by the OGC SQL/MM standard […]. <sup>2</sup></p>
+</blockquote>
+<p>Geometries can be polygons, lines and points. Polygons, two dimensional objects, are delimited by their boundaries (a line) and they can have an interior (an area) and an exterior (another area). Other geometries will mostly have lower dimensions in boundary and interior.</p>
+<p>This is a nice representation from wikipedia:</p>
+<p><img src="https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/DE-9IM-logoSmall.png" class="img-fluid"></p>
+<p>Here is the matrix of all of the possible options:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Interior</th>
+<th>Boundary</th>
+<th>Exterior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Interior</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Boundary</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>Exterior</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>Each part of the matrix can get a value. The value is related to the dimensions of the returned object.</p>
+<ul>
+<li>0 they intersect only on points (<code>st_dimension</code> return 0)</li>
+<li>1 they intersect with lines (<code>st_dimension</code> return 1)</li>
+<li>2 they intersect with an area (<code>st_dimension</code> return 2)</li>
+<li>T they intersect and the number of dimensions <img src="https://latex.codecogs.com/png.latex?%3E="> 0 (ie all of the above)</li>
+<li>F No intersection</li>
+<li>* it doesn’t matter</li>
+</ul>
+<p>This flattened matrix will look like this: “212101212”. This is called a <strong>pattern</strong>.</p>
+<p>This matrix can be used in two ways: describe a relation between polygons or specify a type or relation you are interested in. As a result: you can use <code>st_relate</code> in two different ways:</p>
+<ul>
+<li>the first is to compute the DE-9IM relations between two objects</li>
+<li>the second is to check matching patterns</li>
+</ul>
+<section id="compute-the-de-9im-relations-between-two-objects" class="level2">
+<h2 class="anchored" data-anchor-id="compute-the-de-9im-relations-between-two-objects">Compute the DE-9IM relations between two objects</h2>
+<p>To have an easier time reading the pattern, let’s make a quick function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">pattern_de_9im <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span>  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2FFF1FFF2"</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3">matrix_de_9im <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(pattern) {</span>
+<span id="cb1-4">    string <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unlist</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">strsplit</span>(pattern , <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>))</span>
+<span id="cb1-5">    matrix_de_9im <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(string, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">byrow =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb1-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">colnames</span>(matrix_de_9im) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"B"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"E"</span>)</span>
+<span id="cb1-7">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row.names</span>(matrix_de_9im) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"B"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"E"</span>)</span>
+<span id="cb1-8">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(matrix_de_9im)</span>
+<span id="cb1-9">}</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix_de_9im</span>(pattern_de_9im)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  I   B   E  
+I "2" "F" "F"
+B "F" "1" "F"
+E "F" "F" "2"</code></pre>
+</div>
+</div>
+<p>I will enhance an example from the <a href="https://r-spatial.github.io/sf/reference/st_relate.html">sf documentation</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(sf)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 4 polygones to start </span></span>
+<span id="cb5-2">pol1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_polygon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span></span>
+<span id="cb5-3">pol2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> pol1 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb5-4">pol3 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> pol1 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span></span>
+<span id="cb5-5">pol4 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_polygon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))))</span>
+<span id="cb5-6"></span>
+<span id="cb5-7">squares <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_sf</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">name =</span> LETTERS[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>],</span>
+<span id="cb5-8">           sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_sfc</span>(pol1, pol2, pol3, pol4))</span>
+<span id="cb5-9">          )</span>
+<span id="cb5-10"></span>
+<span id="cb5-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(squares)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here we can see how each square relates to the others:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">my_first_st_relate <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_relate</span>(squares, squares)</span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">colnames</span>(my_first_st_relate) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> squares<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>name</span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">row.names</span>(my_first_st_relate) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> squares<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>name</span>
+<span id="cb6-4">my_first_st_relate</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  A           B           C           D          
+A "2FFF1FFF2" "FF2F01212" "FF2FF1212" "FF2F11212"
+B "FF2F01212" "2FFF1FFF2" "212101212" "FF2FF1212"
+C "FF2FF1212" "212101212" "2FFF1FFF2" "FF2FF1212"
+D "FF2F11212" "FF2FF1212" "FF2FF1212" "2FFF1FFF2"</code></pre>
+</div>
+</div>
+<p>We are producing a symmetrical matrix and you just need to focus on half of it. The first column describes how the A square is related to the other squares.</p>
+<p>First line, first column [A,A] describes how the same square relates to itself:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix_de_9im</span>(my_first_st_relate[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A"</span>])</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  I   B   E  
+I "2" "F" "F"
+B "F" "1" "F"
+E "F" "F" "2"</code></pre>
+</div>
+</div>
+<p>They share the same interior, same boundary and same exterior.</p>
+<p>Let’s see a more complicated case: square B with C:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix_de_9im</span>(my_first_st_relate[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"B"</span>,<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"C"</span>])</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  I   B   E  
+I "2" "1" "2"
+B "1" "0" "1"
+E "2" "1" "2"</code></pre>
+</div>
+</div>
+<p>They share a part of their interior, their interior covers a part of their boundaries, a part of each interior is also an exterior of the other and their boundaries are related on two points.</p>
+<p>Feel free to experiment with the other squares!</p>
+</section>
+<section id="check-matching-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="check-matching-patterns">Check matching patterns</h2>
+<p>Now that we are familiar with the pattern, we can search the matrix for particular patterns. The fact that patterns are just strings allows us to also use regular expressions or other string tricks. Here, for example, we can return every pair-wise relation that shares a boundary.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># . represent every single character </span></span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grepl</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pattern =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"....1...."</span>, my_first_st_relate),</span>
+<span id="cb12-3">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">byrow =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>) </span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]  [,2]  [,3]  [,4]
+[1,]  TRUE FALSE FALSE  TRUE
+[2,] FALSE  TRUE FALSE FALSE
+[3,] FALSE FALSE  TRUE FALSE
+[4,]  TRUE FALSE FALSE  TRUE</code></pre>
+</div>
+</div>
+<p>We can also translate spatial predicates with the DE-9IM pattern: see the Wikipedia page.</p>
+<p>We can achieve the same result thanks to the pattern argument of the <code>st_relate</code> function. The syntax of the pattern changes a bit, you need to replace <code>.</code> (that means every single character) with <code>*</code> to match DE-9IM rules.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_relate</span>(squares, squares,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pattern =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"****1****"</span>,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sparse =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]  [,2]  [,3]  [,4]
+[1,]  TRUE FALSE FALSE  TRUE
+[2,] FALSE  TRUE FALSE FALSE
+[3,] FALSE FALSE  TRUE FALSE
+[4,]  TRUE FALSE FALSE  TRUE</code></pre>
+</div>
+</div>
+<p>With <code>sparse = FALSE</code> it will return the matrix. If you change it to <code>TRUE</code> you get a a sparse geometry binary predicate in the form of a list (cf.&nbsp;chapter 4 of <a href="https://geocompr.robinlovelace.net/spatial-operations.html">Geocomputation with R</a>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_relate</span>(squares, squares,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pattern =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"****1****"</span>,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sparse =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sparse geometry binary predicate list of length 4, where the predicate
+was `relate_pattern'
+ 1: 1, 4
+ 2: 2
+ 3: 3
+ 4: 1, 4</code></pre>
+</div>
+</div>
+<p>You can do a lot with this tool! My commentary on an issue lead Robin to write a nice <a href="https://geocompr.robinlovelace.net/spatial-operations.html#de-9im-strings">introduction to DE-9IM</a>.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Egenhofer M. J., Herring J. R. (1995) Categorizing binary topoligical relationships between regions, lines, and points in geographic databases. Technical Report, Department of Surveying Engineering, University of Maine, Orono, ME.↩︎</p></li>
+<li id="fn2"><p>Hsu, L. S., Obe, R. (2021). PostGIS in Action, Third Edition. États-Unis: Manning. p269↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>R</category>
+  <category>sf</category>
+  <guid>https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/</guid>
+  <pubDate>Thu, 23 Dec 2021 05:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>The Wonderfull World of Overpass Turbo</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I use <a href="https://overpass-turbo.eu/">Overpass Turbo</a> a lot and every time, I rediscover new amazing stuff to do with it. This is one of the many gems in the OpenStreetMap ecosystem! In this post, I will assume a basic understanding of OpenStreetMap (OSM) data structure, but if you want a quick quality refresher, I really like the one in Overpass API’s User <a href="https://dev.overpass-api.de/overpass-doc/en/preface/osm_data_model.html">Manual</a>.</p>
+<section id="what-is-overpass-turbo" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-overpass-turbo">What is Overpass Turbo?</h2>
+<p>Overpass Turbo is a frontend for <a href="https://overpass-api.de/">Overpass API</a>. The author is <a href="https://wiki.openstreetmap.org/wiki/User:Tyr">Martin Raifer</a>, the code and the list of contributors can be browsed on the project’s <a href="https://github.com/tyrasd/overpass-turbo">GitHub</a>. You can find the attributions for the entire stack at the bottom of this post.</p>
+<p>Overpass API merits several posts. Here, I will mostly focus on Overpass Turbo (but maybe you will learn some nice stuff with Overpass API!). It’s main contributor/author is <a href="https://wiki.openstreetmap.org/wiki/User:Roland.olbricht">Roland Olbricht</a> and the code can be found <a href="https://github.com/drolbr/Overpass-API">here</a>.</p>
+<p>If you want to use OSM data you you can follow two main paths (I don’t like using the OSM editing API to retrieve data). The first one uses <a href="https://wiki.openstreetmap.org/wiki/PBF_Format"><code>.pbf</code></a> files<sup>1</sup>. You can check <a href="https://docs.ropensci.org/osmextract/"><code>osmextract</code></a> if you are interested in that option and want use R. <a href="https://www.geofabrik.de/geofabrik/geofabrik.html">GEOFABRIK</a> is providing PBF files for different parts of the world at various scales. You will also probably either need <a href="https://wiki.openstreetmap.org/wiki/Osmosis">Osmosis</a> and/or <a href="https://osm2pgsql.org/">osm2pgsql</a>. The second method for data retrieval uses Overpass.</p>
+<p>Overpass API will store <a href="https://planet.openstreetmap.org/">all the data</a> behind the map and a diff file with last minute changes that happened subsequently can be added. This API is read only: you will not be able to write into OSM with it. For that you should use other kinds of tools, like <a href="https://josm.openstreetmap.de/">JOSM</a> or OSM API (and the old OSM XAPI).</p>
+<p>Overpass Turbo is the perfect place to prototype your queries and explore OSM data.</p>
+</section>
+<section id="a-tour-of-overpass-turbo" class="level2">
+<h2 class="anchored" data-anchor-id="a-tour-of-overpass-turbo">A Tour of Overpass Turbo:</h2>
+<p>I will first repeat some basic informations from <a href="https://wiki.openstreetmap.org/wiki/Overpass_turbo">OSM’s Wiki</a>.</p>
+<p>You can divide the overpass turbo interface in 3 parts.</p>
+<p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/overpassturbo_tour.png" class="img-fluid"></p>
+<p>In <strong>A</strong> we have the <em>Editor</em> panel. In this picture, I used one from the tool examples. As I already said, I will not dive too deeply in Overpass Query Language (Overpass QL), but I’ll explain this one:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/*</span></span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">Use this to comment on multi lines  </span></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*/</span></span>
+<span id="cb1-4">node                        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Part 1: here we want nodes matching</span></span>
+<span id="cb1-5">  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span>amenity<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>drinking_water<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// amenity=drinking_water   </span></span>
+<span id="cb1-6">  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">({{</span>bbox<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}});</span>               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// inside the bbox displayed in B </span></span>
+<span id="cb1-7">                            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// ";" -&gt; end of statement               </span></span>
+<span id="cb1-8">out<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span>                        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Part 2: we take part 1 and display it  </span></span></code></pre></div>
+<p><strong>B</strong> is the display panel. The result of your query can be displayed in the “Map” or directly in “Data” (top right corner). Here we are in XML because <code>out</code> wasn’t specified. To specify another output format, you need to add a setting (<code>[out:json]</code>) before <code>node</code> see <em>Settings</em> in Overpass QL <a href="https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL#Settings">wiki</a>.</p>
+<p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/ql_result.png" class="img-fluid"></p>
+<p>Lastly we can find various menus (<strong>C</strong>) on the top:</p>
+<ul>
+<li><code>Run</code> executes the query</li>
+<li><code>Share</code> provides you a link with your query, the bbox used, and can execute it</li>
+<li><code>Export</code> gives you various ways to export the data, the map and the query (I will show you some nice tips later)</li>
+<li><code>Wizard</code> helps you to build your first query. See its <a href="https://wiki.openstreetmap.org/wiki/Overpass_turbo/Wizard">wiki</a> for more details</li>
+<li><code>Save</code>/<code>Load</code> enables you to save and load your own queries (<code>Load</code> also contains very nice examples! Check out the one by MapCSS!)</li>
+<li><code>Setting</code> can help you fine tune Overpass turbo and export your settings</li>
+<li><code>Help</code> provides you with plenty of good links and the attributions (I used it)</li>
+</ul>
+</section>
+<section id="getting-data" class="level2">
+<h2 class="anchored" data-anchor-id="getting-data">Getting data!</h2>
+<p>Now that you are more familiar with Overpass turbo let’s use the <code>Wizard</code> to help us make our request. I typed <code>river</code> then pressed <code>build query</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/river_query.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The wizard has built a first query. After a quick check, this query looks fine. I will just increase the time-out a bit from 25 to 360 (it is in seconds). I can do that because this query will be run in a local instance of Overpass API (on my computer), not on the public server. I will explain the limitations of public servers a bit later.</p>
+<p>This is the query:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/*</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">This has been generated by the overpass-turbo wizard.</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">The original search was:</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">“river”</span></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*/</span></span>
+<span id="cb2-6"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span>out<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>json<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">][</span>timeout<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">360</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">];</span></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// gather results</span></span>
+<span id="cb2-8"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span id="cb2-9">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// query part for: “river”</span></span>
+<span id="cb2-10">  way<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"natural"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"water"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">][</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"water"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"river"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]({{</span>bbox<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}});</span></span>
+<span id="cb2-11">  relation<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"natural"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"water"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">][</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"water"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"river"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]({{</span>bbox<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}});</span></span>
+<span id="cb2-12"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">);</span></span>
+<span id="cb2-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// print results</span></span>
+<span id="cb2-14">out body<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-15"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;;</span></span>
+<span id="cb2-16">out skel qt<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span>                     </span></code></pre></div>
+<p>As a result, I get 15323 nodes making 112 ways, 10 relations and 72 polygons. You can see that on the bottom right part of the Map panel. You can easily explore the data while moving around the map. If you are happy with the result, you can export it in a GeoJSON via the <code>Export</code> menu, then by selecting <code>Data</code> and here picking GeoJSON. Overpass Turbo offers two options: either download it or copy it to clipboard.</p>
+<p>Most of time you will need to improve the query to match your needs. For that, OSM wiki contains a lot of useful information. I checked the <code>river</code> <a href="https://wiki.openstreetmap.org/wiki/Rivers">entry</a> in it and discovered that the key <code>waterways</code> can be interesting to explore.</p>
+<section id="saving-our-bounding-box-bbox" class="level3">
+<h3 class="anchored" data-anchor-id="saving-our-bounding-box-bbox">Saving our Bounding Box (bbox)</h3>
+<p>You may have noticed that we used the screen display to set up our <a href="https://en.wikipedia.org/wiki/Minimum_bounding_box">bounding box</a>(bbox). This is nice but if we want to reproduce our workflow or keep the same bounding box with other tools/data, we need to record it. You have various ways to save it.</p>
+<p>The first one is to go in the <code>Export</code> menu, then go to the <code>Map</code> tab and select <code>Current Map view</code>. The bbox is in “<code>Bounds</code>” (with other useful information).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/export_bb.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="178"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The second option is to get the bbox from the <code>xml</code> or from the <code>QL</code>. You can get them from the same <code>Export</code> menu in the <code>Query</code> then you can pick convert to <code>Overpass-XML</code> or pick <code>OverpassQL</code> (compact or not). If you have downloaded Overpass API you can find this convert script in <code>cgi-bin/</code> directory of the program. Converting to a compact Overpass Query Language is very useful when you need to send multiple requests on an overpass api instance.</p>
+<p>I have made two quick R functions to retrieve this informations:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># from xml</span></span>
+<span id="cb3-2">bbox_from_xml <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(file_xml) {</span>
+<span id="cb3-3">    all_xml <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> xml2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_xml</span>(file_xml)</span>
+<span id="cb3-4">    bbox_query <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> xml2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">xml_find_first</span>(all_xml, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".//bbox-query"</span>)</span>
+<span id="cb3-5">    bbox_string <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> xml2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">xml_attrs</span>(bbox_query)</span>
+<span id="cb3-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(bbox_string[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"w"</span>], bbox_string[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s"</span>], bbox_string[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"e"</span>], bbox_string[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n"</span>]))</span>
+<span id="cb3-7">}</span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># from overpass AL</span></span>
+<span id="cb3-10">bbox_from_QL <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(file_ql) {</span>
+<span id="cb3-11">    raw_ql <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">readLines</span>(file_ql)</span>
+<span id="cb3-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the ugly regex to get the start of bbox</span></span>
+<span id="cb3-13">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># I keep ) so I will need to remove it </span></span>
+<span id="cb3-14">    locate_bbox <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">regexpr</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pattern =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"[0-9].+?(?=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">))"</span>, </span>
+<span id="cb3-15">                           raw_ql, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">perl =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb3-16">    bbox_string <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">substring</span>(raw_ql, </span>
+<span id="cb3-17">                             locate_bbox[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], </span>
+<span id="cb3-18">                             locate_bbox[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">attr</span>(locate_bbox, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"match.length"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> )</span>
+<span id="cb3-19">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unlist</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">strsplit</span>(bbox_string, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">split =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">","</span>))) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># round a bit </span></span>
+<span id="cb3-20">}</span></code></pre></div>
+</div>
+<p><a href="https://wiki.openstreetmap.org/wiki/Bounding_Box">OSM bounding box</a> follows the “<em>min Longitude, min Latitude, max Longitude, max Latitude</em>” but that’s not the case of the overpass API which follows “<em>South, West, North East</em>” (<em>ie</em>: min Latitude, min Longitude, max Latitude, max Longitude). You start with south then go clockwise.</p>
+<p>You can use <a href="https://docs.ropensci.org/osmdata/reference/bbox_to_string.html"><code>osmdata::bbox_to_string</code></a> to convert it to a string. I also highly recommend that you use the <a href="https://docs.ropensci.org/osmdata/index.html">osmdata</a><sup>2</sup> package alongside Overpass Turbo, both work very well together.</p>
+<p>When you have a specific bbox, you can also use it in Overpass QL settings<sup>3</sup>.</p>
+</section>
+<section id="using-instances-other-than-the-default" class="level3">
+<h3 class="anchored" data-anchor-id="using-instances-other-than-the-default">Using instances other than the default</h3>
+<p>Overpass Turbo is the frontend of an instance of the Overpass API hosted somewhere. You have a list <a href="https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances">here</a> of all the public instances available. You can find them in the <code>settings</code> menu, then <code>General Settings</code> in the <code>server</code> pull-down menu.</p>
+<p>Those instances are provided by the community and to avoid someone taking over all the shared resources, some rules need to be respected. This is why you have a time-out set when you start a query. If, like me, you want to experiment or use a good amount of server resources, you should set up your own instance (or at least start with querying a small amount of data/a less complex request) .</p>
+<p>When doing that, you can provide your private address to Overpass Turbo. I use a pretty standard installation of the instance on my computer so mine is <code>http://localhost:80/api/</code> (yup localhost on port 80 behind an apache web server).</p>
+<p>Bonus: if you use <code>osmdata</code>, you can use your own OSM instance with <a href="https://docs.ropensci.org/osmdata/reference/set_overpass_url.html"><code>set_overpass_url()</code></a></p>
+<p>I hope you discovered some useful stuff! If I miss something or if you want to correct/add things, feel free to reach out!</p>
+</section>
+<section id="full-attributions" class="level3">
+<h3 class="anchored" data-anchor-id="full-attributions">Full attributions</h3>
+<section id="data-sources" class="level4">
+<h4 class="anchored" data-anchor-id="data-sources">Data Sources</h4>
+<p>Data © <a href="http://openstreetmap.org/">OpenStreetMap</a> contributors, <a href="http://opendatacommons.org/licenses/odbl/1-0/">ODbL</a> (<a href="http://www.openstreetmap.org/copyright">Terms</a>)<br>
+Data mining by <a href="http://overpass-api.de/">Overpass API</a><br>
+Map tiles © <a href="http://openstreetmap.org/">OpenStreetMap contributors</a>, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a><br>
+Search provided by <a href="http://wiki.openstreetmap.org/wiki/Nominatim">Nominatim</a></p>
+</section>
+<section id="software-libraries" class="level4">
+<h4 class="anchored" data-anchor-id="software-libraries">Software &amp; Libraries</h4>
+<p>Map powered by <a href="http://leaflet.cloudmade.com/">Leaflet</a><br>
+Editor powered by <a href="http://codemirror.net/">CodeMirror</a><br>
+Other libraries: <a href="https://github.com/tyrasd/osmtogeojson">osmtogeojson</a>, <a href="https://github.com/tyrasd/togpx">togpx</a>, <a href="https://github.com/mapbox/tokml">tokml</a>, <a href="http://lodash.com/">lodash</a>, <a href="http://jquery.com/">jQuery</a>, <a href="http://jqueryui.com/">jQuery UI</a>, <a href="http://html2canvas.hertzen.com/">html2canvas</a>, <a href="http://code.google.com/p/canvg/">canvg</a>, <a href="https://github.com/kajic/leaflet-locationfilter">leaflet-locationfilter</a>, <a href="https://github.com/bbecquet/Leaflet.PolylineOffset">leaflet.PolylineOffset</a>, <a href="http://mapbox.com/maki/">maki</a>, <a href="http://www.sjjb.co.uk/mapicons/">SJJB map icons</a>, <a href="https://github.com/nebulon42/osmic/">Osmic</a>, <a href="https://github.com/eligrey/FileSaver.js">FileSaver.js</a>, <a href="https://github.com/MapBBCode/mapbbcode">MapBBCode</a>, <a href="http://momentjs.com/">Moment.js</a>, <a href="https://github.com/mapbox/polylabel">polylabel</a>, <a href="https://github.com/osmlab/osm-auth">osm-auth</a></p>
+
+
+</section>
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>see also <a href="https://en.wikipedia.org/wiki/Protocol_Buffers">https://en.wikipedia.org/wiki/Protocol_Buffers</a>↩︎</p></li>
+<li id="fn2"><p>Mark Padgham, Bob Rudis, Robin Lovelace, Maëlle Salmon (2017). osmdata Journal of Open Source Software, 2(14). URL <a href="https://doi.org/10.21105/joss.00305">https://doi.org/10.21105/joss.00305</a>↩︎</p></li>
+<li id="fn3"><p>see <a href="https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL#Global_bounding_box_.28bbox.29">here</a> for instructions↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>OSM</category>
+  <guid>https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/</guid>
+  <pubDate>Sat, 23 Oct 2021 04:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Sampling Along a Line</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Recently, <a href="https://www.linkedin.com/feed/update/urn:li:activity:6772126385021435904">someone</a> posted a question on Linkedin about sampling along some lines. It may not be obvious for everyone why anyone would like to do that so let’s provide some examples: sampling in a river every <em>N</em> meters, sampling species diversity along transects. The lines or segments can be used as a way to measure some kind of gradient or to follow something that can be represented as a line. A line is just a one-dimensional (1D) representation, so even if we use it in space it can represent way more stuff… like time!</p>
+<p>The question had to do with QGIS and Postgis. I was a bit curious about how to do it in R and also wanted try with QGIS (later!). I used <a href="https://hub.docker.com/r/rocker/geospatial">rocker/geospatial:4.0.4</a> with <a href="https://cran.r-project.org/web/packages/sf/">sf</a> (0.9.0) and <a href="https://cran.r-project.org/web/packages/spatstat/index.html">spastat</a> (1.63-3) packages (and their respective dependencies). My exploration went a bit longer than expected, so I will just start with spastat then keep going.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Since I first wrote this article {spatstat} have become a “spatstat verse”<sup>1</sup>. I just updated (“2024-06-04”) with the specific, new, spastat package here: <code>spatstat.geom_3.2-9</code></p>
+</div>
+</div>
+<section id="first-spatstat-is-great" class="level1">
+<h1>First, spatstat is great!</h1>
+<p>It is easy when you know about it, but obviously <a href="http://spatstat.org/">Spatstat</a> is great (and needs some advertising!). Spastat is a package designed for spatial statistical analysis and has a strong focus on point patterns. A book came out about it and it is also a good read if you are interested in this topic (Baddeley, Rubak, and Turner 2015).</p>
+<section id="pointsonlines" class="level2">
+<h2 class="anchored" data-anchor-id="pointsonlines">pointsOnLines</h2>
+<p>While looking for how to make a regular sample in a line in a spatstat, I found <code>pointsOnLines</code> with this nice <a href="https://www.rdocumentation.org/packages/spatstat/versions/1.64-1/topics/pointsOnLines">documentation</a> page. This looks perfect for us. Let’s try it!</p>
+<p>The first line just creates some lines (“randomly”). The only difficulty is the <code>psp</code> function. This function creates an object of class <code>psp</code> or a <em>line segment pattern</em>. Spatstat uses its own objects and methods but it is easy to convert them as you can see in the second line where the <code>sf</code> package is used to write our dear friend shapefile. I commented the line because I didn’t want to run a new set of lines every time.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">some_lines <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">psp</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>),  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">owin</span>()) </span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># sf::st_write(sf::st_as_sf(some_lines)[-1,], "some_lines.shp")</span></span>
+<span id="cb1-3">lines <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_read</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"some_lines.shp"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `some_lines' from data source 
+  `/Users/olivierleroy/Documents/btl/posts/2021-03-01-sampling-allong-a-line/some_lines.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 20 features and 1 field
+Geometry type: LINESTRING
+Dimension:     XY
+Bounding box:  xmin: 0.02009798 ymin: 0.03753605 xmax: 0.9965629 ymax: 0.9619593
+CRS:           NA</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#\ label: reading them back </span></span>
+<span id="cb3-2">some_lines <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.psp</span>(sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_geometry</span>(lines), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">owin</span>()) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#  read them back</span></span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(some_lines, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Draw some lines"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>I admit that indexing with negative 1 (<code>[-1,]</code>) is a bit ugly, but if you want to use the almighty shapefile you can only use one type of geometry (no one is perfect!). That’s why you have to remove the polygon that is the bbox at the first line (or use some more hipster geo format). Finally, in the third line, we read it back. Spatstat works primarily in projected coordinates and this should be kept in mind (we don’t care too much about our lack of CRS here, which would not be the case in a real-world project which could fail if you use geographic coordinate systems).</p>
+<p>Now we can use the <code>pointsOnLines</code> function to create an object of <code>ppp</code> type (AKA <em>points pattern</em>) and plot the points. We just use two arguments, the first one is our lines and the second <code>eps</code> is Spacing between successive points. As stated in the details section of the documentation the spacing of <code>eps</code> is measured in coordinate units of X”. Here we used some numbers (20) from a uniform distribution with the default arguments (min = 0 and max = 1) so <code>eps = 0.1</code> was fine. I also liked to <code>shortok</code> default argument so I didn’t change it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">sampling_points <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pointsOnLines</span>(some_lines, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">eps =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>)</span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(some_lines, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Add points!"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>)</span>
+<span id="cb4-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(sampling_points, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"+"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_write</span>(sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_as_sf</span>(sampling_points)[<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,], <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sampling_points.shp"</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># save them</span></span></code></pre></div>
+</div>
+</section>
+<section id="where-is-the-first-sample-placed-on" class="level2">
+<h2 class="anchored" data-anchor-id="where-is-the-first-sample-placed-on">Where is the first sample placed on?</h2>
+<p>One question remains! Where should the first point in a line be placed? This is trickier than it looks: what happens when the length of a lines is not a multiple of our spacing value? Where should we start placing points?</p>
+<p>We can start with a simple example : just one line. We didn’t set up any units but to make it simple, let’s use meters (m).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">fenetre <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">owin</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xrange=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yrange=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># define a reusable window </span></span>
+<span id="cb6-2">line <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">psp</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> fenetre)     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># one line length = 10</span></span>
+<span id="cb6-3">guide <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ppp</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> fenetre) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># create some guides</span></span>
+<span id="cb6-4">mid <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ppp</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9.5</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> fenetre)<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># create more guides</span></span>
+<span id="cb6-5">samples <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pointsOnLines</span>(line, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">eps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># spacing of 3</span></span>
+<span id="cb6-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(line, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>)                       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># plot everything </span></span>
+<span id="cb6-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(guide, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"|"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb6-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(mid, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"+"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>)</span>
+<span id="cb6-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(samples, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/simple example-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Well this innocuous question bring us something unexpected. We expected 3 samples but we got 4 and it looks like the first sample, on both sides, is located at 1 m from the end/beginning of the line (in a circular line they will be 2 m apart) but something is staring to be problematic : the only spacing of 3 is between the second and third sample, other spacing is 2.5 m. If we take a longer line (25 m like below) we get the same pattern (1m, 2.5m then 3) but with more samples spaced with 3 m.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">fenetre <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">owin</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xrange=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yrange=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># define a reusable windows </span></span>
+<span id="cb7-2">line <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">psp</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> fenetre)     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># one line length = 10</span></span>
+<span id="cb7-3">guide <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ppp</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> fenetre) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># create some guides</span></span>
+<span id="cb7-4">samples <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pointsOnLines</span>(line, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">eps =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># spacing of 3</span></span>
+<span id="cb7-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(line, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>)                       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># plot everything </span></span>
+<span id="cb7-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(guide, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"|"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb7-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(samples, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pch =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/second case-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s dive into the <a href="https://github.com/spatstat/spatstat.geom/blob/main/R/pointsonlines.R">code</a> (thx open source!). I will skip the part that defines the function, check what arguments are used, etc.. and do a first stop at L25-L32. This part is the code for what should be done if we have too lines that are too small (<code>length &lt;= spacing</code>) and <code>shortok == TRUE</code> (our setup). We can see that with this option, a sample point will be added at the middle of our small line.</p>
+<p>I will then move to the part for every other (i.e., non-small) line. We can also skip the loop and the bind part and just try with one line. Below I have just reproduced L36 and 47 :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># re using same example </span></span>
+<span id="cb8-2">fenetre <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">owin</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xrange=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yrange=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb8-3">line <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">psp</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">window =</span> fenetre) </span>
+<span id="cb8-4">linedf    <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.data.frame</span>(line)</span>
+<span id="cb8-5">eps <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>                                    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># some spacing</span></span>
+<span id="cb8-6"></span>
+<span id="cb8-7">leni <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lengths_psp</span>(line)    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># length of the segment : 10 </span></span>
+<span id="cb8-8">nwhole <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">floor</span>(leni<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>eps)                   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how many whole segments can we fit : 3</span></span>
+<span id="cb8-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span>(leni<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>eps <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> nwhole <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;&amp;</span> nwhole <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># if we do 3 nwhole we have some "leftovers"</span></span>
+<span id="cb8-10">    nwhole <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> nwhole <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>                    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># I guess it is a design choice </span></span>
+<span id="cb8-11">rump <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> (leni <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> nwhole <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> eps)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>             <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># </span></span>
+<span id="cb8-12">brks <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, rump <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>nwhole) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> eps, leni) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># making bricks: 0 2 5 8 10</span></span>
+<span id="cb8-13">nbrks <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(brks)                       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># how many bricks: 5</span></span>
+<span id="cb8-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># points at middle of each piece</span></span>
+<span id="cb8-15">ss <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> (brks[<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> brks[<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>nbrks])<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb8-16">tp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> ss<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>leni                               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># make it relative</span></span>
+<span id="cb8-17">x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span>(linedf, x0 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> tp <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (x1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>x0))        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># give them coordinates</span></span>
+<span id="cb8-18">y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span>(linedf, y0 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> tp <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (y1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y0))</span></code></pre></div>
+</div>
+<p>The authors have made some design choices. Instead of going for 3 points, they have gone with 4 and focused on their definition : <strong>“Given a line segment pattern, place a series of points at equal distances along each line segment.”</strong>. Points are not located at every <em>x</em> spacing but instead at equal distances: if we set 3 points they are not at the same distance anymore, so it seems they opted to make a compromise, as when (L9) adds a point and decreases the spacing a bit and when not doing so. I feel this is a correct choice when sampling and it remind me a lot of reflections about the all block quadra variance family and the importance of the starting point.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Spatstat is definitely a statistical package at heart and you have to be thoughtful when you use it a bit outside of its main goal (as we figured out)! If you want to use it, you will have to adjust it a bit or remove the first measures at the ends of the lines.</p>
+<p>Next time, let’s see how sf handles this case.</p>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://spatstat.org/2020/12/14/spatstat-split.html">https://spatstat.org/2020/12/14/spatstat-split.html</a>↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Sampling</category>
+  <category>Spatstat</category>
+  <guid>https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/</guid>
+  <pubDate>Thu, 08 Apr 2021 04:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Sensor Observation Service: an Introduction</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2021-01-29-sensor-observation-standard/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Thanks to <a href="https://sist.cnrs.fr/">SIST</a> and the financial support of my lab, I was able to attend a training course on Sensor Observation Services (SOS) with one of my coworkers. It’s time to reflect a bit on what we learned!</p>
+<section id="why-do-sensors-matter-for-a-geographersocial-scientist" class="level1">
+<h1>Why do Sensors matter for a geographer/social scientist?</h1>
+<p>My previous experience with sensors was limited to academic contexts; I remember using them in forests to collect information (temperature, luminosity, etc … ). My contribution under the “research” budget included protecting the equipment from ant colonies intent on building nests on top of the electronics. With their high cost and complicated setup and maintenance, I was under the impression that the “world of sensors” will stay in academia or closely related fields.</p>
+<p>I was wrong. First, the cost of sensors has significantly dropped. Second, they are now more broadly used. Currently part of the “smart city”, they may one day be part of “smart forests” <span class="citation" data-cites="Gabrys2020">(Gabrys 2020)</span> and are already used in the monitoring of other environments (rivers come to mind).</p>
+<p>As sensors become more common, they produce data that will be used in new ways. To this spatial expansion of monitoring, we can also add a diversification in their user bases. <a href="https://citizensense.net/">Citizens</a> and artists are also using them with a wide variety of goals.</p>
+</section>
+<section id="sos" class="level1">
+<h1>SOS?</h1>
+<p><a href="https://www.ogc.org/standards/sos">SOS</a> is a standard for a Web service promoted by the Open Geospatial Consortium (<a href="https://www.ogc.org/">OGC</a>). This standard, used to query real-time sensor data or data time series is a little less well-known than their other Web Services (for example, Web Feature Services, WFS).</p>
+<p>The SOS standard is an implementation of the <a href="https://www.seegrid.csiro.au/wiki/AppSchemas/ObservationsAndSampling">O&amp;M</a> and <a href="https://en.wikipedia.org/wiki/SensorML">SensorML</a> models. The first one, O&amp;M, gives insights about the observational model (what, when and how something gets measured) and the sampling model (how these observations relate to the feature of interest). The second, SensorML, mainly describes sensors. Both of these models use XML, like SOS, but luckily, SOS can also use JSON to transfer data (and a RESTful API).</p>
+<p>It can be used to query some data but also allow new sensors to be registered and even new values to be inserted. Here, we will focus on querying. Keep in mind that we worked on stationary sensors, but mobile ones can also be implemented.</p>
+</section>
+<section id="technical-jargon" class="level1">
+<h1>Technical Jargon</h1>
+<p>Even with a good <a href="https://en.wikipedia.org/wiki/Sensor_Observation_Service">wiki</a> page and OGC <a href="https://portal.ogc.org/files/?artifact_id=26667">documentation</a>, SOS can be a bit cryptic at first and to be fair, defining an “observation” is by no means an easy task! To help us wrap our minds around it, I will explain the technology through the example of the city of Lyon’s noise monitoring network</p>
+<p>Some insight about it can be found <a href="https://rdata-grandlyon.readthedocs.io/en/latest/services.html#sos-service-sensor-data">here</a> and on the <a href="https://www.data.gouv.fr/fr/datasets/reseau-permanent-de-mesure-de-bruit-de-la-metropole-de-lyon/">gouv web site</a>. It is in French, but I’m sure that’s not a problem for anyone ;)</p>
+<section id="observations" class="level2">
+<h2 class="anchored" data-anchor-id="observations">Observations</h2>
+<p>This network monitors noise in various places. Places are called <strong>Features of Interest</strong> (FOI), <code>featureOfInterest</code> in XML. One of them is here <code>urn:ogc:def:feature:x-istsos:1.0:Point:Berthelot</code>. This is more simple that it looks: we have an <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Name">Uniform Resource Name</a> from OGC that defines a feature in istSOS (the service we will use) version 1.0. This feature is a point and has the name (identifier) of Berthelot. Now we would like to collect observations about noise here. To do that, we will use a <strong>procedure</strong> : a way to collect observations. The procedure has a location (coordinates with a coordinate reference system) Here this is done with one sensor but it can be done with more than one or/and using some processes. Our FOI have the procedure/sensor AF01 associated (<code>urn:ogc:def:procedure:x-istsos:1.0:AF01</code>). It is monitoring at least one <strong>observed property</strong> (<code>observedProperty</code>). AF01 produce 4 of them (lday, levening, lnight). lday is a noise level, taking into account human ears in decibels, calculated during daylight hours (6am-6pm). Eventually we will get a <strong>result</strong>, let’s say 62.8 dB(A). <a href="https://en.wikipedia.org/wiki/A-weighting">dB(A)</a> is our unit of measure (<strong>uom</strong>). Time is usually expressed in ISO 8601 (<code>2021-02-06T06:00:00.000000Z</code>).</p>
+<p>Together, all of the above make an <strong>observation</strong>!</p>
+<p>Finally, <strong>offering</strong> enables you to make some logical grouping of observations.</p>
+</section>
+<section id="making-use-of-what-we-learn" class="level2">
+<h2 class="anchored" data-anchor-id="making-use-of-what-we-learn">Making use of what we learn</h2>
+<p>The schema below is adapted from the OGC documentation (p.&nbsp;14 and 15). It shows the different steps required to collect data with an associate request. First, we need to know what kind of services are available.</p>
+<p><img src="https://branchtwigleaf.com/posts/2021-01-29-sensor-observation-standard/flowshartSOS.png" class="img-fluid"></p>
+<p>This a job for a <code>GetCapabilities</code> request:</p>
+<pre><code>https://download.data.grandlyon.com/sos/bruit?service=SOS&amp;request=GetCapabilities</code></pre>
+<p>The first part is the address: <code>https://download.data.grandlyon.com/sos/bruit</code></p>
+<p>(bruit <em>means</em> ‘noise’ in French)</p>
+<p>Then, after <code>?</code> we start the request specifying the service and the request. With this <a href="https://download.data.grandlyon.com/sos/bruit?service=SOS&amp;request=GetCapabilities">request</a> we get an XML giving us all of the information about the service and what we can do with it. A quick scroll gives us the name of the procedures we can request information from and the output format provided.</p>
+<p>We can now ask for more information about the sensor with <code>DescribeSensor</code> before getting observations.</p>
+<pre><code>https://download.data.grandlyon.com/sos/bruit?request=DescribeSensor&amp;procedure=AF01&amp;outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22&amp;service=SOS&amp;version=1.0.0</code></pre>
+<p>This one looks a bit more complicated, so let’s examine it. We will still use the same address. Then, we will request <code>DescribeSensor</code> and we will ask for the only output format available: <code>text/xml;subtype="sensorML/1.0.1"</code>. It looks a bit complicated, because some characters need to be <a href="https://en.wikipedia.org/wiki/Percent-encoding">escaped</a> (<code>outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22</code>). The last part is just asking for SOS version 1.0.</p>
+<p>This request allows us to check the <strong>AllowedTimes</strong> for our next request : <code>GetObservation</code>.</p>
+<pre><code>https://download.data.grandlyon.com/sos/bruit?service=SOS&amp;version=1.0.0&amp;request=GetObservation&amp;offering=observatoire_acoustique_grandlyon&amp;procedure=AF01&amp;eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00&amp;observedProperty=lday&amp;responseFormat=text/plain</code></pre>
+<p>Ok this result is HUGE! However, we have already built some understanding and I will explain the part that we haven’t seen yet. In SOS version 1.0, we need to specify the <strong>offering</strong> that groups our sensor (<code>offering=observatoire_acoustique_grandlyon</code>).</p>
+<p>This information comes from the <code>GetCapabilities</code>. Then, we define our <strong>procedure</strong> and set up a time interval of interest (<code>eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00</code>).</p>
+<p>After that, we specify the observed property that we’re interested in (<code>observedProperty=lday</code>) and response format (<code>responseFormat=text/plain</code>). Just as before, these two pieces of insight come from the GetCapabilities. As you may have noticed, we don’t need to add all observed property and procedure definitions, just the identifier is fine (lday vs urn:ogc:def:parameter:::noise:lday).</p>
+<p>Much more can and should be said (you can use bbox or aggregate in requests!) but let’s stop here. I hope that we can explore some ways to interact with http requests in R, soon!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">af01 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read.csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bruit.csv"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">header =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb4-2">af01<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>V1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> lubridate<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_datetime</span>(af01<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>V1)</span>
+<span id="cb4-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">names</span>(af01) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"time"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sensor"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lday"</span>)</span>
+<span id="cb4-4">quickplot <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> ggplot2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> af01, ggplot2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>( <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span>  time, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> lday)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-5">                ggplot2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> .<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb4-6">                ggplot2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ylim</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-7">                ggplot2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>()</span>
+<span id="cb4-8">quickplot</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2021-01-29-sensor-observation-standard/index_files/figure-html/small use case with the noise data-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="references" class="level1">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-Gabrys2020" class="csl-entry">
+Gabrys, Jennifer. 2020. <span>“Smart Forests and Data Practices: From the Internet of Trees to Planetary Governance.”</span> <em>Big Data &amp; Society</em> 7 (1): 2053951720904871. <a href="https://doi.org/10.1177/2053951720904871">https://doi.org/10.1177/2053951720904871</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>Sensor</category>
+  <category>Smart environment</category>
+  <category>Time series</category>
+  <guid>https://branchtwigleaf.com/posts/2021-01-29-sensor-observation-standard/</guid>
+  <pubDate>Fri, 12 Feb 2021 05:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Trees in Open Data Databases in France</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2021-01-10-trees-in-open-data-databases-in-france/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I collect tree data sets and here are some links to open data from France. I will update the list when I find more!</p>
+<p>You can find out more about my work on my <a href="https://github.com/defuneste/open_data_tree">github</a>. To extract the trees from the files I needed to do a bit of data wrangling.</p>
+<section id="guingamp" class="level2">
+<h2 class="anchored" data-anchor-id="guingamp">Guingamp</h2>
+<p>Typical lat/long in field.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">guingamp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_read</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sources/Arbres de la Ville de Guingamp.csv"</span>)</span>
+<span id="cb1-2">guingamp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_as_sf</span>(guingamp, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">coords =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"longitude"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"latitude"</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">crs =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4326</span>)</span></code></pre></div>
+</section>
+<section id="ecoline" class="level2">
+<h2 class="anchored" data-anchor-id="ecoline">Ecoline</h2>
+<p>Isolated trees are only the ones with “Arbre isolé” in <code>ele_txt</code> field.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">iau_ecoline <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">st_read</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json"</span>)</span>
+<span id="cb2-2">iau_ecoline <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> iau_ecoline[iau_ecoline<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>ele_txt <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Arbre isolé"</span>,]</span></code></pre></div>
+</section>
+<section id="nancy-metropolis" class="level2">
+<h2 class="anchored" data-anchor-id="nancy-metropolis">Nancy metropolis</h2>
+<p>Nancy is a bit more tricky. Each city has a directory where you can found isolated trees (<code>ARBRE_ISOLE.shp</code>). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">nancy <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sapply</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list.files</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pattern =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ARBRE_ISOLE.shp$"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">recursive =</span> T), sf<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span>st_read) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># read all the file </span></span>
+<span id="cb3-2">houdemont <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> nancy[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>] <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># we get Houdemont's data</span></span>
+<span id="cb3-3">houdemont<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Z <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># add the missing data</span></span>
+<span id="cb3-4">houdemont<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> </span>
+<span id="cb3-5">    houdemont<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span>[    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># reorgonize it</span></span>
+<span id="cb3-6">        ,<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HAUTEUR"</span>,  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DIAMETRE"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TYPE"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"CCOCOM"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Z"</span>,  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"geometry"</span>)</span>
+<span id="cb3-7">    ]</span>
+<span id="cb3-8">nancy <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">do.call</span>(rbind, nancy[<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>]) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># one file from every cities except Houdemont </span></span>
+<span id="cb3-9">nancy <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(nancy, houdemont<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># adding Houdemont</span></span></code></pre></div>
+</section>
+<section id="list-of-data-sets" class="level2">
+<h2 class="anchored" data-anchor-id="list-of-data-sets">List of data sets</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: right;">Data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.typeemplacement&amp;disjunctive.arrondissement&amp;disjunctive.libellefrancais&amp;disjunctive.genre&amp;disjunctive.espece&amp;disjunctive.varieteoucultivar&amp;disjunctive.stadedeveloppement&amp;disjunctive.remarquable">“L’arbre à Paris”</a></td>
+<td style="text-align: right;"><a href="https://opendata.paris.fr/explore/dataset/les-arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.grandlyon.com/jeux-de-donnees/arbres-alignement-metropole-lyon/info">“Arbres d’alignement de la Métropole de Lyon”</a></td>
+<td style="text-align: right;"><a href="https://download.data.grandlyon.com/ws/grandlyon/abr_arbres_alignement.abrarbre.shp?srsname=EPSG:4326">shp</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/information/">“Patrimoine arboré de Bordeaux”</a></td>
+<td style="text-align: right;"><a href="https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="http://opendata.nicecotedazur.org/data/dataset/cartographie-des-arbres-communaux">“Cartographie des arbres communaux” (Nice)</a></td>
+<td style="text-align: right;"><a href="http://opendata.nicecotedazur.org/data/storage/f/2020-08-12T09%3A41%3A09.512Z/ev-arbre-opendata-2020.geojson">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-grenoble">“Les arbres de Grenoble”</a></td>
+<td style="text-align: right;"><a href="https://entrepot.metropolegrenoble.fr/opendata/38185-GRE/EspacePublic/json/ARBRES_TERRITOIRE_VDG_EPSG4326.json">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.montpellier3m.fr/dataset/arbres-dalignement-de-montpellier">“Arbres d’alignement de Montpellier”</a></td>
+<td style="text-align: right;"><a href="https://data.montpellier3m.fr/sites/default/files/ressources/MMM_MTP_ArbresAlign.json">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://data.seineouest.fr/explore/dataset/arbres-v2/information/?disjunctive.commune&amp;disjunctive.site&amp;disjunctive.situation&amp;disjunctive.genespvar&amp;disjunctive.feuil_coni&amp;disjunctive.caduc_pers&amp;disjunctive.forme&amp;disjunctive.particular">“Arbres” (Grand Paris Seine Ouest)</a></td>
+<td style="text-align: right;"><a href="https://data.seineouest.fr/explore/dataset/arbres-v2/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.agen.fr/explore/dataset/arbres/information/">“Arbres” (Agen)</a></td>
+<td style="text-align: right;"><a href="https://data.agen.fr/explore/dataset/arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://opendata.agglo-saintquentinois.fr/datasets/aaf5c6a2a3cc49da84c8cc60b97c3507_0">“ARBRES” (Agglo du Saint-Quentinois)</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/66e810ac-c2d2-435e-a08d-efe967903604">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-remarquables-1/">“Arbres remarquables” (Metz)</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/77d95d55-75ea-4fad-8ec7-4221f2fe6eaa">shp</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dalignement-1/">“Arbres d’alignement”(Seine-Saint-Denis)</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/473172e0-de5c-4b62-a0e2-065204fe9db8">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dalignements/information/">“Arbres d’alignements - Ville de Versailles”</a></td>
+<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dalignements/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/information/">“Arbres dans les parcs de la ville de Versailles”</a></td>
+<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dalignement-2/">“Arbres d’alignement” (Nevers)</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/dbdc2068-ee22-474d-8a42-261554482a4f">shp</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement/">“Arbres d’ornement” (Nevers)</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/956d47c3-d907-43f3-a2ed-d70bb251463f">shp</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/information/">“Arbres d’alignement - Toulouse”</a></td>
+<td style="text-align: right;"><a href="https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://data.orleans-metropole.fr/explore/dataset/espace_publicev_arbres/information/">“Arbres - Ville d’Orléans”</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/804b8b61-9f8f-4a0d-8524-35ea5d6e265f">shp</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-saint-egreve">“Les arbres de Saint-Egrève”</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/2bda9508-27e5-4de6-aba3-fdb0d9059a22">shp</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://geo.data.gouv.fr/fr/datasets/e257334df108256a4e05eb16768a05870da263d4">“Arbres d’alignement - Bayonne”</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/3ed45467-0bcc-4049-8aa4-3c0e8fc921ab">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/information/?disjunctive.commune&amp;disjunctive.num_rd&amp;disjunctive.essence_scient&amp;disjunctive.essence_commun&amp;disjunctive.classe_age&amp;disjunctive.statut_emp&amp;sort=id_arbre">“Arbres d’alignement sur la voirie départementale”</a></td>
+<td style="text-align: right;"><a href="https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/">“Arbres d’ornement des espaces verts de la Ville de Rennes”</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/">“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”</a></td>
+<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/information/?sort=com_nom">“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”</a></td>
+<td style="text-align: right;"><a href="https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://catalogue.datara.gouv.fr/geosource/panierDownloadFrontalParametrage?LAYERIDTS=27262455">“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”</a></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">“Arbres de la Ville de Guingamp”</td>
+<td style="text-align: right;"><a href="https://datarmor.cotesdarmor.fr/dataserver/cg22/data/Arbres_Guingamp?&amp;$format=json">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/information/">“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”</a></td>
+<td style="text-align: right;"><a href="https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/information/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJwb2xhciIsImZ1bmMiOiJDT1VOVCIsInlBeGlzIjoiY29kZV9pbnNlZSIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6InJhbmdlLUFjY2VudCJ9XSwieEF4aXMiOiJlc3NfZmNhaXMiLCJtYXhwb2ludHMiOjUwLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJwYXRyaW1vaW5lLWFyYm9yZSIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D">“Inventaire arboré de Grand Paris Sud”</a></td>
+<td style="text-align: right;"><a href="https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/information/?disjunctive.commune">“Cadastre vert - Les arbres” (Hauts-de-Seine)</a></td>
+<td style="text-align: right;"><a href="https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://opendata.agglo-pau.fr/index.php/fiche?idQ=23">“Arbres Alignement sur la CAPP (Pau)”</a></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/information/">“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”</a></td>
+<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="http://opendata.grandnancy.eu/jeux-de-donnees/detail-dune-fiche-de-donnees/?tx_icsoddatastore_pi1%5Bkeywords%5D=arbre&amp;tx_icsoddatastore_pi1%5Buid%5D=66&amp;tx_icsoddatastore_pi1%5BreturnID%5D=447">“Restitution topo 3D” (Nancy)</a></td>
+<td style="text-align: right;"><a href="http://opendata.grandnancy.eu/?eID=ics_od_datastoredownload&amp;file=174">shp</a></td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+ ]]></description>
+  <category>urban forest</category>
+  <category>survey</category>
+  <category>tree</category>
+  <guid>https://branchtwigleaf.com/posts/2021-01-10-trees-in-open-data-databases-in-france/</guid>
+  <pubDate>Sun, 10 Jan 2021 05:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
