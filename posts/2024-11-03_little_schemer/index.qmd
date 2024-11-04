@@ -1,0 +1,130 @@
+---
+title: 'Little Schemer'
+author: 'Olivier Leroy'
+categories: [Scheme, LISP, 'Functional programming']
+image: cover.jpg
+---
+
+
+I have been reading and enjoying **The Little Schemer**! It's time to write a bit about it and structure what I learned so far (up to chapter 5).
+
+If you do not know about it I might start by giving a quick introduction.
+This book about recursion has a very specific and original way of teaching. 
+
+
+::: {.callout-important}
+I do not think it is a beginner's book as it focuses a lot on building abstractions and relies on the reader to make sense of them.
+:::
+
+## Teaching Methods:
+
+Instead of providing a lengthy text and definition it (nearly) **always** start with a question then provide with you an answer. 
+
+For example:
+
+<hr>
+
+Is it true that this is an `atom`?\
+ `atom`
+
+Yes. \
+because `atom` is a string of characters beginning with the letter `a`.
+
+<hr>
+
+This is the first definition that you are given. The book uses this style to either introduce you to a definition or give you small tasks and time to think about them. 
+
+The exception to that practice occurs when the authors introduce "Laws" and "Commandments". 
+
+Example: 
+
+> The Law of Car:  
+> The primitive `car` is defined only for non-empty lists. 
+
+
+"Laws" and "Commandments" are build incrementally, you will start with *preliminary* version and improve them as we build examples and learn more. 
+
+[When I want to practice a bit on a computer I am using this version of [Scheme](https://www.gnu.org/software/mit-scheme/) and Emacs]{.aside}
+
+It is using Scheme (a LISP dialect) but so far I am mostly using pen and paper, which is one reason I like it a lot: you can practice everywhere and do not need a computer. 
+
+Before building a function, the authors always define how the function should behave (with a series of questions).  Now we would probably frame that as Test Driven Development. 
+
+For example we want to create a function *firsts* that is taking a list *l* asan argument: 
+
+`(firsts l)` where `l` is: 
+
+```Scheme
+((apple peach pumpkin) 
+ (plum pear cherry)
+ (grape raisin pea)
+ (bean carrot eggplant))
+```
+Should return: `(apple plum grape bean)`
+
+If the first S-expression of an internal list. is a list it should be returned and if the list is empty it should return an empty list (I am shortcuting you here 3 other questions/answers). 
+
+
+## An Example on Recursion:
+
+I did not begin this book because of his way of teaching (this was a huge added benefit, I was not aware of) but mostly because I wanted to get better at using recursion. 
+
+Hence let's see how we can define `firsts`
+
+The first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as `(first ())` should return `()`). This is the called the **termination condition**, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.
+
+Then we need to build the **typical element**, ie what should be returned (in our previous example `apple` is one of them).  In Scheme it looks like:
+
+```scheme
+(car (car l))
+```
+
+`car` is a primitive function that returns the first S-expression of an non-empty list (`(car l)` would have returned `(apple peach pumpkin)`). 
+
+After that we need to provide the rest of the list to our `firsts` function. LISP has an other primitive function called `cdr` used for that:
+
+```scheme
+(firsts (cdr l))
+```
+
+In our example this would be `((plum pear cherry) (grape raisin pea) (bean carrot eggplant))` and this is called the **natural recursion**.  
+
+The last piece is to patch them together and for that LISP use `cons` (see the Second Commandment). 
+
+$$ (cons \underbrace{(car (car \quad l))}_{typical \quad element} \overbrace{(firsts (cdr \quad l))}^{natural \quad recursion}) $$
+
+
+Now we can write the function:
+
+```scheme
+(define firsts
+  (lambda (l)
+    (cond
+      ((null?) quote()) ;termination condition
+      (else (cons 
+              (car (cars l)) ;typical element
+              (firsts (cdr l)) ;natural recursion
+      )))))
+```
+
+That's it! 
+
+I still would like to highlight a few points: 
+
+- The termination condition is a good example on why you should check for error first
+
+- All of the "Commandments" are easy to find in the backcover of the book. I do not think they are meant to be memorized. They will probably make no sense if you do not go over the exercises first!
+
+- The book always focuses on providing a workable solution:
+
+    -  Sometimes the first example is also incorrect and the author goes over and explains how to correct it.  
+
+    - Sometimes it can be improved or simplified[^1]     
+
+I also like that iterative approach. 
+
+[^1]: So far, most simplifications I have seen are either using set logic to simplify conditions or building other functions.
+
+
+
+
