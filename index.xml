@@ -3011,5 +3011,144 @@ font-style: inherit;"># adding Houdemont</span></span></code></pre></div>
   <guid>https://branchtwigleaf.com/posts/2021-01-10-trees-in-open-data-databases-in-france/</guid>
   <pubDate>Sun, 10 Jan 2021 05:00:00 GMT</pubDate>
 </item>
+<item>
+  <title>Little Schemer</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2024-11-03_little_schemer/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I have been reading and enjoying <strong>The Little Schemer</strong>! It’s time to write a bit about it and structure what I learned so far (up to chapter 5).</p>
+<p>If you do not know about it I might start by giving a quick introduction. This book about recursion has a very specific and original way of teaching.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I do not think it is a beginner’s book as it focuses a lot on building abstractions and relies on the reader to make sense of them.</p>
+</div>
+</div>
+<section id="teaching-methods" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="teaching-methods">Teaching Methods:</h2>
+<p>Instead of providing a lengthy text and definition it (nearly) <strong>always</strong> start with a question then provide with you an answer.</p>
+<p>For example:</p>
+<hr>
+<p>Is it true that this is an <code>atom</code>?<br>
+<code>atom</code></p>
+<p>Yes.<br>
+because <code>atom</code> is a string of characters beginning with the letter <code>a</code>.</p>
+<hr>
+<p>This is the first definition that you are given. The book uses this style to either introduce you to a definition or give you small tasks and time to think about them.</p>
+<p>The exception to that practice occurs when the authors introduce “Laws” and “Commandments”.</p>
+<p>Example:</p>
+<blockquote class="blockquote">
+<p>The Law of Car:<br>
+The primitive <code>car</code> is defined only for non-empty lists.</p>
+</blockquote>
+<p>“Laws” and “Commandments” are build incrementally, you will start with <em>preliminary</em> version and improve them as we build examples and learn more.</p>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="margin-aside">When I want to practice a bit on a computer I am using this version of <a href="https://www.gnu.org/software/mit-scheme/">Scheme</a> and Emacs</span></div></div>
+<p>It is using Scheme (a LISP dialect) but so far I am mostly using pen and paper, which is one reason I like it a lot: you can practice everywhere and do not need a computer.</p>
+<p>Before building a function, the authors always define how the function should behave (with a series of questions). Now we would probably frame that as Test Driven Development.</p>
+<p>For example we want to create a function <em>firsts</em> that is taking a list <em>l</em> asan argument:</p>
+<p><code>(firsts l)</code> where <code>l</code> is:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb1-1">((apple peach pumpkin) </span>
+<span id="cb1-2"> (plum pear cherry)</span>
+<span id="cb1-3"> (grape raisin pea)</span>
+<span id="cb1-4"> (bean carrot eggplant))</span></code></pre></div>
+<p>Should return: <code>(apple plum grape bean)</code></p>
+<p>If the first S-expression of an internal list. is a list it should be returned and if the list is empty it should return an empty list (I am shortcuting you here 3 other questions/answers).</p>
+</section>
+<section id="an-example-on-recursion" class="level2">
+<h2 class="anchored" data-anchor-id="an-example-on-recursion">An Example on Recursion:</h2>
+<p>I did not begin this book because of his way of teaching (this was a huge added benefit, I was not aware of) but mostly because I wanted to get better at using recursion.</p>
+<p>Hence let’s see how we can define <code>firsts</code></p>
+<p>The first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as <code>(first ())</code> should return <code>()</code>). This is the called the <strong>termination condition</strong>, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.</p>
+<p>Then we need to build the <strong>typical element</strong>, ie what should be returned (in our previous example <code>apple</code> is one of them). In Scheme it looks like:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb2-1">(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">car</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">car</span> l))</span></code></pre></div>
+<p><code>car</code> is a primitive function that returns the first S-expression of an non-empty list (<code>(car l)</code> would have returned <code>(apple peach pumpkin)</code>).</p>
+<p>After that we need to provide the rest of the list to our <code>firsts</code> function. LISP has an other primitive function called <code>cdr</code> used for that:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb3-1">(firsts (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">cdr</span> l))</span></code></pre></div>
+<p>In our example this would be <code>((plum pear cherry) (grape raisin pea) (bean carrot eggplant))</code> and this is called the <strong>natural recursion</strong>.</p>
+<p>The last piece is to patch them together and for that LISP use <code>cons</code> (see the Second Commandment).</p>
+<p><img src="https://latex.codecogs.com/png.latex?%20(cons%20%5Cunderbrace%7B(car%20(car%20%5Cquad%20l))%7D_%7Btypical%20%5Cquad%20element%7D%20%5Coverbrace%7B(firsts%20(cdr%20%5Cquad%20l))%7D%5E%7Bnatural%20%5Cquad%20recursion%7D)%20"></p>
+<p>Now we can write the function:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb4-1">(<span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">define</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"> firsts</span></span>
+<span id="cb4-2">  (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">lambda</span> (l)</span>
+<span id="cb4-3">    (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">cond</span></span>
+<span id="cb4-4">      ((<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">null?</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">quote</span>()) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;termination condition</span></span>
+<span id="cb4-5">      (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">cons</span> </span>
+<span id="cb4-6">              (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">car</span> (cars l)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;typical element</span></span>
+<span id="cb4-7">              (firsts (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">cdr</span> l)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;natural recursion</span></span>
+<span id="cb4-8">      )))))</span></code></pre></div>
+<p>That’s it!</p>
+<p>I still would like to highlight a few points:</p>
+<ul>
+<li><p>The termination condition is a good example on why you should check for error first</p></li>
+<li><p>All of the “Commandments” are easy to find in the backcover of the book. I do not think they are meant to be memorized. They will probably make no sense if you do not go over the exercises first!</p></li>
+<li><p>The book always focuses on providing a workable solution:</p>
+<ul>
+<li><p>Sometimes the first example is also incorrect and the author goes over and explains how to correct it.</p></li>
+<li><p>Sometimes it can be improved or simplified<sup>1</sup></p></li>
+</ul></li>
+</ul>
+<p>I also like that iterative approach.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>So far, most simplifications I have seen are either using set logic to simplify conditions or building other functions.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Scheme</category>
+  <category>LISP</category>
+  <category>Functional programming</category>
+  <guid>https://branchtwigleaf.com/posts/2024-11-03_little_schemer/</guid>
+  <pubDate>Mon, 04 Nov 2024 18:15:02 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2024-11-03_little_schemer/cover.jpg" medium="image" type="image/jpeg"/>
+</item>
 </channel>
 </rss>
