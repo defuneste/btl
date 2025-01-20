@@ -8,6 +8,8 @@ website:
   navbar:
     right:
       - about.qmd
+      - href: talks.qmd
+        text: "Talks"
       - icon: github
         href: https://github.com/defuneste
       - icon: mastodon
