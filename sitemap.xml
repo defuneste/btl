@@ -5,56 +5,68 @@
     <lastmod>2024-09-07T18:58:13.747Z</lastmod>
   </url>
   <url>
-    <loc>https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html</loc>
-    <lastmod>2024-06-02T15:17:15.199Z</lastmod>
+    <loc>https://branchtwigleaf.com/talks/auber2024.html</loc>
+    <lastmod>2025-01-20T01:58:58.963Z</lastmod>
   </url>
   <url>
-    <loc>https://branchtwigleaf.com/posts/2024-03-10-awesome-jq/index.html</loc>
-    <lastmod>2024-09-07T18:58:13.748Z</lastmod>
+    <loc>https://branchtwigleaf.com/talks.html</loc>
+    <lastmod>2025-01-20T01:58:58.962Z</lastmod>
   </url>
   <url>
-    <loc>https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/index.html</loc>
-    <lastmod>2024-09-15T14:22:54.645Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/index.html</loc>
-    <lastmod>2024-06-14T20:49:15.439Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2024-09-15_function_factory/index.html</loc>
-    <lastmod>2024-09-30T12:40:28.813Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index.html</loc>
-    <lastmod>2024-06-05T01:57:19.602Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2021-01-29-sensor-observation-standard/index.html</loc>
-    <lastmod>2024-06-04T22:09:30.441Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2024-11-03_little_schemer/index.html</loc>
-    <lastmod>2024-11-04T18:13:47.081Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/index.html</loc>
-    <lastmod>2024-06-02T15:38:45.339Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html</loc>
-    <lastmod>2024-06-02T15:25:23.286Z</lastmod>
-  </url>
-  <url>
-    <loc>https://branchtwigleaf.com/posts/2021-01-10-trees-in-open-data-databases-in-france/index.html</loc>
-    <lastmod>2024-06-03T15:57:39.115Z</lastmod>
+    <loc>https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/index.html</loc>
+    <lastmod>2024-08-17T02:07:04.313Z</lastmod>
   </url>
   <url>
     <loc>https://branchtwigleaf.com/posts/2023-01-05-learning-ds-meme/index.html</loc>
     <lastmod>2024-06-02T15:13:17.334Z</lastmod>
   </url>
   <url>
-    <loc>https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/index.html</loc>
-    <lastmod>2024-08-17T02:07:04.313Z</lastmod>
+    <loc>https://branchtwigleaf.com/posts/2021-01-10-trees-in-open-data-databases-in-france/index.html</loc>
+    <lastmod>2024-06-03T15:57:39.115Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html</loc>
+    <lastmod>2024-06-02T15:25:23.286Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2023-01-10-r-is-also-a-graph-calculator/index.html</loc>
+    <lastmod>2024-06-02T15:38:45.339Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2024-11-03_little_schemer/index.html</loc>
+    <lastmod>2025-01-20T01:58:58.962Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2021-01-29-sensor-observation-standard/index.html</loc>
+    <lastmod>2024-06-04T22:09:30.441Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index.html</loc>
+    <lastmod>2024-06-05T01:57:19.602Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2024-09-15_function_factory/index.html</loc>
+    <lastmod>2024-09-30T12:40:28.813Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/index.html</loc>
+    <lastmod>2024-06-14T20:49:15.439Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/index.html</loc>
+    <lastmod>2024-09-15T14:22:54.645Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2024-03-10-awesome-jq/index.html</loc>
+    <lastmod>2024-09-07T18:58:13.748Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html</loc>
+    <lastmod>2024-06-02T15:17:15.199Z</lastmod>
+  </url>
+  <url>
+    <loc>https://branchtwigleaf.com/talks/urisa2023.html</loc>
+    <lastmod>2025-01-20T01:58:58.963Z</lastmod>
   </url>
   <url>
     <loc>https://branchtwigleaf.com/index.html</loc>

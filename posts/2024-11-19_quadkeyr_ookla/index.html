@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Olivier Leroy">
-<meta name="dcterms.date" content="2021-01-10">
 
-<title>Olivier Leroy - Trees in Open Data Databases in France</title>
+<title>Olivier Leroy - quadkeyr_ookla</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,10 +127,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../talks.html"> 
-<span class="menu-text">Talks</span></a>
-  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/defuneste"> <i class="bi bi-github" role="img">
 </i> 
@@ -158,11 +153,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Trees in Open Data Databases in France</h1>
+      <h1 class="title">quadkeyr_ookla</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">urban forest</div>
-                <div class="quarto-category">survey</div>
-                <div class="quarto-category">tree</div>
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Spatial index</div>
+                <div class="quarto-category">quadkey</div>
+                <div class="quarto-category">DuckDB</div>
               </div>
                   </div>
   </div>
@@ -177,12 +173,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             </div>
     </div>
       
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">January 10, 2021</p>
-      </div>
-    </div>
     
       
     </div>
@@ -199,174 +189,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>I collect tree data sets and here are some links to open data from France. I will update the list when I find more!</p>
-<p>You can find out more about my work on my <a href="https://github.com/defuneste/open_data_tree">github</a>. To extract the trees from the files I needed to do a bit of data wrangling.</p>
-<section id="guingamp" class="level2">
-<h2 class="anchored" data-anchor-id="guingamp">Guingamp</h2>
-<p>Typical lat/long in field.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>guingamp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">"sources/Arbres de la Ville de Guingamp.csv"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>guingamp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(guingamp, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="ecoline" class="level2">
-<h2 class="anchored" data-anchor-id="ecoline">Ecoline</h2>
-<p>Isolated trees are only the ones with “Arbre isolé” in <code>ele_txt</code> field.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iau_ecoline <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>iau_ecoline <span class="ot">&lt;-</span> iau_ecoline[iau_ecoline<span class="sc">$</span>ele_txt <span class="sc">==</span> <span class="st">"Arbre isolé"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="nancy-metropolis" class="level2">
-<h2 class="anchored" data-anchor-id="nancy-metropolis">Nancy metropolis</h2>
-<p>Nancy is a bit more tricky. Each city has a directory where you can found isolated trees (<code>ARBRE_ISOLE.shp</code>). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nancy <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">"ARBRE_ISOLE.shp$"</span>, <span class="at">recursive =</span> T), sf<span class="sc">::</span>st_read) <span class="co"># read all the file </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>houdemont <span class="ot">&lt;-</span> nancy[<span class="dv">6</span>] <span class="co"># we get Houdemont's data</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span><span class="sc">$</span>Z <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co"># add the missing data</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span> <span class="ot">&lt;-</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span>[    <span class="co"># reorgonize it</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        ,<span class="fu">c</span>(<span class="st">"HAUTEUR"</span>,  <span class="st">"DIAMETRE"</span>, <span class="st">"TYPE"</span>, <span class="st">"CCOCOM"</span>, <span class="st">"Z"</span>,  <span class="st">"geometry"</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>nancy <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, nancy[<span class="sc">-</span><span class="dv">6</span>]) <span class="co"># one file from every cities except Houdemont </span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>nancy <span class="ot">&lt;-</span> <span class="fu">rbind</span>(nancy, houdemont<span class="sc">$</span><span class="st">`</span><span class="at">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp</span><span class="st">`</span>) <span class="co"># adding Houdemont</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="list-of-data-sets" class="level2">
-<h2 class="anchored" data-anchor-id="list-of-data-sets">List of data sets</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Name</th>
-<th style="text-align: right;">Data</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.typeemplacement&amp;disjunctive.arrondissement&amp;disjunctive.libellefrancais&amp;disjunctive.genre&amp;disjunctive.espece&amp;disjunctive.varieteoucultivar&amp;disjunctive.stadedeveloppement&amp;disjunctive.remarquable">“L’arbre à Paris”</a></td>
-<td style="text-align: right;"><a href="https://opendata.paris.fr/explore/dataset/les-arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.grandlyon.com/jeux-de-donnees/arbres-alignement-metropole-lyon/info">“Arbres d’alignement de la Métropole de Lyon”</a></td>
-<td style="text-align: right;"><a href="https://download.data.grandlyon.com/ws/grandlyon/abr_arbres_alignement.abrarbre.shp?srsname=EPSG:4326">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/information/">“Patrimoine arboré de Bordeaux”</a></td>
-<td style="text-align: right;"><a href="https://opendata.bordeaux-metropole.fr/explore/dataset/bor_arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="http://opendata.nicecotedazur.org/data/dataset/cartographie-des-arbres-communaux">“Cartographie des arbres communaux” (Nice)</a></td>
-<td style="text-align: right;"><a href="http://opendata.nicecotedazur.org/data/storage/f/2020-08-12T09%3A41%3A09.512Z/ev-arbre-opendata-2020.geojson">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-grenoble">“Les arbres de Grenoble”</a></td>
-<td style="text-align: right;"><a href="https://entrepot.metropolegrenoble.fr/opendata/38185-GRE/EspacePublic/json/ARBRES_TERRITOIRE_VDG_EPSG4326.json">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.montpellier3m.fr/dataset/arbres-dalignement-de-montpellier">“Arbres d’alignement de Montpellier”</a></td>
-<td style="text-align: right;"><a href="https://data.montpellier3m.fr/sites/default/files/ressources/MMM_MTP_ArbresAlign.json">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.seineouest.fr/explore/dataset/arbres-v2/information/?disjunctive.commune&amp;disjunctive.site&amp;disjunctive.situation&amp;disjunctive.genespvar&amp;disjunctive.feuil_coni&amp;disjunctive.caduc_pers&amp;disjunctive.forme&amp;disjunctive.particular">“Arbres” (Grand Paris Seine Ouest)</a></td>
-<td style="text-align: right;"><a href="https://data.seineouest.fr/explore/dataset/arbres-v2/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.agen.fr/explore/dataset/arbres/information/">“Arbres” (Agen)</a></td>
-<td style="text-align: right;"><a href="https://data.agen.fr/explore/dataset/arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.agglo-saintquentinois.fr/datasets/aaf5c6a2a3cc49da84c8cc60b97c3507_0">“ARBRES” (Agglo du Saint-Quentinois)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/66e810ac-c2d2-435e-a08d-efe967903604">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-remarquables-1/">“Arbres remarquables” (Metz)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/77d95d55-75ea-4fad-8ec7-4221f2fe6eaa">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dalignement-1/">“Arbres d’alignement”(Seine-Saint-Denis)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/473172e0-de5c-4b62-a0e2-065204fe9db8">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dalignements/information/">“Arbres d’alignements - Ville de Versailles”</a></td>
-<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dalignements/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/information/">“Arbres dans les parcs de la ville de Versailles”</a></td>
-<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/arbres-dans-les-parcs-de-la-ville-de-versailles/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dalignement-2/">“Arbres d’alignement” (Nevers)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/dbdc2068-ee22-474d-8a42-261554482a4f">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement/">“Arbres d’ornement” (Nevers)</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/956d47c3-d907-43f3-a2ed-d70bb251463f">shp</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/information/">“Arbres d’alignement - Toulouse”</a></td>
-<td style="text-align: right;"><a href="https://data.toulouse-metropole.fr/explore/dataset/arbres-d-alignement/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.orleans-metropole.fr/explore/dataset/espace_publicev_arbres/information/">“Arbres - Ville d’Orléans”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/804b8b61-9f8f-4a0d-8524-35ea5d6e265f">shp</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.metropolegrenoble.fr/ckan/dataset/les-arbres-de-saint-egreve">“Les arbres de Saint-Egrève”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/2bda9508-27e5-4de6-aba3-fdb0d9059a22">shp</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://geo.data.gouv.fr/fr/datasets/e257334df108256a4e05eb16768a05870da263d4">“Arbres d’alignement - Bayonne”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/3ed45467-0bcc-4049-8aa4-3c0e8fc921ab">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/information/?disjunctive.commune&amp;disjunctive.num_rd&amp;disjunctive.essence_scient&amp;disjunctive.essence_commun&amp;disjunctive.classe_age&amp;disjunctive.statut_emp&amp;sort=id_arbre">“Arbres d’alignement sur la voirie départementale”</a></td>
-<td style="text-align: right;"><a href="https://data.issy.com/explore/dataset/arbres-dalignement-sur-la-voirie-departementale/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/">“Arbres d’ornement des espaces verts de la Ville de Rennes”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://www.data.gouv.fr/fr/datasets/arbres-dornement-des-espaces-verts-de-la-ville-de-rennes-1/">“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”</a></td>
-<td style="text-align: right;"><a href="https://www.data.gouv.fr/fr/datasets/r/aff30dbc-b555-4cd3-8804-f8a26239172e">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/information/?sort=com_nom">“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”</a></td>
-<td style="text-align: right;"><a href="https://data.mulhouse-alsace.fr/explore/dataset/68224_arbres_alignement/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://catalogue.datara.gouv.fr/geosource/panierDownloadFrontalParametrage?LAYERIDTS=27262455">“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”</a></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">“Arbres de la Ville de Guingamp”</td>
-<td style="text-align: right;"><a href="https://datarmor.cotesdarmor.fr/dataserver/cg22/data/Arbres_Guingamp?&amp;$format=json">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/information/">“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”</a></td>
-<td style="text-align: right;"><a href="https://data.bretagne.bzh/explore/dataset/patrimoine-arbore-ponctuel-des-voies-navigables-appartenant-a-la-region-bretagne/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/information/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJwb2xhciIsImZ1bmMiOiJDT1VOVCIsInlBeGlzIjoiY29kZV9pbnNlZSIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6InJhbmdlLUFjY2VudCJ9XSwieEF4aXMiOiJlc3NfZmNhaXMiLCJtYXhwb2ludHMiOjUwLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJwYXRyaW1vaW5lLWFyYm9yZSIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D">“Inventaire arboré de Grand Paris Sud”</a></td>
-<td style="text-align: right;"><a href="https://data.grandparissud.fr/explore/dataset/patrimoine-arbore/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/information/?disjunctive.commune">“Cadastre vert - Les arbres” (Hauts-de-Seine)</a></td>
-<td style="text-align: right;"><a href="https://opendata.hauts-de-seine.fr/explore/dataset/cadastre-vert-les-arbres/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://opendata.agglo-pau.fr/index.php/fiche?idQ=23">“Arbres Alignement sur la CAPP (Pau)”</a></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/information/">“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”</a></td>
-<td style="text-align: right;"><a href="https://data.iledefrance.fr/explore/dataset/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france/download/?format=geojson&amp;timezone=Europe/Berlin&amp;lang=fr">GeoJson</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="http://opendata.grandnancy.eu/jeux-de-donnees/detail-dune-fiche-de-donnees/?tx_icsoddatastore_pi1%5Bkeywords%5D=arbre&amp;tx_icsoddatastore_pi1%5Buid%5D=66&amp;tx_icsoddatastore_pi1%5BreturnID%5D=447">“Restitution topo 3D” (Nancy)</a></td>
-<td style="text-align: right;"><a href="http://opendata.grandnancy.eu/?eID=ics_od_datastoredownload&amp;file=174">shp</a></td>
-</tr>
-</tbody>
-</table>
+<p><a href="https://www.ookla.com/">Ookla</a> is a company that is recording <a href="https://www.speedtest.net/">internet speed test</a> all over the world. Their data is intersting when comparing other dataset like fore example <a href="https://broadbandmap.fcc.gov/home">FCC NBM</a>.</p>
+<p>They are sharing it in shapefile (A.K.A cockroach of spacial file format) and parquet<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris); <span class="fu">library</span>(sf); <span class="fu">library</span>(quadkeyr); </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>To enable caching of data, set `options(tigris_use_cache = TRUE)`
+in your R script or .Rprofile.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
+</div>
+</div>
+<p>I just tested how hard it will be to get from s3 a specific county.</p>
+<p>I think it is easier (better computing) to use text logic to get the data instead of spatial predicates (at least as a first pass).</p>
+<p>Ookla is divided in quadkey at zoom 16</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># classic workflow on tools </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>MA <span class="ot">&lt;-</span> tigris<span class="sc">::</span><span class="fu">counties</span>(<span class="st">"MA"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>barnstable <span class="ot">&lt;-</span> MA[MA<span class="sc">$</span>NAME <span class="sc">==</span> <span class="st">"Barnstable"</span>, ]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># get bbox for nex tools</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>my_bbox <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_bbox</span>(barnstable)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># use quadkeyr::qkmap_app() to get the correct</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># zoom level (I find that it is the hard part)</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>my_qk <span class="ot">&lt;-</span> quadkeyr<span class="sc">::</span><span class="fu">create_qk_grid</span>(my_bbox[<span class="st">"xmin"</span>],</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                         my_bbox[<span class="st">"xmax"</span>],</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                         my_bbox[<span class="st">"ymin"</span>],</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                         my_bbox[<span class="st">"ymax"</span>],</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">zoom =</span> <span class="dv">16</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                         )</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_qk<span class="sc">$</span>data)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(my_qk<span class="sc">$</span>data<span class="sc">$</span>quadkey, <span class="st">"barnstable.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I need to write a file because at failed using {dbplyr} and used that files in duckdb:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>load httpfs;</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">copy</span> (</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> qk <span class="kw">AS</span> (<span class="kw">from</span> read_csv(<span class="st">'barnstable.csv'</span>, <span class="kw">header</span> <span class="op">=</span> <span class="kw">true</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> quadkey,avg_d_kbps,avg_u_kbps,avg_lat_ms,tests,devices,quarter,<span class="dt">year</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> read_parquet(<span class="st">'s3://ookla-open-data/parquet/performance/type=fixed/*/*/*.parquet'</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> quadkey <span class="kw">in</span> (<span class="kw">select</span> x <span class="kw">from</span> qk)) <span class="kw">to</span> <span class="st">'barnstable.csv'</span> ;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
-</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://github.com/teamookla/ookla-open-data?tab=readme-ov-file#data-formats">https://github.com/teamookla/ookla-open-data?tab=readme-ov-file#data-formats</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

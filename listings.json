@@ -1,5 +1,12 @@
 [
   {
+    "listing": "/talks.html",
+    "items": [
+      "/talks/auber2024.html",
+      "/talks/urisa2023.html"
+    ]
+  },
+  {
     "listing": "/index.html",
     "items": [
       "/posts/2024-11-03_little_schemer/index.html",

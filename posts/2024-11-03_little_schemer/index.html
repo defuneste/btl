@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Olivier Leroy">
+<meta name="dcterms.date" content="2024-11-03">
 
 <title>Olivier Leroy - Little Schemer</title>
 <style>
@@ -156,6 +157,10 @@ window.Quarto = {
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks.html"> 
+<span class="menu-text">Talks</span></a>
+  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/defuneste"> <i class="bi bi-github" role="img">
 </i> 
@@ -201,6 +206,12 @@ window.Quarto = {
             </div>
     </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 3, 2024</p>
+      </div>
+    </div>
     
       
     </div>
@@ -268,7 +279,7 @@ The primitive <code>car</code> is defined only for non-empty lists.</p>
 <h2 class="anchored" data-anchor-id="an-example-on-recursion">An Example on Recursion:</h2>
 <p>I did not begin this book because of his way of teaching (this was a huge added benefit, I was not aware of) but mostly because I wanted to get better at using recursion.</p>
 <p>Hence let’s see how we can define <code>firsts</code></p>
-<p>The first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as <code>(first ())</code> should return <code>()</code>). This is the called the <strong>termination condition</strong>, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.</p>
+<p>The first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as <code>(firsts ())</code> should return <code>()</code>). This is the called the <strong>termination condition</strong>, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.</p>
 <p>Then we need to build the <strong>typical element</strong>, ie what should be returned (in our previous example <code>apple</code> is one of them). In Scheme it looks like:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">car</span> (<span class="kw">car</span> l))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>car</code> is a primitive function that returns the first S-expression of an non-empty list (<code>(car l)</code> would have returned <code>(apple peach pumpkin)</code>).</p>
