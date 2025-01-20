@@ -3,6 +3,7 @@ title: 'Little Schemer'
 author: 'Olivier Leroy'
 categories: [Scheme, LISP, 'Functional programming']
 image: cover.jpg
+date: '2024-11-03'
 ---
 
 
@@ -71,7 +72,7 @@ I did not begin this book because of his way of teaching (this was a huge added 
 
 Hence let's see how we can define `firsts`
 
-The first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as `(first ())` should return `()`). This is the called the **termination condition**, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.
+The first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as `(firsts ())` should return `()`). This is the called the **termination condition**, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.
 
 Then we need to build the **typical element**, ie what should be returned (in our previous example `apple` is one of them).  In Scheme it looks like:
 

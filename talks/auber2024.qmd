@@ -1,0 +1,29 @@
+---
+title: "AUBER 2024"
+categories: [FCC, broadband, package, "data as code"]
+author: "Olivier Leroy"
+date: "2024-10-20"
+---
+
+AUBER is the [Association for University Business and Economic Research](https://auber.org/), a professional organization for economic research centers at leading universities and affiliated organizations across America.
+
+I presented a talk on the benefits of streamlining date access using an R Package with [`cori.data.fcc`](https://ruralinnovation.github.io/cori.data.fcc/) as an example. 
+
+This is a short list of the advantages:
+
+1. Address Data Challenges
+
+    - Data is packaged as code to simplify data access, reduce errors, and promote collaboration.
+    
+    - Low-level data transformations are codified: this makes them easy for others to reproduce.
+
+2. Accelerate Innovation
+
+    - Broadband data is packaged so that researchers can focus on analysis and insights, not data wrangling.
+
+3. Unlock Deeper Insights Faster
+
+    - cori.data.fcc provides fast access to granular details, essential for understanding broadband challenges across multiple geographic scales.
+
+
+My presentation is available [HERE](https://ruralinnovation.github.io/prez_auber_2024/#/title-slide)!
