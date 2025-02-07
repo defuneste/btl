@@ -10,6 +10,8 @@ website:
       - about.qmd
       - href: talks.qmd
         text: "Talks"
+      - text: "![](/assets/img/codeberg-logo_icon_white.svg)"
+        href: https://codeberg.org/defuneste
       - icon: github
         href: https://github.com/defuneste
       - icon: mastodon
@@ -24,4 +26,3 @@ format:
   html:
     theme: United
     css: styles.css
-
