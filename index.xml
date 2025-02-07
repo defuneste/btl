@@ -9,8 +9,87 @@
 <link>https://branchtwigleaf.com/</link>
 <atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Message in a bottle for me</description>
-<generator>quarto-1.4.552</generator>
-<lastBuildDate>Sun, 03 Nov 2024 04:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.40</generator>
+<lastBuildDate>Thu, 06 Feb 2025 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Codeberg links and icons!</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2025-02-06_codeberg_link/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I like GitHub (GH) but it seems like a good idea to learn about what other software forges are out there… !</p>
+<div class="page-columns page-full"><p>You can find a great post about it here: </p><div class="no-row-height column-margin column-container"><span class="margin-aside"><a href="https://mastodon.social/@gvwilson/113945550159389620">https://mastodon.social/<span class="citation" data-cites="gvwilson/113945550159389620">@gvwilson/113945550159389620</span></a></span></div></div>
+<blockquote class="mastodon-embed blockquote" data-embed-url="https://mastodon.social/@gvwilson/113945550159389620/embed" style="background: #FCF8FF; border-radius: 8px; border: 1px solid #C9C4DA; margin: 0; max-width: 540px; min-width: 270px; overflow: hidden; padding: 0;">
+<a href="https://mastodon.social/@gvwilson/113945550159389620" target="_blank" style="align-items: center; color: #1C1A25; display: flex; flex-direction: column; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Roboto, sans-serif; font-size: 14px; justify-content: center; letter-spacing: 0.25px; line-height: 20px; padding: 24px; text-decoration: none;"> <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewbox="0 0 79 75"><path d="M74.7135 16.6043C73.6199 8.54587 66.5351 2.19527 58.1366 0.964691C56.7196 0.756754 51.351 0 38.9148 0H38.822C26.3824 0 23.7135 0.756754 22.2966 0.964691C14.1319 2.16118 6.67571 7.86752 4.86669 16.0214C3.99657 20.0369 3.90371 24.4888 4.06535 28.5726C4.29578 34.4289 4.34049 40.275 4.877 46.1075C5.24791 49.9817 5.89495 53.8251 6.81328 57.6088C8.53288 64.5968 15.4938 70.4122 22.3138 72.7848C29.6155 75.259 37.468 75.6697 44.9919 73.971C45.8196 73.7801 46.6381 73.5586 47.4475 73.3063C49.2737 72.7302 51.4164 72.086 52.9915 70.9542C53.0131 70.9384 53.0308 70.9178 53.0433 70.8942C53.0558 70.8706 53.0628 70.8445 53.0637 70.8179V65.1661C53.0634 65.1412 53.0574 65.1167 53.0462 65.0944C53.035 65.0721 53.0189 65.0525 52.9992 65.0371C52.9794 65.0218 52.9564 65.011 52.9318 65.0056C52.9073 65.0002 52.8819 65.0003 52.8574 65.0059C48.0369 66.1472 43.0971 66.7193 38.141 66.7103C29.6118 66.7103 27.3178 62.6981 26.6609 61.0278C26.1329 59.5842 25.7976 58.0784 25.6636 56.5486C25.6622 56.5229 25.667 56.4973 25.6775 56.4738C25.688 56.4502 25.7039 56.4295 25.724 56.4132C25.7441 56.397 25.7678 56.3856 25.7931 56.3801C25.8185 56.3746 25.8448 56.3751 25.8699 56.3816C30.6101 57.5151 35.4693 58.0873 40.3455 58.086C41.5183 58.086 42.6876 58.086 43.8604 58.0553C48.7647 57.919 53.9339 57.6701 58.7591 56.7361C58.8794 56.7123 58.9998 56.6918 59.103 56.6611C66.7139 55.2124 73.9569 50.665 74.6929 39.1501C74.7204 38.6967 74.7892 34.4016 74.7892 33.9312C74.7926 32.3325 75.3085 22.5901 74.7135 16.6043ZM62.9996 45.3371H54.9966V25.9069C54.9966 21.8163 53.277 19.7302 49.7793 19.7302C45.9343 19.7302 44.0083 22.1981 44.0083 27.0727V37.7082H36.0534V27.0727C36.0534 22.1981 34.124 19.7302 30.279 19.7302C26.8019 19.7302 25.0651 21.8163 25.0617 25.9069V45.3371H17.0656V25.3172C17.0656 21.2266 18.1191 17.9769 20.2262 15.568C22.3998 13.1648 25.2509 11.9308 28.7898 11.9308C32.8859 11.9308 35.9812 13.492 38.0447 16.6111L40.036 19.9245L42.0308 16.6111C44.0943 13.492 47.1896 11.9308 51.2788 11.9308C54.8143 11.9308 57.6654 13.1648 59.8459 15.568C61.9529 17.9746 63.0065 21.2243 63.0065 25.3172L62.9996 45.3371Z" fill="currentColor"></path></svg>
+<div style="color: #787588; margin-top: 16px;">
+Post by <span class="citation" data-cites="gvwilson">@gvwilson</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span>
+</div>
+<div style="font-weight: 500;">
+View on Mastodon
+</div>
+</a>
+</blockquote>
+<script data-allowed-prefixes="https://mastodon.social/" async="" src="https://mastodon.social/embed.js"></script>
+<p><br></p>
+<p>I will add to that:</p>
+<ul>
+<li><p>a bit of competition<sup>1</sup> is good</p></li>
+<li><p>discovering other implementations is always worth it.</p></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;<a href="https://about.gitlab.com/">GitLab</a> is another option.</p></div></div><p>While this blog is still on GH I will test <a href="https://codeberg.org/">Codeberg</a> more! Hence, I wanted to add a link of my, nearly empty, codeberg (adding more nudges for others to try!)</p>
+<p>In quarto this is quite easy:</p>
+<ol type="1">
+<li>Download the <code>.svg</code> from the <a href="https://codeberg.org/Codeberg/Design">codeberg design repo</a> and put it where you are usually add such assets (example: <code>assets/img/</code>)</li>
+</ol>
+<p>The repo is archived but we are complying with the licence and the “Do” section.</p>
+<ol start="2" type="1">
+<li>Update your <code>_quarto.yml</code> with a your take on:</li>
+</ol>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">text</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"![](/assets/img/codeberg-logo_icon_white.svg)"</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">href</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> https://codeberg.org/defuneste</span></span></code></pre></div>
+<div class="page-columns page-full"><p>Using <code>text</code> was not obvious but this <a href="https://github.com/quarto-dev/quarto-cli/discussions/7640">GH discussion</a> (sic) was helpful. Notice that I specified an absolute path. </p><div class="no-row-height column-margin column-container"><span class="margin-aside">Thanks! <span class="citation" data-cites="MickaelCanouil">@MickaelCanouil</span><span class="citation" data-cites="fosstodon.org">@fosstodon.org</span> and <span class="citation" data-cites="ellakaye">@ellakaye</span><span class="citation" data-cites="fosstodon.org">@fosstodon.org</span></span></div></div>
+<p>It should be good to go!</p>
+<p>Another, easier, option would be to replace <code>text: "![]your_link"</code> with <code>ìcon: git</code>.</p>
+
+
+
+
+ ]]></description>
+  <category>Codeberg</category>
+  <category>blog</category>
+  <guid>https://branchtwigleaf.com/posts/2025-02-06_codeberg_link/</guid>
+  <pubDate>Thu, 06 Feb 2025 05:00:00 GMT</pubDate>
+  <media:content url="https://branchtwigleaf.com/posts/2025-02-06_codeberg_link/codeberg-logo_vertical_blue.svg" medium="image" type="image/svg+xml"/>
+</item>
 <item>
   <title>Little Schemer</title>
   <dc:creator>Olivier Leroy</dc:creator>
@@ -74,13 +153,16 @@ The primitive <code>car</code> is defined only for non-empty lists.</p>
 <p>Then we need to build the <strong>typical element</strong>, ie what should be returned (in our previous example <code>apple</code> is one of them). In Scheme it looks like:</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb2-1">(<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">car</span> (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">car</span> l))</span></code></pre></div>
 <p><code>car</code> is a primitive function that returns the first S-expression of an non-empty list (<code>(car l)</code> would have returned <code>(apple peach pumpkin)</code>).</p>
 <p>After that we need to provide the rest of the list to our <code>firsts</code> function. LISP has an other primitive function called <code>cdr</code> used for that:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb3-1">(firsts (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">cdr</span> l))</span></code></pre></div>
 <p>In our example this would be <code>((plum pear cherry) (grape raisin pea) (bean carrot eggplant))</code> and this is called the <strong>natural recursion</strong>.</p>
 <p>The last piece is to patch them together and for that LISP use <code>cons</code> (see the Second Commandment).</p>
@@ -93,29 +175,37 @@ background-color: null;
 font-style: inherit;"> firsts</span></span>
 <span id="cb4-2">  (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> (l)</span>
 <span id="cb4-3">    (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">cond</span></span>
 <span id="cb4-4">      ((<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">null?</span>) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">quote</span>()) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;termination condition</span></span>
 <span id="cb4-5">      (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span> (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">cons</span> </span>
 <span id="cb4-6">              (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">car</span> (cars l)) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;typical element</span></span>
 <span id="cb4-7">              (firsts (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">cdr</span> l)) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;natural recursion</span></span>
@@ -175,6 +265,7 @@ font-style: inherit;">;natural recursion</span></span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>() {</span>
 <span id="cb1-2"></span>
 <span id="cb1-3">conn <span class="ot" style="color: #003B4F;
@@ -235,6 +326,7 @@ font-style: inherit;">return</span>(conn)</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(schema) {</span>
 <span id="cb2-2"></span>
 <span id="cb2-3">con <span class="ot" style="color: #003B4F;
@@ -352,6 +444,7 @@ font-style: inherit;">dbDisconnect</span>(con)</span></code></pre></div>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(schema, table){</span>
 <span id="cb4-2">   con <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -391,6 +484,7 @@ font-style: inherit;">return</span>(dat)</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(schema, name, table, ...) {</span>
 <span id="cb4-11">   con <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -488,12 +582,14 @@ font-style: inherit;"># what is a nice naming convention for function factory</s
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(schema) {</span>
 <span id="cb6-3">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">force</span>(schema)</span>
 <span id="cb6-4">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(table_name) {</span>
 <span id="cb6-5">        con <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -523,12 +619,14 @@ font-style: inherit;">dbReadTable</span>(con, table_name)</span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(schema) {</span>
 <span id="cb6-12">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">force</span>(schema)</span>
 <span id="cb6-13">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(table_name, dat, ...) {</span>
 <span id="cb6-14">        con <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -650,7 +748,7 @@ font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></
   <category>PG</category>
   <guid>https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/</guid>
   <pubDate>Sun, 14 Jul 2024 04:00:00 GMT</pubDate>
-  <media:content url="https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/DuckDB_postgre_SQL_Logo.png" medium="image" type="image/png" height="112" width="144"/>
+  <media:content url="https://branchtwigleaf.com/posts/2024-07-14-from-elephant-to-duck/DuckDB_postgre_SQL_Logo.png" medium="image" type="image/png"/>
 </item>
 <item>
   <title>Awesome jq and GeoJSON</title>
@@ -763,6 +861,7 @@ font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(x){</span>
 <span id="cb1-2">    temp <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -1143,7 +1242,7 @@ font-style: inherit;">theme_bw</span>()</span></code></pre></div>
 <p>This is a nice representation from wikipedia:</p>
 <p><img src="https://branchtwigleaf.com/posts/2021-12-23-toying-with-de9im/DE-9IM-logoSmall.png" class="img-fluid"></p>
 <p>Here is the matrix of all of the possible options:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th></th>
@@ -1202,6 +1301,7 @@ font-style: inherit;">"2FFF1FFF2"</span></span>
 background-color: null;
 font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(pattern) {</span>
 <span id="cb1-4">    string <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -1272,7 +1372,7 @@ E "F" "F" "2"</code></pre>
 background-color: null;
 font-style: inherit;">library</span>(sf)</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
+<pre><code>Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -1775,7 +1875,7 @@ font-style: inherit;">;</span>                     </span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/export_bb.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="178"></p>
+<p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/export_bb.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1790,6 +1890,7 @@ font-style: inherit;"># from xml</span></span>
 background-color: null;
 font-style: inherit;">&lt;-</span><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(file_xml) {</span>
 <span id="cb3-3">    all_xml <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -1836,6 +1937,7 @@ font-style: inherit;"># from overpass AL</span></span>
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span>(file_ql) {</span>
 <span id="cb3-11">    raw_ql <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -2023,7 +2125,7 @@ background-color: null;
 font-style: inherit;">"some_lines.shp"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `some_lines' from data source 
-  `/Users/olivierleroy/Documents/btl/posts/2021-03-01-sampling-allong-a-line/some_lines.shp' 
+  `/home/defuneste/Documents/btl/posts/2021-03-01-sampling-allong-a-line/some_lines.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 20 features and 1 field
 Geometry type: LINESTRING
@@ -2524,6 +2626,7 @@ background-color: null;
 font-style: inherit;"># how many whole segments can we fit : 3</span></span>
 <span id="cb8-9"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span>(leni<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span>eps <span class="sc" style="color: #5E5E5E;
@@ -3005,7 +3108,7 @@ font-style: inherit;"># adding Houdemont</span></span></code></pre></div>
 </section>
 <section id="list-of-data-sets" class="level2">
 <h2 class="anchored" data-anchor-id="list-of-data-sets">List of data sets</h2>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Name</th>
