@@ -4,7 +4,7 @@ author: Olivier Leroy
 date: '2024-07-14'
 categories: [DuckDB, R, SQL, PG]
 description: ''
-image: "DuckDB_postgre_SQL_Logo.png"
+image: 'DuckDB_Postgre_SQL_Logo.png'
 ---
 
 With [John Hall](https://real-currents.com/dev/) we wrote a blog post about moving a table from postgres to a parquet file using duckdb. 

@@ -5,7 +5,7 @@ date: '2023-01-06'
 categories: [OSM]
 description: ''
 draft: false
-image: image-2.jpg
+image: 'Image-2.jpg'
 ---
 
 I was a bit intimidated to contribute to OSM and it took me time to do it. I needed to move to another country, get a correct smartphone (I was for a long time a Nokia 3310 user) and have some baby to move around in a stroller to decide myself! If you were like me, hesitating, you should not and I will try to explain why and how you can contribute.  
