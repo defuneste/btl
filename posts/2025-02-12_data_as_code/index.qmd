@@ -1,0 +1,27 @@
+---
+title: 'Data as code'
+author: 'Olivier Leroy'
+categories: [R, package, DuckDB, SQL, Broadband]
+---
+
+
+A data product is generaly something produce by data that is providing insight. The most common form, in the wide, are reports, graphs, dashboards and web apps. 
+
+I want to add to that list packaged code that is streamlining data for analysis.  
+
+
+still experimental duckdb 
+
+analyst are not particuarly happy to write sql 
+
+documentation / source 
+
+Good read: 
+
+- https://ropensci.org/blog/2022/06/16/publicize-api-client-yes-no/
+
+- https://milesmcbain.xyz/posts/data-analysis-reuse/ 
+
+
+
+
