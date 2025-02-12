@@ -1,16 +1,50 @@
 ---
 title: 'Data as code'
 author: 'Olivier Leroy'
-categories: [R, package, DuckDB, SQL, Broadband]
+categories: [R, package, DuckDB, SQL, S3, Broadband]
 ---
 
 
-A data product is generaly something produce by data that is providing insight. The most common form, in the wide, are reports, graphs, dashboards and web apps. 
+# Data products and more
 
-I want to add to that list packaged code that is streamlining data for analysis.  
+A data product is a medium including data that is providing insights. The most common forms, in the wild, are reports, graphs, dashboards and web apps. 
 
+I want to add to that list "packaged code" for data or "data as code". 
+
+Usually data is files storing information, the most commun example is probably tabular data in spreadhseet (`.xls`) or plain text files (`.csv`) but it can also be provided from a database either directly or exposed throught an API. 
+
+As writing API's call can be tedious (even with amazing generic packages!) we have seen some great specific package implementations: 
+
+- tidycensus[^tidycensus] on top of the US Census Bureau API[^censusbureau]
+
+- nasapoawer[^nasapower] on top of NASA POWER API client[^nasapowerapi]
+
+
+[^tidycensus]: Walker K, Herman M (2025). *tidycensus: Load US Census Boundary and Attribute Data as 'tidyverse' and 'sf'-Ready Data Frames*. R package version 1.7.1, [https://walker-data.com/tidycensus/](https://walker-data.com/tidycensus/). 
+
+[^censusbureau]: [https://www.census.gov/data/developers/about/terms-of-service.html](https://www.census.gov/data/developers/about/terms-of-service.html)
+
+[^nasapower]: Sparks A (2018). “nasapower: A NASA POWER Global Meteorology, Surface Solar Energy and Climatology Data Client for R.” *The Journal of Open Source Software*, **3**(30), 1035. doi:10.21105/joss.01035. 
+
+[^nasapowerapi]: [https://power.larc.nasa.gov/docs/services/api/](https://power.larc.nasa.gov/docs/services/api/)
+
+Those packages are already "data as code": they allow you to seamlessly convert a lot operations in code and store them in plain text for version control and reproducibility. Sadly for reproducibility they are still depending on their upstream: if the US Census 
+
+After this lenghty introduction I want to add a new way: wrapping around duckdb, parquet and object storage. So far I have seen few use of that tech stack.   
+
+FCC introduction / analyst team 
+
+
+ELT in `data_raw`
+
+Easy access to documentation pkgdown, vignettes, or functions  
+
+
+limits:  
 
 still experimental duckdb 
+
+how does it scales? 
 
 analyst are not particuarly happy to write sql 
 
