@@ -7,13 +7,16 @@ categories: [R, package, DuckDB, SQL, S3, Broadband]
 
 # Data products and more
 
-A data product is a medium including data that is providing insights. The most common forms, in the wild, are reports, graphs, dashboards and web apps. 
+A data product is a medium including data that is providing insights. 
+The most common forms, in the wild, are reports, graphs, dashboards and web apps. 
 
-I want to add to that list "packaged code" for data or "data as code". 
+I want to add to that list "packaged code" for data, or "data as code". 
 
-Usually data is files storing information, the most commun example is probably tabular data in spreadhseet (`.xls`) or plain text files (`.csv`) but it can also be provided from a database either directly or exposed throught an API. 
+Usually data is files storing information. 
+The most commun example is probably tabular data in spreadhseet (`.xls`) or plain text files (`.csv`). 
+It can also be provided from a database either directly or exposed throught an API. 
 
-As writing API's call can be tedious (even with amazing generic packages!) we have seen some great specific package implementations: 
+Writing API's call can be tedious (even with amazing generic packages!) we have seen some great specific package implementations: 
 
 - tidycensus[^tidycensus] on top of the US Census Bureau API[^censusbureau]
 
@@ -28,7 +31,19 @@ As writing API's call can be tedious (even with amazing generic packages!) we ha
 
 [^nasapowerapi]: [https://power.larc.nasa.gov/docs/services/api/](https://power.larc.nasa.gov/docs/services/api/)
 
-Those packages are already "data as code": they allow you to seamlessly convert a lot operations in code and store them in plain text for version control and reproducibility. Sadly for reproducibility they are still depending on their upstream: if the US Census 
+Those packages are already "data as code": 
+
+- data is now represented as code, in a programmatic way
+
+- they allow you to seamlessly convert a lot of mouses point-and-click in code and store those operations in plain text
+
+- enabled  version control and reproducibility. 
+
+Sadly for reproducibility, API package are still depending on their upstream. 
+R-opensci has a very [nice article](https://ropensci.org/blog/2022/06/16/publicize-api-client-yes-no/) about packaging on top of an API.
+it has a full paragraph on how an API can "hurt you"!
+To simplify, if the US Census Bureau or NASA change something it could break your code. 
+
 
 After this lenghty introduction I want to add a new way: wrapping around duckdb, parquet and object storage. So far I have seen few use of that tech stack.   
 
@@ -47,6 +62,8 @@ still experimental duckdb
 how does it scales? 
 
 analyst are not particuarly happy to write sql 
+
+Business code -> more code 
 
 documentation / source 
 
