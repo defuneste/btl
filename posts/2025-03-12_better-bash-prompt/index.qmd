@@ -127,9 +127,13 @@ fi
 ```
 
 I now have:
+
 - in purple, surrounded by parenthesis, the git branch branch I am in
-- `:`  a
+
+- `:`  a separator 
+
 - the basename of the repository (still in blue)
+
 - `$ `
 
 # Other potential improvements
