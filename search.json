@@ -49,242 +49,11 @@
     "text": "With John Hall we wrote a blog post about moving a table from postgres to a parquet file using duckdb.\n\nThere are a lot of conversations — understandably — on the use of Apache Parquet, Apache Arrow and DuckDB. […] Let’s see an example of how they can be used to convert a table in a PostgresSQL database to a parquet file:\n\nYou can find the post on CORI’s Map and data analytics team blog."
   },
   {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "objectID": "posts/2024-03-10-awesome-jq/index.html",
+    "href": "posts/2024-03-10-awesome-jq/index.html",
+    "title": "Awesome jq and GeoJSON",
     "section": "",
-    "text": "The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.\nI was quite interested in the last episode geospatial consulting – as a business and a career and wanted to share some of the little gems this episode has to offer.\nThe episode was an interview with Todd Slind (VP of Technology) at Locana.co about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.\nBefore going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following Geospatial Connections with another Locana employe and I feel those contributions are great!"
-  },
-  {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
-    "section": "Geospatial Consulting as Business",
-    "text": "Geospatial Consulting as Business\n\n“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind\n\nA lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.\nThis dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.\nBoth markets were defined as:\n\nMature Market:\n\nStandardize: allow “off-the-shelf solutions”\n\nPresence of a robust consultancy ecosystem (with competition)\n\nInformed consumers\n\n\n\nLess Mature Market:\n\nProblems are still unclear\n\nNeed for more custom development / more IT\nMore constraints from the environment (ex: low bandwidth)\nNeed to build a common language\n\nThe best way to build a strong core is to practice and build experience."
-  },
-  {
-    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
-    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
-    "title": "Mapscaping: geospatial consulting – as a business and a career",
-    "section": "Geospatail consulting as a career",
-    "text": "Geospatail consulting as a career\nThis leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.\nAccording to Todd Slind, a great consultant should have:\n- Curiosity/creativity as a self-starter\n- Can “interface” with clients (importance of speaking the same language)\n- Is able to have ownership over their own personal development\nIf a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new shiny developments (sedona, arrow) but the better question is “where and how to apply them to solve problems?”\nI also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.\nStrangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!"
-  },
-  {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
-    "title": "Trees in Open Data Databases in France",
-    "section": "",
-    "text": "I collect tree data sets and here are some links to open data from France. I will update the list when I find more!\nYou can find out more about my work on my github. To extract the trees from the files I needed to do a bit of data wrangling."
-  },
-  {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
-    "title": "Trees in Open Data Databases in France",
-    "section": "Guingamp",
-    "text": "Guingamp\nTypical lat/long in field.\nguingamp &lt;- sf::st_read(\"sources/Arbres de la Ville de Guingamp.csv\")\nguingamp &lt;- sf::st_as_sf(guingamp, coords = c(\"longitude\", \"latitude\"), crs = 4326)"
-  },
-  {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
-    "title": "Trees in Open Data Databases in France",
-    "section": "Ecoline",
-    "text": "Ecoline\nIsolated trees are only the ones with “Arbre isolé” in ele_txt field.\niau_ecoline &lt;- sf::st_read(\"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json\")\niau_ecoline &lt;- iau_ecoline[iau_ecoline$ele_txt == \"Arbre isolé\",]"
-  },
-  {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
-    "title": "Trees in Open Data Databases in France",
-    "section": "Nancy metropolis",
-    "text": "Nancy metropolis\nNancy is a bit more tricky. Each city has a directory where you can found isolated trees (ARBRE_ISOLE.shp). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.\nnancy &lt;- sapply(list.files(pattern = \"ARBRE_ISOLE.shp$\", recursive = T), sf::st_read) # read all the file \nhoudemont &lt;- nancy[6] # we get Houdemont's data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`$Z &lt;- NA # add the missing data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp` &lt;- \n    houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`[    # reorgonize it\n        ,c(\"HAUTEUR\",  \"DIAMETRE\", \"TYPE\", \"CCOCOM\", \"Z\",  \"geometry\")\n    ]\nnancy &lt;- do.call(rbind, nancy[-6]) # one file from every cities except Houdemont \nnancy &lt;- rbind(nancy, houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`) # adding Houdemont"
-  },
-  {
-    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
-    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
-    "title": "Trees in Open Data Databases in France",
-    "section": "List of data sets",
-    "text": "List of data sets\n\n\n\nName\nData\n\n\n\n\n“L’arbre à Paris”\nGeoJson\n\n\n“Arbres d’alignement de la Métropole de Lyon”\nshp\n\n\n“Patrimoine arboré de Bordeaux”\nGeoJson\n\n\n“Cartographie des arbres communaux” (Nice)\nGeoJson\n\n\n“Les arbres de Grenoble”\nGeoJson\n\n\n“Arbres d’alignement de Montpellier”\nGeoJson\n\n\n“Arbres” (Grand Paris Seine Ouest)\nGeoJson\n\n\n“Arbres” (Agen)\nGeoJson\n\n\n“ARBRES” (Agglo du Saint-Quentinois)\nGeoJson\n\n\n“Arbres remarquables” (Metz)\nshp\n\n\n“Arbres d’alignement”(Seine-Saint-Denis)\nGeoJson\n\n\n“Arbres d’alignements - Ville de Versailles”\nGeoJson\n\n\n“Arbres dans les parcs de la ville de Versailles”\nGeoJson\n\n\n“Arbres d’alignement” (Nevers)\nshp\n\n\n“Arbres d’ornement” (Nevers)\nshp\n\n\n“Arbres d’alignement - Toulouse”\nGeoJson\n\n\n“Arbres - Ville d’Orléans”\nshp\n\n\n“Les arbres de Saint-Egrève”\nshp\n\n\n“Arbres d’alignement - Bayonne”\nGeoJson\n\n\n“Arbres d’alignement sur la voirie départementale”\nGeoJson\n\n\n“Arbres d’ornement des espaces verts de la Ville de Rennes”\nGeoJson\n\n\n“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”\nGeoJson\n\n\n“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”\nGeoJson\n\n\n“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”\n\n\n\n“Arbres de la Ville de Guingamp”\nGeoJson\n\n\n“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”\nGeoJson\n\n\n“Inventaire arboré de Grand Paris Sud”\nGeoJson\n\n\n“Cadastre vert - Les arbres” (Hauts-de-Seine)\nGeoJson\n\n\n“Arbres Alignement sur la CAPP (Pau)”\n\n\n\n“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”\nGeoJson\n\n\n“Restitution topo 3D” (Nancy)\nshp"
-  },
-  {
-    "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
-    "href": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
-    "title": "Using Go Map to contribute to OSM",
-    "section": "",
-    "text": "I was a bit intimidated to contribute to OSM and it took me time to do it. I needed to move to another country, get a correct smartphone (I was for a long time a Nokia 3310 user) and have some baby to move around in a stroller to decide myself! If you were like me, hesitating, you should not and I will try to explain why and how you can contribute."
-  },
-  {
-    "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html#footnotes",
-    "href": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html#footnotes",
-    "title": "Using Go Map to contribute to OSM",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nSee this nice blog post on the history of “global street maps”↩︎"
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
-    "title": "R is (also) a graph calculator",
-    "section": "",
-    "text": "I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time ago!). I find a nice free book and practice with it. A lot can be done with pen + paper but sometimes you need to represent an equation in a Cartesian plane.\nR is perfect for that (even if it is not a Computer algebra system) but I am always forgetting some specific ways to do it!\nFirst we do a simple function:\n\\[y = \\sqrt[3](1 - x^2)\\]\nsimple_function &lt;- function(x){\n    temp = (1 - x*x)\n    # R is using natural log so you need to adjust a bit, ie if you use negative\n    # value you will get NaN :\n    # kind of same idea of doing cube_root(-1) * cube_root(abs(x))\n    sign(temp)*abs(temp)**(1/3)\n}\nsimple_function(-5:5)\n\n [1] -2.884499 -2.466212 -2.000000 -1.442250  0.000000  1.000000  0.000000\n [8] -1.442250 -2.000000 -2.466212 -2.884499\nThen you have (as far as I know) 3 options!"
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
-    "title": "R is (also) a graph calculator",
-    "section": "Vector and plot:",
-    "text": "Vector and plot:\nHere this is simple we generate a sequence of values and apply our function on it.\n\nx &lt;- -5:5\ny &lt;- simple_function(x)\nplot(x, y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n# if you prefer it can also go in data frame because both vectors have the same length\n#df &lt;- data.frame(x = x,\n#                 y = simple_function(x))\n\nThis is good but if you pay attention you can see that using type = \"b\" we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:\n\nx &lt;- seq(from = -5, to = 5, by = .1)\ny &lt;- simple_function(x)\nplot(x , y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n\nThis is a bit better!"
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
-    "title": "R is (also) a graph calculator",
-    "section": "curve!",
-    "text": "curve!\nThe base-R packagegraphics provide us with a lot of very cool functions and one of it is curve(). It can take a function or an expression.\n\ncurve(simple_function, from = -5, to = 5,\n      ylab = \"y\", col = 2) # some small tuning is still needed\n\n\n\n\n\n\n\n\nEasy and simple."
-  },
-  {
-    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
-    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
-    "title": "R is (also) a graph calculator",
-    "section": "ggplot!",
-    "text": "ggplot!\nObviously, we can also do it with ggplot::stat_function():\n\nlibrary(ggplot2)\n# I was lazy and just reused x\nggplot(data.frame(x), aes(x = x)) +\n    stat_function(fun = simple_function, colour = 2) +\n    theme_bw()"
-  },
-  {
-    "objectID": "posts/2024-11-03_little_schemer/index.html",
-    "href": "posts/2024-11-03_little_schemer/index.html",
-    "title": "Little Schemer",
-    "section": "",
-    "text": "I have been reading and enjoying The Little Schemer! It’s time to write a bit about it and structure what I learned so far (up to chapter 5).\nIf you do not know about it I might start by giving a quick introduction. This book about recursion has a very specific and original way of teaching."
-  },
-  {
-    "objectID": "posts/2024-11-03_little_schemer/index.html#teaching-methods",
-    "href": "posts/2024-11-03_little_schemer/index.html#teaching-methods",
-    "title": "Little Schemer",
-    "section": "Teaching Methods:",
-    "text": "Teaching Methods:\nInstead of providing a lengthy text and definition it (nearly) always start with a question then provide with you an answer.\nFor example:\n\nIs it true that this is an atom?\natom\nYes.\nbecause atom is a string of characters beginning with the letter a.\n\nThis is the first definition that you are given. The book uses this style to either introduce you to a definition or give you small tasks and time to think about them.\nThe exception to that practice occurs when the authors introduce “Laws” and “Commandments”.\nExample:\n\nThe Law of Car:\nThe primitive car is defined only for non-empty lists.\n\n“Laws” and “Commandments” are build incrementally, you will start with preliminary version and improve them as we build examples and learn more.\nWhen I want to practice a bit on a computer I am using this version of Scheme and Emacs\nIt is using Scheme (a LISP dialect) but so far I am mostly using pen and paper, which is one reason I like it a lot: you can practice everywhere and do not need a computer.\nBefore building a function, the authors always define how the function should behave (with a series of questions). Now we would probably frame that as Test Driven Development.\nFor example we want to create a function firsts that is taking a list l asan argument:\n(firsts l) where l is:\n((apple peach pumpkin) \n (plum pear cherry)\n (grape raisin pea)\n (bean carrot eggplant))\nShould return: (apple plum grape bean)\nIf the first S-expression of an internal list. is a list it should be returned and if the list is empty it should return an empty list (I am shortcuting you here 3 other questions/answers)."
-  },
-  {
-    "objectID": "posts/2024-11-03_little_schemer/index.html#an-example-on-recursion",
-    "href": "posts/2024-11-03_little_schemer/index.html#an-example-on-recursion",
-    "title": "Little Schemer",
-    "section": "An Example on Recursion:",
-    "text": "An Example on Recursion:\nI did not begin this book because of his way of teaching (this was a huge added benefit, I was not aware of) but mostly because I wanted to get better at using recursion.\nHence let’s see how we can define firsts\nThe first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as (firsts ()) should return ()). This is the called the termination condition, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.\nThen we need to build the typical element, ie what should be returned (in our previous example apple is one of them). In Scheme it looks like:\n(car (car l))\ncar is a primitive function that returns the first S-expression of an non-empty list ((car l) would have returned (apple peach pumpkin)).\nAfter that we need to provide the rest of the list to our firsts function. LISP has an other primitive function called cdr used for that:\n(firsts (cdr l))\nIn our example this would be ((plum pear cherry) (grape raisin pea) (bean carrot eggplant)) and this is called the natural recursion.\nThe last piece is to patch them together and for that LISP use cons (see the Second Commandment).\n\\[ (cons \\underbrace{(car (car \\quad l))}_{typical \\quad element} \\overbrace{(firsts (cdr \\quad l))}^{natural \\quad recursion}) \\]\nNow we can write the function:\n(define firsts\n  (lambda (l)\n    (cond\n      ((null?) quote()) ;termination condition\n      (else (cons \n              (car (cars l)) ;typical element\n              (firsts (cdr l)) ;natural recursion\n      )))))\nThat’s it!\nI still would like to highlight a few points:\n\nThe termination condition is a good example on why you should check for error first\nAll of the “Commandments” are easy to find in the backcover of the book. I do not think they are meant to be memorized. They will probably make no sense if you do not go over the exercises first!\nThe book always focuses on providing a workable solution:\n\nSometimes the first example is also incorrect and the author goes over and explains how to correct it.\nSometimes it can be improved or simplified1\n\n\nI also like that iterative approach."
-  },
-  {
-    "objectID": "posts/2024-11-03_little_schemer/index.html#footnotes",
-    "href": "posts/2024-11-03_little_schemer/index.html#footnotes",
-    "title": "Little Schemer",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nSo far, most simplifications I have seen are either using set logic to simplify conditions or building other functions.↩︎"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Posts",
-    "section": "",
-    "text": "Codeberg links and icons!\n\n\n\n\n\n\nCodeberg\n\n\nblog\n\n\n\n\n\n\n\n\n\nFeb 6, 2025\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLittle Schemer\n\n\n\n\n\n\nScheme\n\n\nLISP\n\n\nFunctional programming\n\n\n\n\n\n\n\n\n\nNov 3, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nFunction factories to improve Database read and write\n\n\n\n\n\n\nR\n\n\nPG\n\n\nFunctional programming\n\n\n\n\n\n\n\n\n\nSep 15, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nFrom elephant to duck!\n\n\n\n\n\n\nDuckDB\n\n\nR\n\n\nSQL\n\n\nPG\n\n\n\n\n\n\n\n\n\nJul 14, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nAwesome jq and GeoJSON\n\n\n\n\n\n\ngeojson\n\n\njq\n\n\nCLI\n\n\nGIS\n\n\n\n\n\n\n\n\n\nMar 10, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nMapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nToying with DE-9IM\n\n\n\n\n\n\nR\n\n\nsf\n\n\n\nexploring st_relate\n\n\n\n\n\nDec 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nThe Wonderfull World of Overpass Turbo\n\n\n\n\n\n\nOSM\n\n\n\nSome tips for Overpass Turbo\n\n\n\n\n\nOct 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSampling Along a Line\n\n\n\n\n\n\nSampling\n\n\nSpatstat\n\n\n\nfirst part : Spatstat\n\n\n\n\n\nApr 8, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSensor Observation Service: an Introduction\n\n\n\n\n\n\nSensor\n\n\nSmart environment\n\n\nTime series\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\nurban forest\n\n\nsurvey\n\n\ntree\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "talks/auber2024.html",
-    "href": "talks/auber2024.html",
-    "title": "AUBER 2024",
-    "section": "",
-    "text": "AUBER is the Association for University Business and Economic Research, a professional organization for economic research centers at leading universities and affiliated organizations across America.\nI presented a talk on the benefits of streamlining date access using an R Package with cori.data.fcc as an example.\nThis is a short list of the advantages:\n\nAddress Data Challenges\n\nData is packaged as code to simplify data access, reduce errors, and promote collaboration.\nLow-level data transformations are codified: this makes them easy for others to reproduce.\n\nAccelerate Innovation\n\nBroadband data is packaged so that researchers can focus on analysis and insights, not data wrangling.\n\nUnlock Deeper Insights Faster\n\ncori.data.fcc provides fast access to granular details, essential for understanding broadband challenges across multiple geographic scales.\n\n\nMy presentation is available HERE!"
-  },
-  {
-    "objectID": "talks/urisa2023.html",
-    "href": "talks/urisa2023.html",
-    "title": "URISA 2023",
-    "section": "",
-    "text": "The Urban and Regional Information Systems Association — better known as URISA — is the main association for professionals in the GIS and geospatial space.\nWe were fortunate enough to be selected to present a portion of our work on broadband infrastructure at URISA’s annual conference GIS-Pro-2023 last fall in Columbus, Ohio.\nOur presentation, “Rural areas are overrepresented in unserved areas and underestimated in statistics,” utilized FCC NBM data to demonstrate several points:\n\nThe new dataset (NBM) represents an improvement over the previous one (derived from F477).\nDespite the narrowing gap between rural and nonrural areas, significant disparities still exist.\nThe current BEAD definition of an “unserved area” is less suitable for rural areas than for urban areas.\n\nYou can dig more into our presentation HERE!"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Hi! I am a Senior Data Engineer for the Center On Rural Innovation where I help data scientists and software engineers make sense of data and use it to help rural communities throughout America.\nPreviously, I worked as a geographer researching topics related to trees and the environmental, including studies on agroforestry, urban settings, virtual trees, tree identification applications and databases, etc.\nI hold a Ph.D. in Geography and Environmental Studies from the University of Paris.\nBranch Twig Leaf is a blog exploring new approaches to spatial data as well as trees in digital humanities and social science research.\nMastodon"
-  },
-  {
-    "objectID": "posts/2021-12-23-toying-with-de9im/index.html",
-    "href": "posts/2021-12-23-toying-with-de9im/index.html",
-    "title": "Toying with DE-9IM",
-    "section": "",
-    "text": "This little text below is from a reply I posted to issue. I tried to help a bit and I learned a lot at the same time!\nThe discussion topic was the st_relate function in the sf great package. this function implements the Dimensionally Extended 9-Intersection Model (DE-9IM) 1 or intersection matrix.\nGeometries can be polygons, lines and points. Polygons, two dimensional objects, are delimited by their boundaries (a line) and they can have an interior (an area) and an exterior (another area). Other geometries will mostly have lower dimensions in boundary and interior.\nThis is a nice representation from wikipedia:\nHere is the matrix of all of the possible options:\nEach part of the matrix can get a value. The value is related to the dimensions of the returned object.\nThis flattened matrix will look like this: “212101212”. This is called a pattern.\nThis matrix can be used in two ways: describe a relation between polygons or specify a type or relation you are interested in. As a result: you can use st_relate in two different ways:"
-  },
-  {
-    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#compute-the-de-9im-relations-between-two-objects",
-    "href": "posts/2021-12-23-toying-with-de9im/index.html#compute-the-de-9im-relations-between-two-objects",
-    "title": "Toying with DE-9IM",
-    "section": "Compute the DE-9IM relations between two objects",
-    "text": "Compute the DE-9IM relations between two objects\nTo have an easier time reading the pattern, let’s make a quick function:\n\npattern_de_9im =  \"2FFF1FFF2\"\n\nmatrix_de_9im = function(pattern) {\n    string = unlist(strsplit(pattern , \"\"))\n    matrix_de_9im = matrix(string, nrow = 3, byrow = TRUE)\n    colnames(matrix_de_9im) = c(\"I\", \"B\", \"E\")\n    row.names(matrix_de_9im) = c(\"I\", \"B\", \"E\")\n    return(matrix_de_9im)\n}\n\nmatrix_de_9im(pattern_de_9im)\n\n  I   B   E  \nI \"2\" \"F\" \"F\"\nB \"F\" \"1\" \"F\"\nE \"F\" \"F\" \"2\"\n\n\nI will enhance an example from the sf documentation.\n\nlibrary(sf)\n\nLinking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE\n\n# 4 polygones to start \npol1 = st_polygon(list(rbind(c(0,0),c(1,0),c(1,1),c(0,1),c(0,0)))) - 0.5\npol2 = pol1 + 1\npol3 = pol1 + 1.5\npol4 = st_polygon(list(rbind(c(-1,0.5),c(-1,1.5),c(0,1.5),c(0,0.5),c(-1,0.5))))\n\nsquares = sf::st_sf(data.frame(name = LETTERS[1:4],\n           sf::st_sfc(pol1, pol2, pol3, pol4))\n          )\n\nplot(squares)\n\n\n\n\n\n\n\n\nHere we can see how each square relates to the others:\n\nmy_first_st_relate = sf::st_relate(squares, squares)\ncolnames(my_first_st_relate) = squares$name\nrow.names(my_first_st_relate) = squares$name\nmy_first_st_relate\n\n  A           B           C           D          \nA \"2FFF1FFF2\" \"FF2F01212\" \"FF2FF1212\" \"FF2F11212\"\nB \"FF2F01212\" \"2FFF1FFF2\" \"212101212\" \"FF2FF1212\"\nC \"FF2FF1212\" \"212101212\" \"2FFF1FFF2\" \"FF2FF1212\"\nD \"FF2F11212\" \"FF2FF1212\" \"FF2FF1212\" \"2FFF1FFF2\"\n\n\nWe are producing a symmetrical matrix and you just need to focus on half of it. The first column describes how the A square is related to the other squares.\nFirst line, first column [A,A] describes how the same square relates to itself:\n\nmatrix_de_9im(my_first_st_relate[\"A\",\"A\"])\n\n  I   B   E  \nI \"2\" \"F\" \"F\"\nB \"F\" \"1\" \"F\"\nE \"F\" \"F\" \"2\"\n\n\nThey share the same interior, same boundary and same exterior.\nLet’s see a more complicated case: square B with C:\n\nmatrix_de_9im(my_first_st_relate[\"B\",\"C\"])\n\n  I   B   E  \nI \"2\" \"1\" \"2\"\nB \"1\" \"0\" \"1\"\nE \"2\" \"1\" \"2\"\n\n\nThey share a part of their interior, their interior covers a part of their boundaries, a part of each interior is also an exterior of the other and their boundaries are related on two points.\nFeel free to experiment with the other squares!"
-  },
-  {
-    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#check-matching-patterns",
-    "href": "posts/2021-12-23-toying-with-de9im/index.html#check-matching-patterns",
-    "title": "Toying with DE-9IM",
-    "section": "Check matching patterns",
-    "text": "Check matching patterns\nNow that we are familiar with the pattern, we can search the matrix for particular patterns. The fact that patterns are just strings allows us to also use regular expressions or other string tricks. Here, for example, we can return every pair-wise relation that shares a boundary.\n\n# . represent every single character \nmatrix(grepl(pattern = \"....1....\", my_first_st_relate),\n       nrow = 4, byrow = TRUE) \n\n      [,1]  [,2]  [,3]  [,4]\n[1,]  TRUE FALSE FALSE  TRUE\n[2,] FALSE  TRUE FALSE FALSE\n[3,] FALSE FALSE  TRUE FALSE\n[4,]  TRUE FALSE FALSE  TRUE\n\n\nWe can also translate spatial predicates with the DE-9IM pattern: see the Wikipedia page.\nWe can achieve the same result thanks to the pattern argument of the st_relate function. The syntax of the pattern changes a bit, you need to replace . (that means every single character) with * to match DE-9IM rules.\n\nsf::st_relate(squares, squares,  pattern = \"****1****\",  sparse = FALSE)\n\n      [,1]  [,2]  [,3]  [,4]\n[1,]  TRUE FALSE FALSE  TRUE\n[2,] FALSE  TRUE FALSE FALSE\n[3,] FALSE FALSE  TRUE FALSE\n[4,]  TRUE FALSE FALSE  TRUE\n\n\nWith sparse = FALSE it will return the matrix. If you change it to TRUE you get a a sparse geometry binary predicate in the form of a list (cf. chapter 4 of Geocomputation with R)\n\nsf::st_relate(squares, squares,  pattern = \"****1****\",  sparse = TRUE)\n\nSparse geometry binary predicate list of length 4, where the predicate\nwas `relate_pattern'\n 1: 1, 4\n 2: 2\n 3: 3\n 4: 1, 4\n\n\nYou can do a lot with this tool! My commentary on an issue lead Robin to write a nice introduction to DE-9IM."
-  },
-  {
-    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#footnotes",
-    "href": "posts/2021-12-23-toying-with-de9im/index.html#footnotes",
-    "title": "Toying with DE-9IM",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nEgenhofer M. J., Herring J. R. (1995) Categorizing binary topoligical relationships between regions, lines, and points in geographic databases. Technical Report, Department of Surveying Engineering, University of Maine, Orono, ME.↩︎\nHsu, L. S., Obe, R. (2021). PostGIS in Action, Third Edition. États-Unis: Manning. p269↩︎"
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html",
-    "title": "Learning Data Science Meme",
-    "section": "",
-    "text": "I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:\n/rant on"
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
-    "title": "Learning Data Science Meme",
-    "section": "Where am I?",
-    "text": "Where am I?\nAs a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.\nLike every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff."
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
-    "title": "Learning Data Science Meme",
-    "section": "Good points",
-    "text": "Good points\nI think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”."
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
-    "title": "Learning Data Science Meme",
-    "section": "Bad stuffs",
-    "text": "Bad stuffs\nI will have fewer problems with the meme if it did not mention IQ (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a journey than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.\nI guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools."
-  },
-  {
-    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
-    "href": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
-    "title": "Learning Data Science Meme",
-    "section": "Summing it up",
-    "text": "Summing it up\nIf you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.\n/rant off"
-  },
-  {
-    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html",
-    "href": "posts/2021-01-29-sensor-observation-standard/index.html",
-    "title": "Sensor Observation Service: an Introduction",
-    "section": "",
-    "text": "Thanks to SIST and the financial support of my lab, I was able to attend a training course on Sensor Observation Services (SOS) with one of my coworkers. It’s time to reflect a bit on what we learned!"
-  },
-  {
-    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
-    "href": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
-    "title": "Sensor Observation Service: an Introduction",
-    "section": "Observations",
-    "text": "Observations\nThis network monitors noise in various places. Places are called Features of Interest (FOI), featureOfInterest in XML. One of them is here urn:ogc:def:feature:x-istsos:1.0:Point:Berthelot. This is more simple that it looks: we have an Uniform Resource Name from OGC that defines a feature in istSOS (the service we will use) version 1.0. This feature is a point and has the name (identifier) of Berthelot. Now we would like to collect observations about noise here. To do that, we will use a procedure : a way to collect observations. The procedure has a location (coordinates with a coordinate reference system) Here this is done with one sensor but it can be done with more than one or/and using some processes. Our FOI have the procedure/sensor AF01 associated (urn:ogc:def:procedure:x-istsos:1.0:AF01). It is monitoring at least one observed property (observedProperty). AF01 produce 4 of them (lday, levening, lnight). lday is a noise level, taking into account human ears in decibels, calculated during daylight hours (6am-6pm). Eventually we will get a result, let’s say 62.8 dB(A). dB(A) is our unit of measure (uom). Time is usually expressed in ISO 8601 (2021-02-06T06:00:00.000000Z).\nTogether, all of the above make an observation!\nFinally, offering enables you to make some logical grouping of observations."
-  },
-  {
-    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
-    "href": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
-    "title": "Sensor Observation Service: an Introduction",
-    "section": "Making use of what we learn",
-    "text": "Making use of what we learn\nThe schema below is adapted from the OGC documentation (p. 14 and 15). It shows the different steps required to collect data with an associate request. First, we need to know what kind of services are available.\n\nThis a job for a GetCapabilities request:\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&request=GetCapabilities\nThe first part is the address: https://download.data.grandlyon.com/sos/bruit\n(bruit means ‘noise’ in French)\nThen, after ? we start the request specifying the service and the request. With this request we get an XML giving us all of the information about the service and what we can do with it. A quick scroll gives us the name of the procedures we can request information from and the output format provided.\nWe can now ask for more information about the sensor with DescribeSensor before getting observations.\nhttps://download.data.grandlyon.com/sos/bruit?request=DescribeSensor&procedure=AF01&outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22&service=SOS&version=1.0.0\nThis one looks a bit more complicated, so let’s examine it. We will still use the same address. Then, we will request DescribeSensor and we will ask for the only output format available: text/xml;subtype=\"sensorML/1.0.1\". It looks a bit complicated, because some characters need to be escaped (outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22). The last part is just asking for SOS version 1.0.\nThis request allows us to check the AllowedTimes for our next request : GetObservation.\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&version=1.0.0&request=GetObservation&offering=observatoire_acoustique_grandlyon&procedure=AF01&eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00&observedProperty=lday&responseFormat=text/plain\nOk this result is HUGE! However, we have already built some understanding and I will explain the part that we haven’t seen yet. In SOS version 1.0, we need to specify the offering that groups our sensor (offering=observatoire_acoustique_grandlyon).\nThis information comes from the GetCapabilities. Then, we define our procedure and set up a time interval of interest (eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00).\nAfter that, we specify the observed property that we’re interested in (observedProperty=lday) and response format (responseFormat=text/plain). Just as before, these two pieces of insight come from the GetCapabilities. As you may have noticed, we don’t need to add all observed property and procedure definitions, just the identifier is fine (lday vs urn:ogc:def:parameter:::noise:lday).\nMuch more can and should be said (you can use bbox or aggregate in requests!) but let’s stop here. I hope that we can explore some ways to interact with http requests in R, soon!\n\naf01 &lt;- read.csv(\"bruit.csv\", header = FALSE)\naf01$V1 &lt;- lubridate::as_datetime(af01$V1)\nnames(af01) &lt;- c(\"time\", \"sensor\", \"lday\")\nquickplot &lt;- ggplot2::ggplot(data = af01, ggplot2::aes( x =  time, y = lday)) +\n                ggplot2::geom_point(alpha = .1, col = \"darkred\") + \n                ggplot2::ylim(c(50, 90)) +\n                ggplot2::theme_bw()\nquickplot"
+    "text": "I wrote a blog post about using jq for filtering geojson.\n\nIf you are manipulating a lot of GeoJSON features/objects and want a quick CLI tool to filter and slice them, you should give jq a try! Since there are not many tutorials that exist on using jq to manage objects in the GeoJSON family, we hope that these few tricks will help you on your learning journey.\n\nYou can find the post on CORI’s Map and data analytics team blog."
   },
   {
     "objectID": "posts/2021-10-23-wonderfull-of-overpass-turbo/index.html",
@@ -322,11 +91,263 @@
     "text": "Footnotes\n\n\nsee also https://en.wikipedia.org/wiki/Protocol_Buffers↩︎\nMark Padgham, Bob Rudis, Robin Lovelace, Maëlle Salmon (2017). osmdata Journal of Open Source Software, 2(14). URL https://doi.org/10.21105/joss.00305↩︎\nsee here for instructions↩︎"
   },
   {
-    "objectID": "posts/2024-03-10-awesome-jq/index.html",
-    "href": "posts/2024-03-10-awesome-jq/index.html",
-    "title": "Awesome jq and GeoJSON",
+    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html",
+    "href": "posts/2021-01-29-sensor-observation-standard/index.html",
+    "title": "Sensor Observation Service: an Introduction",
     "section": "",
-    "text": "I wrote a blog post about using jq for filtering geojson.\n\nIf you are manipulating a lot of GeoJSON features/objects and want a quick CLI tool to filter and slice them, you should give jq a try! Since there are not many tutorials that exist on using jq to manage objects in the GeoJSON family, we hope that these few tricks will help you on your learning journey.\n\nYou can find the post on CORI’s Map and data analytics team blog."
+    "text": "Thanks to SIST and the financial support of my lab, I was able to attend a training course on Sensor Observation Services (SOS) with one of my coworkers. It’s time to reflect a bit on what we learned!"
+  },
+  {
+    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
+    "href": "posts/2021-01-29-sensor-observation-standard/index.html#observations",
+    "title": "Sensor Observation Service: an Introduction",
+    "section": "Observations",
+    "text": "Observations\nThis network monitors noise in various places. Places are called Features of Interest (FOI), featureOfInterest in XML. One of them is here urn:ogc:def:feature:x-istsos:1.0:Point:Berthelot. This is more simple that it looks: we have an Uniform Resource Name from OGC that defines a feature in istSOS (the service we will use) version 1.0. This feature is a point and has the name (identifier) of Berthelot. Now we would like to collect observations about noise here. To do that, we will use a procedure : a way to collect observations. The procedure has a location (coordinates with a coordinate reference system) Here this is done with one sensor but it can be done with more than one or/and using some processes. Our FOI have the procedure/sensor AF01 associated (urn:ogc:def:procedure:x-istsos:1.0:AF01). It is monitoring at least one observed property (observedProperty). AF01 produce 4 of them (lday, levening, lnight). lday is a noise level, taking into account human ears in decibels, calculated during daylight hours (6am-6pm). Eventually we will get a result, let’s say 62.8 dB(A). dB(A) is our unit of measure (uom). Time is usually expressed in ISO 8601 (2021-02-06T06:00:00.000000Z).\nTogether, all of the above make an observation!\nFinally, offering enables you to make some logical grouping of observations."
+  },
+  {
+    "objectID": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
+    "href": "posts/2021-01-29-sensor-observation-standard/index.html#making-use-of-what-we-learn",
+    "title": "Sensor Observation Service: an Introduction",
+    "section": "Making use of what we learn",
+    "text": "Making use of what we learn\nThe schema below is adapted from the OGC documentation (p. 14 and 15). It shows the different steps required to collect data with an associate request. First, we need to know what kind of services are available.\n\nThis a job for a GetCapabilities request:\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&request=GetCapabilities\nThe first part is the address: https://download.data.grandlyon.com/sos/bruit\n(bruit means ‘noise’ in French)\nThen, after ? we start the request specifying the service and the request. With this request we get an XML giving us all of the information about the service and what we can do with it. A quick scroll gives us the name of the procedures we can request information from and the output format provided.\nWe can now ask for more information about the sensor with DescribeSensor before getting observations.\nhttps://download.data.grandlyon.com/sos/bruit?request=DescribeSensor&procedure=AF01&outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22&service=SOS&version=1.0.0\nThis one looks a bit more complicated, so let’s examine it. We will still use the same address. Then, we will request DescribeSensor and we will ask for the only output format available: text/xml;subtype=\"sensorML/1.0.1\". It looks a bit complicated, because some characters need to be escaped (outputFormat=text%2Fxml%3Bsubtype%3D%22sensorML%2F1.0.1%22). The last part is just asking for SOS version 1.0.\nThis request allows us to check the AllowedTimes for our next request : GetObservation.\nhttps://download.data.grandlyon.com/sos/bruit?service=SOS&version=1.0.0&request=GetObservation&offering=observatoire_acoustique_grandlyon&procedure=AF01&eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00&observedProperty=lday&responseFormat=text/plain\nOk this result is HUGE! However, we have already built some understanding and I will explain the part that we haven’t seen yet. In SOS version 1.0, we need to specify the offering that groups our sensor (offering=observatoire_acoustique_grandlyon).\nThis information comes from the GetCapabilities. Then, we define our procedure and set up a time interval of interest (eventTime=2010-06-17T08:00:00+02:00/2021-01-23T07:00:00+01:00).\nAfter that, we specify the observed property that we’re interested in (observedProperty=lday) and response format (responseFormat=text/plain). Just as before, these two pieces of insight come from the GetCapabilities. As you may have noticed, we don’t need to add all observed property and procedure definitions, just the identifier is fine (lday vs urn:ogc:def:parameter:::noise:lday).\nMuch more can and should be said (you can use bbox or aggregate in requests!) but let’s stop here. I hope that we can explore some ways to interact with http requests in R, soon!\n\naf01 &lt;- read.csv(\"bruit.csv\", header = FALSE)\naf01$V1 &lt;- lubridate::as_datetime(af01$V1)\nnames(af01) &lt;- c(\"time\", \"sensor\", \"lday\")\nquickplot &lt;- ggplot2::ggplot(data = af01, ggplot2::aes( x =  time, y = lday)) +\n                ggplot2::geom_point(alpha = .1, col = \"darkred\") + \n                ggplot2::ylim(c(50, 90)) +\n                ggplot2::theme_bw()\nquickplot"
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html",
+    "title": "Learning Data Science Meme",
+    "section": "",
+    "text": "I know that I should not bother too much about some meme and just enjoy them like some cheap beer (yes, I enjoy cheap beer) but I would like to react to this one:\n/rant on"
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#where-am-i",
+    "title": "Learning Data Science Meme",
+    "section": "Where am I?",
+    "text": "Where am I?\nAs a R user I guess I am probably in one of the slopes :). I do not know Rust, Scala, C++, C#, SAS, etc so I guess I am on the left side of it.\nLike every meme you can find plenty of interpretations (and I like that). Let’s start with something good then we will go with the bad stuff."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#good-points",
+    "title": "Learning Data Science Meme",
+    "section": "Good points",
+    "text": "Good points\nI think you should focus on building strong foundations in a few tools/language before learning plenty of them and you should not disperse yourself with superficial knowledge. I assume this is the distinction between the “stupid guy” and the “smart one”."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#bad-stuffs",
+    "title": "Learning Data Science Meme",
+    "section": "Bad stuffs",
+    "text": "Bad stuffs\nI will have fewer problems with the meme if it did not mention IQ (yup I am one of the view guys how read axis label). I feel it imply that the “stupid guy” will never be a smart one while I think this Gaussian is more a journey than some typology of people (based on IQ …). In my case learning a bit of C/C++ will be very helpful because lots of dependencies, I used is in this language (and yes sometimes to solve some issue you need to go that far). I also know a lot of smart people that are learning Rust and improving their programming skill because they are learning new ways and new perspective on programming.\nI guess you could say that, at the end, “senior” people know that using just Python/SQL/Excel is the best way to maximize their ROI. It is probably correct but I think a “senior” or a smart guy is someone that can identify the right tool to solve a problem (and not necessarily using the “second best one”) and to do that they probably learned by experimenting with other tools."
+  },
+  {
+    "objectID": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "href": "posts/2023-01-05-learning-ds-meme/index.html#summing-it-up",
+    "title": "Learning Data Science Meme",
+    "section": "Summing it up",
+    "text": "Summing it up\nIf you know SQL/excel and learning Python (or R) you are doing a great job (and you should not feel bad or stupid)! If you enjoy learning Rust, C or Julia and learning something new you are also awesome.\n/rant off"
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html",
+    "title": "Toying with DE-9IM",
+    "section": "",
+    "text": "This little text below is from a reply I posted to issue. I tried to help a bit and I learned a lot at the same time!\nThe discussion topic was the st_relate function in the sf great package. this function implements the Dimensionally Extended 9-Intersection Model (DE-9IM) 1 or intersection matrix.\nGeometries can be polygons, lines and points. Polygons, two dimensional objects, are delimited by their boundaries (a line) and they can have an interior (an area) and an exterior (another area). Other geometries will mostly have lower dimensions in boundary and interior.\nThis is a nice representation from wikipedia:\nHere is the matrix of all of the possible options:\nEach part of the matrix can get a value. The value is related to the dimensions of the returned object.\nThis flattened matrix will look like this: “212101212”. This is called a pattern.\nThis matrix can be used in two ways: describe a relation between polygons or specify a type or relation you are interested in. As a result: you can use st_relate in two different ways:"
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#compute-the-de-9im-relations-between-two-objects",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html#compute-the-de-9im-relations-between-two-objects",
+    "title": "Toying with DE-9IM",
+    "section": "Compute the DE-9IM relations between two objects",
+    "text": "Compute the DE-9IM relations between two objects\nTo have an easier time reading the pattern, let’s make a quick function:\n\npattern_de_9im =  \"2FFF1FFF2\"\n\nmatrix_de_9im = function(pattern) {\n    string = unlist(strsplit(pattern , \"\"))\n    matrix_de_9im = matrix(string, nrow = 3, byrow = TRUE)\n    colnames(matrix_de_9im) = c(\"I\", \"B\", \"E\")\n    row.names(matrix_de_9im) = c(\"I\", \"B\", \"E\")\n    return(matrix_de_9im)\n}\n\nmatrix_de_9im(pattern_de_9im)\n\n  I   B   E  \nI \"2\" \"F\" \"F\"\nB \"F\" \"1\" \"F\"\nE \"F\" \"F\" \"2\"\n\n\nI will enhance an example from the sf documentation.\n\nlibrary(sf)\n\nLinking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE\n\n# 4 polygones to start \npol1 = st_polygon(list(rbind(c(0,0),c(1,0),c(1,1),c(0,1),c(0,0)))) - 0.5\npol2 = pol1 + 1\npol3 = pol1 + 1.5\npol4 = st_polygon(list(rbind(c(-1,0.5),c(-1,1.5),c(0,1.5),c(0,0.5),c(-1,0.5))))\n\nsquares = sf::st_sf(data.frame(name = LETTERS[1:4],\n           sf::st_sfc(pol1, pol2, pol3, pol4))\n          )\n\nplot(squares)\n\n\n\n\n\n\n\n\nHere we can see how each square relates to the others:\n\nmy_first_st_relate = sf::st_relate(squares, squares)\ncolnames(my_first_st_relate) = squares$name\nrow.names(my_first_st_relate) = squares$name\nmy_first_st_relate\n\n  A           B           C           D          \nA \"2FFF1FFF2\" \"FF2F01212\" \"FF2FF1212\" \"FF2F11212\"\nB \"FF2F01212\" \"2FFF1FFF2\" \"212101212\" \"FF2FF1212\"\nC \"FF2FF1212\" \"212101212\" \"2FFF1FFF2\" \"FF2FF1212\"\nD \"FF2F11212\" \"FF2FF1212\" \"FF2FF1212\" \"2FFF1FFF2\"\n\n\nWe are producing a symmetrical matrix and you just need to focus on half of it. The first column describes how the A square is related to the other squares.\nFirst line, first column [A,A] describes how the same square relates to itself:\n\nmatrix_de_9im(my_first_st_relate[\"A\",\"A\"])\n\n  I   B   E  \nI \"2\" \"F\" \"F\"\nB \"F\" \"1\" \"F\"\nE \"F\" \"F\" \"2\"\n\n\nThey share the same interior, same boundary and same exterior.\nLet’s see a more complicated case: square B with C:\n\nmatrix_de_9im(my_first_st_relate[\"B\",\"C\"])\n\n  I   B   E  \nI \"2\" \"1\" \"2\"\nB \"1\" \"0\" \"1\"\nE \"2\" \"1\" \"2\"\n\n\nThey share a part of their interior, their interior covers a part of their boundaries, a part of each interior is also an exterior of the other and their boundaries are related on two points.\nFeel free to experiment with the other squares!"
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#check-matching-patterns",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html#check-matching-patterns",
+    "title": "Toying with DE-9IM",
+    "section": "Check matching patterns",
+    "text": "Check matching patterns\nNow that we are familiar with the pattern, we can search the matrix for particular patterns. The fact that patterns are just strings allows us to also use regular expressions or other string tricks. Here, for example, we can return every pair-wise relation that shares a boundary.\n\n# . represent every single character \nmatrix(grepl(pattern = \"....1....\", my_first_st_relate),\n       nrow = 4, byrow = TRUE) \n\n      [,1]  [,2]  [,3]  [,4]\n[1,]  TRUE FALSE FALSE  TRUE\n[2,] FALSE  TRUE FALSE FALSE\n[3,] FALSE FALSE  TRUE FALSE\n[4,]  TRUE FALSE FALSE  TRUE\n\n\nWe can also translate spatial predicates with the DE-9IM pattern: see the Wikipedia page.\nWe can achieve the same result thanks to the pattern argument of the st_relate function. The syntax of the pattern changes a bit, you need to replace . (that means every single character) with * to match DE-9IM rules.\n\nsf::st_relate(squares, squares,  pattern = \"****1****\",  sparse = FALSE)\n\n      [,1]  [,2]  [,3]  [,4]\n[1,]  TRUE FALSE FALSE  TRUE\n[2,] FALSE  TRUE FALSE FALSE\n[3,] FALSE FALSE  TRUE FALSE\n[4,]  TRUE FALSE FALSE  TRUE\n\n\nWith sparse = FALSE it will return the matrix. If you change it to TRUE you get a a sparse geometry binary predicate in the form of a list (cf. chapter 4 of Geocomputation with R)\n\nsf::st_relate(squares, squares,  pattern = \"****1****\",  sparse = TRUE)\n\nSparse geometry binary predicate list of length 4, where the predicate\nwas `relate_pattern'\n 1: 1, 4\n 2: 2\n 3: 3\n 4: 1, 4\n\n\nYou can do a lot with this tool! My commentary on an issue lead Robin to write a nice introduction to DE-9IM."
+  },
+  {
+    "objectID": "posts/2021-12-23-toying-with-de9im/index.html#footnotes",
+    "href": "posts/2021-12-23-toying-with-de9im/index.html#footnotes",
+    "title": "Toying with DE-9IM",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nEgenhofer M. J., Herring J. R. (1995) Categorizing binary topoligical relationships between regions, lines, and points in geographic databases. Technical Report, Department of Surveying Engineering, University of Maine, Orono, ME.↩︎\nHsu, L. S., Obe, R. (2021). PostGIS in Action, Third Edition. États-Unis: Manning. p269↩︎"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hi! I am a Senior Data Engineer for the Center On Rural Innovation where I help data scientists and software engineers make sense of data and use it to help rural communities throughout America.\nPreviously, I worked as a geographer researching topics related to trees and the environmental, including studies on agroforestry, urban settings, virtual trees, tree identification applications and databases, etc.\nI hold a Ph.D. in Geography and Environmental Studies from the University of Paris.\nBranch Twig Leaf is a blog exploring new approaches to spatial data as well as trees in digital humanities and social science research.\nMastodon"
+  },
+  {
+    "objectID": "talks/urisa2023.html",
+    "href": "talks/urisa2023.html",
+    "title": "URISA 2023",
+    "section": "",
+    "text": "The Urban and Regional Information Systems Association — better known as URISA — is the main association for professionals in the GIS and geospatial space.\nWe were fortunate enough to be selected to present a portion of our work on broadband infrastructure at URISA’s annual conference GIS-Pro-2023 last fall in Columbus, Ohio.\nOur presentation, “Rural areas are overrepresented in unserved areas and underestimated in statistics,” utilized FCC NBM data to demonstrate several points:\n\nThe new dataset (NBM) represents an improvement over the previous one (derived from F477).\nDespite the narrowing gap between rural and nonrural areas, significant disparities still exist.\nThe current BEAD definition of an “unserved area” is less suitable for rural areas than for urban areas.\n\nYou can dig more into our presentation HERE!"
+  },
+  {
+    "objectID": "talks/auber2024.html",
+    "href": "talks/auber2024.html",
+    "title": "AUBER 2024",
+    "section": "",
+    "text": "AUBER is the Association for University Business and Economic Research, a professional organization for economic research centers at leading universities and affiliated organizations across America.\nI presented a talk on the benefits of streamlining date access using an R Package with cori.data.fcc as an example.\nThis is a short list of the advantages:\n\nAddress Data Challenges\n\nData is packaged as code to simplify data access, reduce errors, and promote collaboration.\nLow-level data transformations are codified: this makes them easy for others to reproduce.\n\nAccelerate Innovation\n\nBroadband data is packaged so that researchers can focus on analysis and insights, not data wrangling.\n\nUnlock Deeper Insights Faster\n\ncori.data.fcc provides fast access to granular details, essential for understanding broadband challenges across multiple geographic scales.\n\n\nMy presentation is available HERE!"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Posts",
+    "section": "",
+    "text": "Improving my default bash prompt\n\n\n\n\n\n\nshell\n\n\nbash\n\n\nlinux\n\n\ngit\n\n\nCLI\n\n\n\n\n\n\n\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nCodeberg links and icons!\n\n\n\n\n\n\nCodeberg\n\n\nblog\n\n\n\n\n\n\n\n\n\nFeb 6, 2025\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLittle Schemer\n\n\n\n\n\n\nScheme\n\n\nLISP\n\n\nFunctional programming\n\n\n\n\n\n\n\n\n\nNov 3, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nFunction factories to improve Database read and write\n\n\n\n\n\n\nR\n\n\nPG\n\n\nFunctional programming\n\n\n\n\n\n\n\n\n\nSep 15, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nFrom elephant to duck!\n\n\n\n\n\n\nDuckDB\n\n\nR\n\n\nSQL\n\n\nPG\n\n\n\n\n\n\n\n\n\nJul 14, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nAwesome jq and GeoJSON\n\n\n\n\n\n\ngeojson\n\n\njq\n\n\nCLI\n\n\nGIS\n\n\n\n\n\n\n\n\n\nMar 10, 2024\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nMapscaping: geospatial consulting – as a business and a career\n\n\n\n\n\n\npodcast\n\n\nGIS\n\n\n\n\n\n\n\n\n\nJan 14, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nR is (also) a graph calculator\n\n\n\n\n\n\nR\n\n\nplot\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nJan 10, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Go Map to contribute to OSM\n\n\n\n\n\n\nOSM\n\n\n\n\n\n\n\n\n\nJan 6, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nLearning Data Science Meme\n\n\n\n\n\n\nlearning\n\n\nmeme\n\n\n\n\n\n\n\n\n\nJan 5, 2023\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nToying with DE-9IM\n\n\n\n\n\n\nR\n\n\nsf\n\n\n\nexploring st_relate\n\n\n\n\n\nDec 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nThe Wonderfull World of Overpass Turbo\n\n\n\n\n\n\nOSM\n\n\n\nSome tips for Overpass Turbo\n\n\n\n\n\nOct 23, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSampling Along a Line\n\n\n\n\n\n\nSampling\n\n\nSpatstat\n\n\n\nfirst part : Spatstat\n\n\n\n\n\nApr 8, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nSensor Observation Service: an Introduction\n\n\n\n\n\n\nSensor\n\n\nSmart environment\n\n\nTime series\n\n\n\n\n\n\n\n\n\nFeb 12, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\n\n\n\n\n\n\nTrees in Open Data Databases in France\n\n\n\n\n\n\nurban forest\n\n\nsurvey\n\n\ntree\n\n\n\n\n\n\n\n\n\nJan 10, 2021\n\n\nOlivier Leroy\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/2024-11-03_little_schemer/index.html",
+    "href": "posts/2024-11-03_little_schemer/index.html",
+    "title": "Little Schemer",
+    "section": "",
+    "text": "I have been reading and enjoying The Little Schemer! It’s time to write a bit about it and structure what I learned so far (up to chapter 5).\nIf you do not know about it I might start by giving a quick introduction. This book about recursion has a very specific and original way of teaching."
+  },
+  {
+    "objectID": "posts/2024-11-03_little_schemer/index.html#teaching-methods",
+    "href": "posts/2024-11-03_little_schemer/index.html#teaching-methods",
+    "title": "Little Schemer",
+    "section": "Teaching Methods:",
+    "text": "Teaching Methods:\nInstead of providing a lengthy text and definition it (nearly) always start with a question then provide with you an answer.\nFor example:\n\nIs it true that this is an atom?\natom\nYes.\nbecause atom is a string of characters beginning with the letter a.\n\nThis is the first definition that you are given. The book uses this style to either introduce you to a definition or give you small tasks and time to think about them.\nThe exception to that practice occurs when the authors introduce “Laws” and “Commandments”.\nExample:\n\nThe Law of Car:\nThe primitive car is defined only for non-empty lists.\n\n“Laws” and “Commandments” are build incrementally, you will start with preliminary version and improve them as we build examples and learn more.\nWhen I want to practice a bit on a computer I am using this version of Scheme and Emacs\nIt is using Scheme (a LISP dialect) but so far I am mostly using pen and paper, which is one reason I like it a lot: you can practice everywhere and do not need a computer.\nBefore building a function, the authors always define how the function should behave (with a series of questions). Now we would probably frame that as Test Driven Development.\nFor example we want to create a function firsts that is taking a list l asan argument:\n(firsts l) where l is:\n((apple peach pumpkin) \n (plum pear cherry)\n (grape raisin pea)\n (bean carrot eggplant))\nShould return: (apple plum grape bean)\nIf the first S-expression of an internal list. is a list it should be returned and if the list is empty it should return an empty list (I am shortcuting you here 3 other questions/answers)."
+  },
+  {
+    "objectID": "posts/2024-11-03_little_schemer/index.html#an-example-on-recursion",
+    "href": "posts/2024-11-03_little_schemer/index.html#an-example-on-recursion",
+    "title": "Little Schemer",
+    "section": "An Example on Recursion:",
+    "text": "An Example on Recursion:\nI did not begin this book because of his way of teaching (this was a huge added benefit, I was not aware of) but mostly because I wanted to get better at using recursion.\nHence let’s see how we can define firsts\nThe first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as (firsts ()) should return ()). This is the called the termination condition, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.\nThen we need to build the typical element, ie what should be returned (in our previous example apple is one of them). In Scheme it looks like:\n(car (car l))\ncar is a primitive function that returns the first S-expression of an non-empty list ((car l) would have returned (apple peach pumpkin)).\nAfter that we need to provide the rest of the list to our firsts function. LISP has an other primitive function called cdr used for that:\n(firsts (cdr l))\nIn our example this would be ((plum pear cherry) (grape raisin pea) (bean carrot eggplant)) and this is called the natural recursion.\nThe last piece is to patch them together and for that LISP use cons (see the Second Commandment).\n\\[ (cons \\underbrace{(car (car \\quad l))}_{typical \\quad element} \\overbrace{(firsts (cdr \\quad l))}^{natural \\quad recursion}) \\]\nNow we can write the function:\n(define firsts\n  (lambda (l)\n    (cond\n      ((null?) quote()) ;termination condition\n      (else (cons \n              (car (cars l)) ;typical element\n              (firsts (cdr l)) ;natural recursion\n      )))))\nThat’s it!\nI still would like to highlight a few points:\n\nThe termination condition is a good example on why you should check for error first\nAll of the “Commandments” are easy to find in the backcover of the book. I do not think they are meant to be memorized. They will probably make no sense if you do not go over the exercises first!\nThe book always focuses on providing a workable solution:\n\nSometimes the first example is also incorrect and the author goes over and explains how to correct it.\nSometimes it can be improved or simplified1\n\n\nI also like that iterative approach."
+  },
+  {
+    "objectID": "posts/2024-11-03_little_schemer/index.html#footnotes",
+    "href": "posts/2024-11-03_little_schemer/index.html#footnotes",
+    "title": "Little Schemer",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nSo far, most simplifications I have seen are either using set logic to simplify conditions or building other functions.↩︎"
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html",
+    "title": "R is (also) a graph calculator",
+    "section": "",
+    "text": "I am doing some basic maths. I was to frustrate of Roger Bivand explaining stuff that I could not understand with my maths background (science background but loooong time ago!). I find a nice free book and practice with it. A lot can be done with pen + paper but sometimes you need to represent an equation in a Cartesian plane.\nR is perfect for that (even if it is not a Computer algebra system) but I am always forgetting some specific ways to do it!\nFirst we do a simple function:\n\\[y = \\sqrt[3](1 - x^2)\\]\nsimple_function &lt;- function(x){\n    temp = (1 - x*x)\n    # R is using natural log so you need to adjust a bit, ie if you use negative\n    # value you will get NaN :\n    # kind of same idea of doing cube_root(-1) * cube_root(abs(x))\n    sign(temp)*abs(temp)**(1/3)\n}\nsimple_function(-5:5)\n\n [1] -2.884499 -2.466212 -2.000000 -1.442250  0.000000  1.000000  0.000000\n [8] -1.442250 -2.000000 -2.466212 -2.884499\nThen you have (as far as I know) 3 options!"
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#vector-and-plot",
+    "title": "R is (also) a graph calculator",
+    "section": "Vector and plot:",
+    "text": "Vector and plot:\nHere this is simple we generate a sequence of values and apply our function on it.\n\nx &lt;- -5:5\ny &lt;- simple_function(x)\nplot(x, y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n# if you prefer it can also go in data frame because both vectors have the same length\n#df &lt;- data.frame(x = x,\n#                 y = simple_function(x))\n\nThis is good but if you pay attention you can see that using type = \"b\" we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:\n\nx &lt;- seq(from = -5, to = 5, by = .1)\ny &lt;- simple_function(x)\nplot(x , y, type = \"b\", col = 2)\n\n\n\n\n\n\n\n\nThis is a bit better!"
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#curve",
+    "title": "R is (also) a graph calculator",
+    "section": "curve!",
+    "text": "curve!\nThe base-R packagegraphics provide us with a lot of very cool functions and one of it is curve(). It can take a function or an expression.\n\ncurve(simple_function, from = -5, to = 5,\n      ylab = \"y\", col = 2) # some small tuning is still needed\n\n\n\n\n\n\n\n\nEasy and simple."
+  },
+  {
+    "objectID": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
+    "href": "posts/2023-01-10-r-is-also-a-graph-calculator/index.html#ggplot",
+    "title": "R is (also) a graph calculator",
+    "section": "ggplot!",
+    "text": "ggplot!\nObviously, we can also do it with ggplot::stat_function():\n\nlibrary(ggplot2)\n# I was lazy and just reused x\nggplot(data.frame(x), aes(x = x)) +\n    stat_function(fun = simple_function, colour = 2) +\n    theme_bw()"
+  },
+  {
+    "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
+    "href": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html",
+    "title": "Using Go Map to contribute to OSM",
+    "section": "",
+    "text": "I was a bit intimidated to contribute to OSM and it took me time to do it. I needed to move to another country, get a correct smartphone (I was for a long time a Nokia 3310 user) and have some baby to move around in a stroller to decide myself! If you were like me, hesitating, you should not and I will try to explain why and how you can contribute."
+  },
+  {
+    "objectID": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html#footnotes",
+    "href": "posts/2023-01-06-2-using-go-map-to-contribute-to-osm/index.html#footnotes",
+    "title": "Using Go Map to contribute to OSM",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nSee this nice blog post on the history of “global street maps”↩︎"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html",
+    "title": "Trees in Open Data Databases in France",
+    "section": "",
+    "text": "I collect tree data sets and here are some links to open data from France. I will update the list when I find more!\nYou can find out more about my work on my github. To extract the trees from the files I needed to do a bit of data wrangling."
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#guingamp",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Guingamp",
+    "text": "Guingamp\nTypical lat/long in field.\nguingamp &lt;- sf::st_read(\"sources/Arbres de la Ville de Guingamp.csv\")\nguingamp &lt;- sf::st_as_sf(guingamp, coords = c(\"longitude\", \"latitude\"), crs = 4326)"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#ecoline",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Ecoline",
+    "text": "Ecoline\nIsolated trees are only the ones with “Arbre isolé” in ele_txt field.\niau_ecoline &lt;- sf::st_read(\"sources/elements-fixes-ponctuels-de-la-couche-ecoline-dile-de-france.json\")\niau_ecoline &lt;- iau_ecoline[iau_ecoline$ele_txt == \"Arbre isolé\",]"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#nancy-metropolis",
+    "title": "Trees in Open Data Databases in France",
+    "section": "Nancy metropolis",
+    "text": "Nancy metropolis\nNancy is a bit more tricky. Each city has a directory where you can found isolated trees (ARBRE_ISOLE.shp). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.\nnancy &lt;- sapply(list.files(pattern = \"ARBRE_ISOLE.shp$\", recursive = T), sf::st_read) # read all the file \nhoudemont &lt;- nancy[6] # we get Houdemont's data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`$Z &lt;- NA # add the missing data\nhoudemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp` &lt;- \n    houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`[    # reorgonize it\n        ,c(\"HAUTEUR\",  \"DIAMETRE\", \"TYPE\", \"CCOCOM\", \"Z\",  \"geometry\")\n    ]\nnancy &lt;- do.call(rbind, nancy[-6]) # one file from every cities except Houdemont \nnancy &lt;- rbind(nancy, houdemont$`sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp`) # adding Houdemont"
+  },
+  {
+    "objectID": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
+    "href": "posts/2021-01-10-trees-in-open-data-databases-in-france/index.html#list-of-data-sets",
+    "title": "Trees in Open Data Databases in France",
+    "section": "List of data sets",
+    "text": "List of data sets\n\n\n\nName\nData\n\n\n\n\n“L’arbre à Paris”\nGeoJson\n\n\n“Arbres d’alignement de la Métropole de Lyon”\nshp\n\n\n“Patrimoine arboré de Bordeaux”\nGeoJson\n\n\n“Cartographie des arbres communaux” (Nice)\nGeoJson\n\n\n“Les arbres de Grenoble”\nGeoJson\n\n\n“Arbres d’alignement de Montpellier”\nGeoJson\n\n\n“Arbres” (Grand Paris Seine Ouest)\nGeoJson\n\n\n“Arbres” (Agen)\nGeoJson\n\n\n“ARBRES” (Agglo du Saint-Quentinois)\nGeoJson\n\n\n“Arbres remarquables” (Metz)\nshp\n\n\n“Arbres d’alignement”(Seine-Saint-Denis)\nGeoJson\n\n\n“Arbres d’alignements - Ville de Versailles”\nGeoJson\n\n\n“Arbres dans les parcs de la ville de Versailles”\nGeoJson\n\n\n“Arbres d’alignement” (Nevers)\nshp\n\n\n“Arbres d’ornement” (Nevers)\nshp\n\n\n“Arbres d’alignement - Toulouse”\nGeoJson\n\n\n“Arbres - Ville d’Orléans”\nshp\n\n\n“Les arbres de Saint-Egrève”\nshp\n\n\n“Arbres d’alignement - Bayonne”\nGeoJson\n\n\n“Arbres d’alignement sur la voirie départementale”\nGeoJson\n\n\n“Arbres d’ornement des espaces verts de la Ville de Rennes”\nGeoJson\n\n\n“Arbres d’alignement en accompagnement de voirie sur la ville de Rennes”\nGeoJson\n\n\n“Caractéristiques des arbres d’alignements gérés par la Ville de Mulhouse”\nGeoJson\n\n\n“Arbres inventoriés pour la lutte contre le capricorne asiatique - Foyers de Divonne-les-Bains”\n\n\n\n“Arbres de la Ville de Guingamp”\nGeoJson\n\n\n“Patrimoine arboré ponctuel des voies navigables appartenant à la Région Bretagne”\nGeoJson\n\n\n“Inventaire arboré de Grand Paris Sud”\nGeoJson\n\n\n“Cadastre vert - Les arbres” (Hauts-de-Seine)\nGeoJson\n\n\n“Arbres Alignement sur la CAPP (Pau)”\n\n\n\n“Éléments fixes ponctuels de la couche Ecoline d’Île-de-France”\nGeoJson\n\n\n“Restitution topo 3D” (Nancy)\nshp"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "",
+    "text": "The Mapscaping Podcast is a great podcast in the “geospatial” space. It covers a broad diversity of topics and the production value is always top notch.\nI was quite interested in the last episode geospatial consulting – as a business and a career and wanted to share some of the little gems this episode has to offer.\nThe episode was an interview with Todd Slind (VP of Technology) at Locana.co about geospatial consulting. As the title states, the show addresses both the business and career aspect of geoconsulting.\nBefore going into these two aspects, I would like to thank Locana for sponsoring the podcast and contributing to the geospatial community. I am also following Geospatial Connections with another Locana employe and I feel those contributions are great!"
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatial-consulting-as-business",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatial Consulting as Business",
+    "text": "Geospatial Consulting as Business\n\n“We do not want to be on the bleeding edge […] where we are doing all the bleeding […].” Todd Slind\n\nA lot of the exchange was around the need for a consulting business (and as we will see later how it applies to individuals) to strike a balance between having a strong core or area of expertise while also placing some bets in other sectors.\nThis dichotomy can also be seen in the “mature market” versus “less mature market”. For a consultancy business, it is good to have strong foundations in an established industry. It could be in both markets, but I guess it seems it is easier in a mature market thanks to “off-the-shelf solutions”.\nBoth markets were defined as:\n\nMature Market:\n\nStandardize: allow “off-the-shelf solutions”\n\nPresence of a robust consultancy ecosystem (with competition)\n\nInformed consumers\n\n\n\nLess Mature Market:\n\nProblems are still unclear\n\nNeed for more custom development / more IT\nMore constraints from the environment (ex: low bandwidth)\nNeed to build a common language\n\nThe best way to build a strong core is to practice and build experience."
+  },
+  {
+    "objectID": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "href": "posts/2023-01-14-4-mapscaping-geospatial-consulting-as-a-business-and-a-career/index.html#geospatail-consulting-as-a-career",
+    "title": "Mapscaping: geospatial consulting – as a business and a career",
+    "section": "Geospatail consulting as a career",
+    "text": "Geospatail consulting as a career\nThis leads, at the consultant level, to a trade off between “learning on the job” versus “being in your comfort zone”. You need to maintain your core area of expertise while also being curious about new opportunities.\nAccording to Todd Slind, a great consultant should have:\n- Curiosity/creativity as a self-starter\n- Can “interface” with clients (importance of speaking the same language)\n- Is able to have ownership over their own personal development\nIf a consultant wants to bring new ideas/new technology to improve a process, it is better if they can bring some prototype or find a way to show how it can be “real”. I should print this advice: it is easy to see all the new shiny developments (sedona, arrow) but the better question is “where and how to apply them to solve problems?”\nI also liked the idea for consultants to socialize and create discussion spaces dedicated to estimating the time needed for different assignments.\nStrangely, technology was not brought into the discussion too much (ie: impact of choosing one, “one-way door versus two-way doors”) and I hope this can be a topic for another episode!!!"
+  },
+  {
+    "objectID": "posts/2025-03-12_better-bash-prompt/index.html",
+    "href": "posts/2025-03-12_better-bash-prompt/index.html",
+    "title": "Improving my default bash prompt",
+    "section": "",
+    "text": "Even though I am not a system admin, I work frequently in remote or virtual computers other than my desktop, and Ubuntu default terminal requires me to have my username, hostname, and full directory path in my prompt … whiiich tends to be a bit lengthy!\nMost of the time, I use zsh and oh-my-zsh. In 5 minutes, you can set up a nice config and call it a day (and I recommend doing that!).\nFor some obscure reason, I wanted to try doing some linux certifications and since most of them require you to be on bash I wanted to stick with it and have a minimal setup for my daily needs.\nThe prompt was one thing that really bothered me!"
+  },
+  {
+    "objectID": "posts/2025-03-12_better-bash-prompt/index.html#stuff-outside-of-my-needs-but-worth-learning",
+    "href": "posts/2025-03-12_better-bash-prompt/index.html#stuff-outside-of-my-needs-but-worth-learning",
+    "title": "Improving my default bash prompt",
+    "section": "Stuff outside of my needs but worth learning",
+    "text": "Stuff outside of my needs but worth learning\nI enjoyed playing with my prompts and testing all the examples that provided! It is totally worth reading and since your use of shell may differ from mine, you will probably pick out other interesting ideas.\nI just want to highlight a few of them here.\n\nA script to test colors on bash!\na very nice way of using local variables in function to make it more readable:\n\n# [...] plenty of code above\nlocal GRAY=\"\\[\\033[1;30m\\]\"\n# [...] then using $GRAY\n\nExamples using PROMPT_COMMAND variables\nUsing functions to switch prompt styles (happy_day_prompt /sad_day_prompt, anyone?)\nDisplaying other system information like number of running jobs, last exit status returned and more!"
+  },
+  {
+    "objectID": "posts/2025-03-12_better-bash-prompt/index.html#stuff-that-i-learned-and-that-i-am-going-to-use",
+    "href": "posts/2025-03-12_better-bash-prompt/index.html#stuff-that-i-learned-and-that-i-am-going-to-use",
+    "title": "Improving my default bash prompt",
+    "section": "Stuff that I learned and that I am going to use",
+    "text": "Stuff that I learned and that I am going to use\nIn bash, .bashrc seems to be the place (I am deferring to Giles Orr here) to either source another script with your functions setting your prompt or to directly set your prompt.\nIn Ubuntu it seems my .bashrc already had some lines of codes to handle the prompt (depending if my terminal can handle color or not):\n# color_prompt and debian_chroot are declare a bit above\nif [ \"$color_prompt\" = yes ]; then\n   PS1='${debian_chroot:+($debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ '\nelse\n   PS1='${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ '\nfi\nI think it is easier for a quick implementation to just modify those lines instead of sourcing a specific function.\nYou can also do echo $PS1to check what is yours. If you want to play with it first before updating the file you should follow the same pattern provided by Giles Orr:\nSAVE=$PS1 # \"save\" it\nPS1=\"\\W$ \" # test something\nPS1=$SAVE # back to the original\nIf, like me, you did not grow up with ASCII code and bash Prompt Escape Sequences this is the one you need to understand:\n\n\\033 is an ASCII escape character (it could probably be replaced by \\e in bash)\n01;32m are defining font then color (or background color). I do not know why they should be followed by m. If you do not want to keep the same font/color after your prompt, you need to reverse character to default (\\033[00m).\n\n\n\n\nDaniel Crisman’s script result\n\n\nSee also this wikipedia article for more info: https://en.wikipedia.org/wiki/ANSI_escape_code#Colors\n\n\\[  \\] is the beginning and end sequence to include non-printing characters, a backlash (\\) needs to be used here because [ and ] are parts of reserved characters. Even if we do not see characters defining escape characters and colors they are still taking up space in the prompt (quite a lot!) and so we need a way to indicate that they should not be “displayed”.\n\\u is for the user name (I do not want to keep it)\n\\h for the host name (I also do not want to keep it)\n\\w is for the current working directory and \\W (uppercase) just gives us the basename of the working directory (perfect for me)\n$ needs also to be escaped (\\$), notice also that a white space is included after \\$ ' and should be kept.\n\nAs you see, an easy ways to change my prompt is to remove : the part before it up to the parts that are defined using chroot (on my setup this also could probably be removed, but I may log into places where chroot is specified and I am being restricted!) andchange` for its uppercase version.\nFor the git branch I wrote a quick function:\ngit_branch_show_current () {\ngit branch 2&gt; /dev/null --show-current\nreturn\n}\nIt displays the current branch and sends any error in a dark corner of /dev/null/.\nThen I added some parenthesis to look a bit fancy, changed quotes and changed colors.\ngit_branch_show_current () {\ngit branch 2&gt; /dev/null --show-current\nreturn\n}\n\n\nif [ \"$color_prompt\" = yes ]; then\n   PS1=\"${debian_chroot:+($debian_chroot)}\\[\\033[31;35m\\](\\$(git_branch_show_current))\\033[00m\\]:\\[\\033[01;34m\\]\\W\\[\\033[00m\\]\\$ \"\nelse\n   PS1='${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ '\nfi\nI now have: - in purple, surrounded by parenthesis, the git branch branch I am in - : a - the basename of the repository (still in blue) - $"
   },
   {
     "objectID": "posts/2024-09-15_function_factory/index.html",
