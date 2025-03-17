@@ -3514,7 +3514,13 @@ font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></sp
 background-color: null;
 font-weight: bold;
 font-style: inherit;">fi</span></span></code></pre></div>
-<p>I now have: - in purple, surrounded by parenthesis, the git branch branch I am in - <code>:</code> a - the basename of the repository (still in blue) - <code>$</code></p>
+<p>I now have:</p>
+<ul>
+<li><p>in purple, surrounded by parenthesis, the git branch branch I am in</p></li>
+<li><p><code>:</code> a separator</p></li>
+<li><p>the basename of the repository (still in blue)</p></li>
+<li><p><code>$</code></p></li>
+</ul>
 </section>
 </section>
 <section id="other-potential-improvements" class="level1">
@@ -3531,7 +3537,7 @@ font-style: inherit;">fi</span></span></code></pre></div>
   <category>git</category>
   <category>CLI</category>
   <guid>https://branchtwigleaf.com/posts/2025-03-12_better-bash-prompt/</guid>
-  <pubDate>Mon, 17 Mar 2025 01:30:43 GMT</pubDate>
+  <pubDate>Mon, 17 Mar 2025 15:38:32 GMT</pubDate>
 </item>
 </channel>
 </rss>
