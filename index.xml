@@ -10,7 +10,293 @@
 <atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Message in a bottle for me</description>
 <generator>quarto-1.6.40</generator>
-<lastBuildDate>Thu, 06 Feb 2025 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 16 Mar 2025 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Improving my default bash prompt</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2025-03-12_better-bash-prompt/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Even though I am not a system admin, I work frequently in remote or virtual computers other than my desktop, and Ubuntu default terminal requires me to have my username, hostname, and full directory path in my prompt … whiiich tends to be a bit lengthy!</p>
+<p>Most of the time, I use zsh and oh-my-zsh. In 5 minutes, you can set up a nice config and call it a day (and I recommend doing that!).</p>
+<p>For some obscure reason, I wanted to try doing some linux certifications and since most of them require you to be on bash I wanted to stick with it and have a minimal setup for my daily needs.</p>
+<p>The prompt was one thing that really bothered me!</p>
+<section id="a-prompt-for-my-specific-needs" class="level1">
+<h1>A prompt for my specific needs</h1>
+<p>Like I said, I am not a sys. admin who can constantly change their “user” and “host” and if I am doubting <code>whoami</code> or where I am (<code>pwd</code>) I can easily get those from the command line. Hence, just having the directory of the project I am in is enough for my needs. I should also say, in most terminal emulators you will already have a windows title with all of that info.</p>
+<p>I switch git’s branches quite a lot, and having a prompt reminding me on which branch I am was something that I was missing.</p>
+<p>After a quick search it appears that this <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/">HOWTO</a> from Giles Orr was the perfect reading material.</p>
+<section id="stuff-outside-of-my-needs-but-worth-learning" class="level2">
+<h2 class="anchored" data-anchor-id="stuff-outside-of-my-needs-but-worth-learning">Stuff outside of my needs but worth learning</h2>
+<p>I enjoyed playing with my prompts and testing all the examples that provided! It is totally worth reading and since your use of shell may differ from mine, you will probably pick out other interesting ideas.</p>
+<p>I just want to highlight a few of them here.</p>
+<ul>
+<li><p>A <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html">script</a> to test colors on bash!</p></li>
+<li><p>a very nice way of using local variables in function to make it more readable:</p></li>
+</ul>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># [...] plenty of code above</span></span>
+<span id="cb1-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">local</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">GRAY</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"\[\033[1;30m\]"</span></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># [...] then using $GRAY</span></span></code></pre></div>
+<ul>
+<li><p>Examples using PROMPT_COMMAND variables</p></li>
+<li><p>Using functions to switch prompt styles (happy_day_prompt /sad_day_prompt, anyone?)</p></li>
+<li><p>Displaying other system information like number of running jobs, last exit status returned and more!</p></li>
+</ul>
+</section>
+<section id="stuff-that-i-learned-and-that-i-am-going-to-use" class="level2">
+<h2 class="anchored" data-anchor-id="stuff-that-i-learned-and-that-i-am-going-to-use">Stuff that I learned and that I am going to use</h2>
+<p>In bash, <code>.bashrc</code> seems to be the place (I am deferring to Giles Orr here) to either <code>source</code> another script with your functions setting your prompt or to directly set your prompt.</p>
+<p>In Ubuntu it seems my <code>.bashrc</code> already had some lines of codes to handle the prompt (depending if my terminal can handle color or not):</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># color_prompt and debian_chroot are declare a bit above</span></span>
+<span id="cb2-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">[</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$color_prompt</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> yes <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span></span>
+<span id="cb2-3">   <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '</span></span>
+<span id="cb2-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span></span>
+<span id="cb2-5">   <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></span>
+<span id="cb2-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">fi</span></span></code></pre></div>
+<p>I think it is easier for a quick implementation to just modify those lines instead of sourcing a specific function.</p>
+<p>You can also do <code>echo $PS1</code>to check what is yours. If you want to play with it first before updating the file you should follow the same pattern provided by Giles Orr:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">SAVE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$PS1</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># "save" it</span></span>
+<span id="cb3-2"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"\W$ "</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># test something</span></span>
+<span id="cb3-3"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$SAVE</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># back to the original</span></span></code></pre></div>
+<p>If, like me, you did not grow up with ASCII code and bash <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html">Prompt Escape Sequences</a> this is the one you need to understand:</p>
+<ul>
+<li><p><code>\033</code> is an ASCII escape character (it could probably be replaced by <code>\e</code> in bash)</p></li>
+<li><p><code>01;32m</code> are defining font then color (or background color). I do not know why they should be followed by <code>m</code>. If you do not want to keep the same font/color after your prompt, you need to reverse character to default (<code>\033[00m</code>).</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2025-03-12_better-bash-prompt/bash_colors.png" class="img-fluid figure-img"></p>
+<figcaption>Daniel Crisman’s script result</figcaption>
+</figure>
+</div>
+<p>See also this wikipedia article for more info: <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#Colors">https://en.wikipedia.org/wiki/ANSI_escape_code#Colors</a></p>
+<ul>
+<li><p><code>\[  \]</code> is the beginning and end sequence to include non-printing characters, a backlash (<code>\</code>) needs to be used here because <code>[</code> and <code>]</code> are parts of reserved characters. Even if we do not see characters defining escape characters and colors they are still taking up space in the prompt (quite a lot!) and so we need a way to indicate that they should not be “displayed”.</p></li>
+<li><p><code>\u</code> is for the user name (I do not want to keep it)</p></li>
+<li><p><code>\h</code> for the host name (I also do not want to keep it)</p></li>
+<li><p><code>\w</code> is for the current working directory and <code>\W</code> (uppercase) just gives us the basename of the working directory (perfect for me)</p></li>
+<li><p><code>$</code> needs also to be escaped (<code>\$</code>), notice also that a white space is included after <code>\$ '</code> and should be kept.</p></li>
+</ul>
+<p>As you see, an easy ways to change my prompt is to remove <code>:</code> the part before it up to the parts that are defined using <code>chroot</code> (on my setup this also could probably be removed, but I may log into places where chroot is specified and I am being restricted!) and<code>change</code>` for its uppercase version.</p>
+<p>For the git branch I wrote a quick function:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git_branch_show_current ()</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">{</span></span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> branch <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> /dev/null <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--show-current</span></span>
+<span id="cb4-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span></span>
+<span id="cb4-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">}</span></span></code></pre></div>
+<p>It displays the current branch and sends any error in a dark corner of <code>/dev/null/</code>.</p>
+<p>Then I added some parenthesis to look a bit fancy, changed quotes and changed colors.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git_branch_show_current ()</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">{</span></span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> branch <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> /dev/null <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--show-current</span></span>
+<span id="cb5-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span></span>
+<span id="cb5-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">}</span></span>
+<span id="cb5-5"></span>
+<span id="cb5-6"></span>
+<span id="cb5-7"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">[</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$color_prompt</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> yes <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span></span>
+<span id="cb5-8">   <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${debian_chroot</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:+</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$debian_chroot</span>)<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\[\033[31;35m\](</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">(git_branch_show_current))\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> "</span></span>
+<span id="cb5-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span></span>
+<span id="cb5-10">   <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></span>
+<span id="cb5-11"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">fi</span></span></code></pre></div>
+<p>I now have:</p>
+<ul>
+<li><p>in purple, surrounded by parenthesis, the git branch branch I am in</p></li>
+<li><p><code>:</code> a separator</p></li>
+<li><p>the basename of the repository (still in blue)</p></li>
+<li><p><code>$</code></p></li>
+</ul>
+</section>
+</section>
+<section id="other-potential-improvements" class="level1">
+<h1>Other potential improvements</h1>
+<p>Later, I may play around with using the exit value (is it 0 or not?) and maybe displaying the history number could be useful to easily rerun some commands previously used!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>shell</category>
+  <category>bash</category>
+  <category>linux</category>
+  <category>git</category>
+  <category>CLI</category>
+  <guid>https://branchtwigleaf.com/posts/2025-03-12_better-bash-prompt/</guid>
+  <pubDate>Sun, 16 Mar 2025 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Codeberg links and icons!</title>
   <dc:creator>Olivier Leroy</dc:creator>
@@ -3252,292 +3538,6 @@ font-style: inherit;"># adding Houdemont</span></span></code></pre></div>
   <category>tree</category>
   <guid>https://branchtwigleaf.com/posts/2021-01-10-trees-in-open-data-databases-in-france/</guid>
   <pubDate>Sun, 10 Jan 2021 05:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Improving my default bash prompt</title>
-  <dc:creator>Olivier Leroy</dc:creator>
-  <link>https://branchtwigleaf.com/posts/2025-03-12_better-bash-prompt/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Even though I am not a system admin, I work frequently in remote or virtual computers other than my desktop, and Ubuntu default terminal requires me to have my username, hostname, and full directory path in my prompt … whiiich tends to be a bit lengthy!</p>
-<p>Most of the time, I use zsh and oh-my-zsh. In 5 minutes, you can set up a nice config and call it a day (and I recommend doing that!).</p>
-<p>For some obscure reason, I wanted to try doing some linux certifications and since most of them require you to be on bash I wanted to stick with it and have a minimal setup for my daily needs.</p>
-<p>The prompt was one thing that really bothered me!</p>
-<section id="a-prompt-for-my-specific-needs" class="level1">
-<h1>A prompt for my specific needs</h1>
-<p>Like I said, I am not a sys. admin who can constantly change their “user” and “host” and if I am doubting <code>whoami</code> or where I am (<code>pwd</code>) I can easily get those from the command line. Hence, just having the directory of the project I am in is enough for my needs. I should also say, in most terminal emulators you will already have a windows title with all of that info.</p>
-<p>I switch git’s branches quite a lot, and having a prompt reminding me on which branch I am was something that I was missing.</p>
-<p>After a quick search it appears that this <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/">HOWTO</a> from Giles Orr was the perfect reading material.</p>
-<section id="stuff-outside-of-my-needs-but-worth-learning" class="level2">
-<h2 class="anchored" data-anchor-id="stuff-outside-of-my-needs-but-worth-learning">Stuff outside of my needs but worth learning</h2>
-<p>I enjoyed playing with my prompts and testing all the examples that provided! It is totally worth reading and since your use of shell may differ from mine, you will probably pick out other interesting ideas.</p>
-<p>I just want to highlight a few of them here.</p>
-<ul>
-<li><p>A <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html">script</a> to test colors on bash!</p></li>
-<li><p>a very nice way of using local variables in function to make it more readable:</p></li>
-</ul>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># [...] plenty of code above</span></span>
-<span id="cb1-2"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">local</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">GRAY</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"\[\033[1;30m\]"</span></span>
-<span id="cb1-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># [...] then using $GRAY</span></span></code></pre></div>
-<ul>
-<li><p>Examples using PROMPT_COMMAND variables</p></li>
-<li><p>Using functions to switch prompt styles (happy_day_prompt /sad_day_prompt, anyone?)</p></li>
-<li><p>Displaying other system information like number of running jobs, last exit status returned and more!</p></li>
-</ul>
-</section>
-<section id="stuff-that-i-learned-and-that-i-am-going-to-use" class="level2">
-<h2 class="anchored" data-anchor-id="stuff-that-i-learned-and-that-i-am-going-to-use">Stuff that I learned and that I am going to use</h2>
-<p>In bash, <code>.bashrc</code> seems to be the place (I am deferring to Giles Orr here) to either <code>source</code> another script with your functions setting your prompt or to directly set your prompt.</p>
-<p>In Ubuntu it seems my <code>.bashrc</code> already had some lines of codes to handle the prompt (depending if my terminal can handle color or not):</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># color_prompt and debian_chroot are declare a bit above</span></span>
-<span id="cb2-2"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">[</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$color_prompt</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span> <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> yes <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">then</span></span>
-<span id="cb2-3">   <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '</span></span>
-<span id="cb2-4"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span></span>
-<span id="cb2-5">   <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></span>
-<span id="cb2-6"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">fi</span></span></code></pre></div>
-<p>I think it is easier for a quick implementation to just modify those lines instead of sourcing a specific function.</p>
-<p>You can also do <code>echo $PS1</code>to check what is yours. If you want to play with it first before updating the file you should follow the same pattern provided by Giles Orr:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">SAVE</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$PS1</span> <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># "save" it</span></span>
-<span id="cb3-2"><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"\W$ "</span> <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># test something</span></span>
-<span id="cb3-3"><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$SAVE</span> <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># back to the original</span></span></code></pre></div>
-<p>If, like me, you did not grow up with ASCII code and bash <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html">Prompt Escape Sequences</a> this is the one you need to understand:</p>
-<ul>
-<li><p><code>\033</code> is an ASCII escape character (it could probably be replaced by <code>\e</code> in bash)</p></li>
-<li><p><code>01;32m</code> are defining font then color (or background color). I do not know why they should be followed by <code>m</code>. If you do not want to keep the same font/color after your prompt, you need to reverse character to default (<code>\033[00m</code>).</p></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://branchtwigleaf.com/posts/2025-03-12_better-bash-prompt/bash_colors.png" class="img-fluid figure-img"></p>
-<figcaption>Daniel Crisman’s script result</figcaption>
-</figure>
-</div>
-<p>See also this wikipedia article for more info: <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#Colors">https://en.wikipedia.org/wiki/ANSI_escape_code#Colors</a></p>
-<ul>
-<li><p><code>\[  \]</code> is the beginning and end sequence to include non-printing characters, a backlash (<code>\</code>) needs to be used here because <code>[</code> and <code>]</code> are parts of reserved characters. Even if we do not see characters defining escape characters and colors they are still taking up space in the prompt (quite a lot!) and so we need a way to indicate that they should not be “displayed”.</p></li>
-<li><p><code>\u</code> is for the user name (I do not want to keep it)</p></li>
-<li><p><code>\h</code> for the host name (I also do not want to keep it)</p></li>
-<li><p><code>\w</code> is for the current working directory and <code>\W</code> (uppercase) just gives us the basename of the working directory (perfect for me)</p></li>
-<li><p><code>$</code> needs also to be escaped (<code>\$</code>), notice also that a white space is included after <code>\$ '</code> and should be kept.</p></li>
-</ul>
-<p>As you see, an easy ways to change my prompt is to remove <code>:</code> the part before it up to the parts that are defined using <code>chroot</code> (on my setup this also could probably be removed, but I may log into places where chroot is specified and I am being restricted!) and<code>change</code>` for its uppercase version.</p>
-<p>For the git branch I wrote a quick function:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git_branch_show_current ()</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">{</span></span>
-<span id="cb4-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> branch <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> /dev/null <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--show-current</span></span>
-<span id="cb4-3"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span></span>
-<span id="cb4-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">}</span></span></code></pre></div>
-<p>It displays the current branch and sends any error in a dark corner of <code>/dev/null/</code>.</p>
-<p>Then I added some parenthesis to look a bit fancy, changed quotes and changed colors.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git_branch_show_current ()</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">{</span></span>
-<span id="cb5-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> branch <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> /dev/null <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--show-current</span></span>
-<span id="cb5-3"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span></span>
-<span id="cb5-4"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">}</span></span>
-<span id="cb5-5"></span>
-<span id="cb5-6"></span>
-<span id="cb5-7"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">[</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$color_prompt</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span> <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> yes <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">then</span></span>
-<span id="cb5-8">   <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">${debian_chroot</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:+</span>(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$debian_chroot</span>)<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">}</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">\[\033[31;35m\](</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">\$</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">(git_branch_show_current))\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">\$</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> "</span></span>
-<span id="cb5-9"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span></span>
-<span id="cb5-10">   <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></span>
-<span id="cb5-11"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">fi</span></span></code></pre></div>
-<p>I now have:</p>
-<ul>
-<li><p>in purple, surrounded by parenthesis, the git branch branch I am in</p></li>
-<li><p><code>:</code> a separator</p></li>
-<li><p>the basename of the repository (still in blue)</p></li>
-<li><p><code>$</code></p></li>
-</ul>
-</section>
-</section>
-<section id="other-potential-improvements" class="level1">
-<h1>Other potential improvements</h1>
-<p>Later, I may play around with using the exit value (is it 0 or not?) and maybe displaying the history number could be useful to easily rerun some commands previously used!</p>
-
-
-</section>
-
- ]]></description>
-  <category>shell</category>
-  <category>bash</category>
-  <category>linux</category>
-  <category>git</category>
-  <category>CLI</category>
-  <guid>https://branchtwigleaf.com/posts/2025-03-12_better-bash-prompt/</guid>
-  <pubDate>Mon, 17 Mar 2025 15:38:32 GMT</pubDate>
 </item>
 </channel>
 </rss>
