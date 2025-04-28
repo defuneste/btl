@@ -2,6 +2,7 @@
 title: 'Improving my default bash prompt'
 author: 'Olivier Leroy'
 categories: [shell, bash, linux, git, CLI]
+date: '2025-03-16'
 ---
 
 Even though I am not a system admin, I work frequently in remote or virtual computers other than my desktop, and Ubuntu default terminal requires me to have my username, hostname, and full directory path in my prompt ... whiiich tends to be a bit lengthy!
