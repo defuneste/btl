@@ -1,0 +1,12 @@
+---
+title: "ISPM 2019"
+categories: [VGI, OSM, "urban tree", gamification]
+author: "Olivier Leroy"
+date: "2019-06-19"
+---
+
+ISPM is the **International Society on Participatory Mapping** I presented at their second conference (June 19th, 2019) with  Pierre-Yves Gicquel and [Thierry Joliveau](https://mondegeonumerique.wordpress.com/qui/) in Espoo, Finland.  
+
+The talk focus on the new landscape, at the time, on crowdsourced naturalist and tree inventories, why for urban and/or isolated tree they should use OpenStreetMap and how gamification with the help of incorpored botanic tools could improved data quality. 
+
+Our presentation is available [HERE](https://codeberg.org/defuneste/presentations/src/branch/main/ISPM_albiziapp_2019/ISPM_albiziapp.pdf) in pdf!
