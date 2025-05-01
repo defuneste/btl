@@ -4,7 +4,7 @@
     "href": "talks.html",
     "title": "Talks",
     "section": "",
-    "text": "A short list of my recent presentations:\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nOct 20, 2024\n\n\nAUBER 2024\n\n\nFCC, broadband, package, data as code\n\n\n\n\nOct 18, 2023\n\n\nURISA 2023\n\n\nFCC, Quarto, URISA, broadband\n\n\n\n\n\nNo matching items"
+    "text": "A short list of my recent presentations:\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nOct 20, 2024\n\n\nAUBER 2024\n\n\nFCC, broadband, package, data as code\n\n\n\n\nOct 18, 2023\n\n\nURISA 2023\n\n\nFCC, Quarto, URISA, broadband\n\n\n\n\nSep 16, 2020\n\n\nGeodatadays 2020\n\n\nVGI, OSM, urban tree, gamification\n\n\n\n\nJun 19, 2019\n\n\nISPM 2019\n\n\nVGI, OSM, urban tree, gamification\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2021-03-01-sampling-allong-a-line/index.html",
@@ -194,6 +194,20 @@
     "title": "AUBER 2024",
     "section": "",
     "text": "AUBER is the Association for University Business and Economic Research, a professional organization for economic research centers at leading universities and affiliated organizations across America.\nI presented a talk on the benefits of streamlining date access using an R Package with cori.data.fcc as an example.\nThis is a short list of the advantages:\n\nAddress Data Challenges\n\nData is packaged as code to simplify data access, reduce errors, and promote collaboration.\nLow-level data transformations are codified: this makes them easy for others to reproduce.\n\nAccelerate Innovation\n\nBroadband data is packaged so that researchers can focus on analysis and insights, not data wrangling.\n\nUnlock Deeper Insights Faster\n\ncori.data.fcc provides fast access to granular details, essential for understanding broadband challenges across multiple geographic scales.\n\n\nMy presentation is available HERE!"
+  },
+  {
+    "objectID": "talks/geodata2020.html",
+    "href": "talks/geodata2020.html",
+    "title": "Geodatadays 2020",
+    "section": "",
+    "text": "The geodata days are organized by the Afigeo the french professional organization of information systems and spatial data.\nWe presented with Pierre-Yves Gicquel Albiziap, a web application to improve urban tree inventories, how it can be integrated in other systems and what are some potential uses cases.\nOur presentation, in french, is available HERE in pdf!"
+  },
+  {
+    "objectID": "talks/ispm2019.html",
+    "href": "talks/ispm2019.html",
+    "title": "ISPM 2019",
+    "section": "",
+    "text": "I presented a lecture at the second International Society on Participatory Mapping (ISPM, https://pmappingsociety.mn.co/) Conference (June 19th, 2019) with Pierre-Yves Gicquel and Thierry Joliveau in Espoo, Finland.\nThe talk focused on:\n\nThe new digital landscape for crowdsourced naturalist and tree inventories\nUsing OpenStreetMap for urban and/or isolated trees to counter data silos\nHow gamification that incorporates botanic tools can improve data quality\n\nOur presentation is available HERE in pdf!"
   },
   {
     "objectID": "index.html",
