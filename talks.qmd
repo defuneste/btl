@@ -5,7 +5,8 @@ listing:
   - id: pkgs
     contents: "/talks/"
     type: table
-    fields: [date, title, categories]  
+    fields: [date, title, categories]
+    sort: "date desc" 
 ---   
 
 A short list of my recent presentations:
