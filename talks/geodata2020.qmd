@@ -1,0 +1,12 @@
+---
+title: "Geodatadays 2020"
+categories: [VGI, OSM, "urban tree", gamification]
+author: "Olivier Leroy"
+date: "2020-09-16"
+---
+
+The [geodata days](https://www.geodatadays.fr/) are organized by the [Afigeo](https://www.afigeo.asso.fr/) the french professional organization of information systems and spatial data.  
+
+We presented with Pierre-Yves Gicquel [Albiziap](https://albiziapp.univ-lemans.fr/login), a web application to improve urban tree inventories, how it can be integrated in other systems and what are some potential uses cases.   
+
+Our presentation, in french, is available [HERE](https://codeberg.org/defuneste/presentations/src/branch/main/GeoDataDays_ol_2020/GeoDataDays_ol.pdf) in pdf!
