@@ -10,7 +10,150 @@
 <atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Message in a bottle for me</description>
 <generator>quarto-1.6.40</generator>
-<lastBuildDate>Sun, 16 Mar 2025 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 20 May 2025 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>QGIS Ricing!</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2025-05-20_qgis-ricing/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Thanks to <a href="https://mastodon.social/@AtanasE">Atanas</a> and <a href="https://mapstodon.space/@kgjenkins">Keith Jenkins</a> I learned recently that older versions of QGIS have dogs on their splash screens (the screen when QGIS is loading).</p>
+<p>You can see them well archived by <a href="https://github.com/ThomasG77">Thomas Gratier</a> <a href="https://github.com/webgeodatavore/qgis-splash-screens-birthday">here</a></p>
+<p>I liked version 0.3, which gives off strong GEOINT vibes! What if I could replace the current splash screen<sup>1</sup> with this old one?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2025-05-20_qgis-ricing/splash.png" class="img-fluid figure-img"></p>
+<figcaption><span class="citation" data-cites="QGIS">@QGIS</span> Development Team</figcaption>
+</figure>
+</div>
+<p>On Ubuntu, QGIS stores user profiles in:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">/home/defuneste/.local/share/QGIS/QGIS3/profiles</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># you can go here with </span></span>
+<span id="cb1-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> /home/<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">whoami</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span>/.local/share/QGIS/QGIS3/profiles</span></code></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can find that in <code>Setting -&gt; User Profiles -&gt; Open Actives ..</code>, please see the <a href="https://docs.qgis.org/testing/en/docs/user_manual/introduction/qgis_configuration.html#working-with-user-profiles">documentation</a> about it.</p>
+</div>
+</div>
+<section id="create-a-new-profile-to-play-with" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-new-profile-to-play-with">Create a new profile to play with:</h2>
+<p>You will automatically have a default profile folder (names <code>default</code>) containing plenty of goodies that you can experiment with.</p>
+<p>I recommend creating a new profile. You can do it with the GUI, but it is easier to write about it using command line example.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># remember to navigate to profiles/ or change path </span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cp</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-R</span> default my_profile</span>
+<span id="cb2-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> my_profiles/QGIS/</span></code></pre></div>
+<p>You should just have a <code>QGIS.ini</code> file.</p>
+</section>
+<section id="get-that-fancy-image-and-store-it" class="level2">
+<h2 class="anchored" data-anchor-id="get-that-fancy-image-and-store-it">Get that fancy image and store it:</h2>
+<p>I create a repository to store the image. Feel free to adapt accordingly</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mkdir</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> ~/.config/qgis/</span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wget</span> https://raw.githubusercontent.com/webgeodatavore/qgis-splash-screens-birthday/refs/heads/master/original-size/qgis_version_0.3.png</span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mv</span> qgis_version_0.3.png ~/.config/qgis/splash.png</span></code></pre></div>
+</section>
+<section id="customzied-it" class="level2">
+<h2 class="anchored" data-anchor-id="customzied-it">Customzied it!</h2>
+<p>We are going to create a <code>QGISCUSTOMIZATION3.ini</code> and specify our customization. I learned about it <a href="https://gis.stackexchange.com/questions/68988/customising-splash-image-of-qgis">here</a>.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-e</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"[Customization]\nsplashpath=/home/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">whoami</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/.config/qgis/"</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb4-2"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> QGISCUSTOMIZATION3.ini</span>
+<span id="cb4-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># or use your favorite text editor</span></span>
+<span id="cb4-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># if you already have QGISCUSTOMIZATION3.ini it will overwrite it</span></span></code></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is <code>Customization</code> and not <code>customization</code>, guess who made that mistake…</p>
+</div>
+</div>
+<p>Remember <code>/home/$(whoami)/.config/qgis/</code> is where I previously saved my image, it should be named <code>splash.png</code>. Now, That I think about it, I could see changing that so it would be under <code>my_profiles/</code>.</p>
+<p>After that you should just start QGIS with the specific profile and it will use the proper splash screen.</p>
+<p>This is obviously a toy example but I really like the option to customize QGIS more. It can be useful to limit the UI to specific needs for students or coworkers so they would not be overwhelmed or just to have a more “lean” and personalized interface.</p>
+<p>I am curious about what others can do! So please share your nice QGIS setup!</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>I also really like the current trend to use maps from different cities↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>QGIS</category>
+  <category>GIS</category>
+  <guid>https://branchtwigleaf.com/posts/2025-05-20_qgis-ricing/</guid>
+  <pubDate>Tue, 20 May 2025 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Improving my default bash prompt</title>
   <dc:creator>Olivier Leroy</dc:creator>
