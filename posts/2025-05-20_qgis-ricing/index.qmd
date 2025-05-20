@@ -1,0 +1,78 @@
+---
+title: 'QGIS Ricing!'
+author: 'Olivier Leroy'
+date: '2025-05-20'
+categories: [QGIS, GIS]
+---
+
+
+Thanks to [Atanas](https://mastodon.social/@AtanasE) and [Keith Jenkins](https://mapstodon.space/@kgjenkins) I learned recently that older versions of QGIS have dogs on their splash screens (the screen when QGIS is loading). 
+
+You can see them well archived by [Thomas Gratier](https://github.com/ThomasG77) [here](https://github.com/webgeodatavore/qgis-splash-screens-birthday)
+
+I liked version 0.3, which gives off strong GEOINT vibes! What if I could replace the current splash screen[^1] with this old one?
+
+[^1]: I also really like the current trend to use maps from different cities
+
+![@QGIS Development Team](splash.png)
+
+On Ubuntu, QGIS stores user profiles in: 
+
+```bash
+/home/defuneste/.local/share/QGIS/QGIS3/profiles
+
+# you can go here with 
+cd /home/$(whoami)/.local/share/QGIS/QGIS3/profiles
+```
+
+::: {.callout-tip}
+You can find that in `Setting -> User Profiles -> Open Actives ..`, please see the [documentation](https://docs.qgis.org/testing/en/docs/user_manual/introduction/qgis_configuration.html#working-with-user-profiles) about it. 
+:::
+
+## Create a new profile to play with: 
+
+You will automatically have a default profile folder (names `default`) containing plenty of goodies that you can experiment with. 
+
+I recommend creating a new profile. You can do it with the GUI, but it is easier to write about it using command line example.
+
+```bash
+# remember to navigate to profiles/ or change path 
+cp -R default my_profile
+cd my_profiles/QGIS/
+```
+You should just have a `QGIS.ini` file. 
+
+## Get that fancy image and store it: 
+
+I create a repository to store the image. Feel free to adapt accordingly
+
+```bash
+mkdir -p ~/.config/qgis/
+wget https://raw.githubusercontent.com/webgeodatavore/qgis-splash-screens-birthday/refs/heads/master/original-size/qgis_version_0.3.png
+mv qgis_version_0.3.png ~/.config/qgis/splash.png
+```
+
+## Customzied it!
+
+We are going to create a `QGISCUSTOMIZATION3.ini` and specify our customization. I learned about it [here](https://gis.stackexchange.com/questions/68988/customising-splash-image-of-qgis). 
+
+```bash
+echo -e "[Customization]\nsplashpath=/home/$(whoami)/.config/qgis/" \
+> QGISCUSTOMIZATION3.ini
+# or use your favorite text editor
+# if you already have QGISCUSTOMIZATION3.ini it will overwrite it
+```
+::: {.callout-tip}
+It is `Customization` and not `customization`, guess who made that mistake...
+:::
+
+Remember `/home/$(whoami)/.config/qgis/` is where I previously saved my image, it should be named `splash.png`. Now, That I think about it, I could see changing that so it would be under `my_profiles/`. 
+
+After that you should just start QGIS with the specific profile and it will use the proper splash screen. 
+
+This is obviously a toy example but I really like the option to customize QGIS more. It can be useful to limit the UI to specific needs for students or coworkers so they would not be overwhelmed or just to have a more "lean" and personalized interface. 
+
+I am curious about what others can do! So please share your nice QGIS setup! 
+
+
+
