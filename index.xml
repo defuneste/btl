@@ -10,7 +10,62 @@
 <atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Message in a bottle for me</description>
 <generator>quarto-1.6.40</generator>
-<lastBuildDate>Tue, 20 May 2025 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 15 Jul 2025 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>“Forest Management Becomes a Desk Job”</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2025-07-15_forest-desk-job/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Since I’ve noticed that I mostly blog about data and computer topics, I thought it was time to balance things out a bit. Today, I want to highlight a passage from a book we’re reading at home: <em><a href="https://www.ugapress.org/9780820341255/blue-ridge-commons/">Blue Ridge Commons</a></em> by <strong>Kathryn Newfont</strong>. It offers an interesting perspective on forests and data.</p>
+<section id="quick-overview" class="level2">
+<h2 class="anchored" data-anchor-id="quick-overview">Quick overview:</h2>
+<p>This won’t be a full-length book review, no time or plan for that but a bit of context: Blue Ridge Commons is a history book about <a href="https://en.wikipedia.org/wiki/Enclosure">enclosures</a> and the many forms of contestation they sparked in Western North Carolina and the broader Appalachian region. It underscores how forests (broadly defined here) have historically been sites of overlapping human activities. Enclosures, whether old or more recent, tend to limit this plurality, often reducing forests to a single function or form of “production.” The book discusses this through examples like timber harvesting for paper mills via clearcutting, as well as policy frameworks like the Wilderness Act.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2025-07-15_forest-desk-job/wilderness.png" class="img-fluid figure-img" alt="Figure 11. The southern appalachian region proved a hotbed of antiwilderness activism during the RARE II process of the late 1970. Wilderness opponents used commons-friendly arguments to draw mountain residents to their cause, casting themselves as agents of commons defense and wilderness designation and wilderness designation as a form of enclosure. [...] The sign appeared in Georgia Chattahoochee National Forest, which bordered North Carolina Nantahala From Blue Ridge Commons. The Sign says You put it in  wilderness I will put in ashes"></p>
+<figcaption>From Blue Ridge Commons, Kathryn Newfont, University of Georgia Press</figcaption>
+</figure>
+</div>
+<p><strong>Side note (from a French perspective):</strong> French foresters might point out that the concept of <em>“multifonctionnalité”</em> is enshrined in French forest law<sup>1</sup>, though opinions likely vary on how it’s applied in practice (as they should?).</p>
+</section>
+<section id="forest-management-becomes-a-desk-job" class="level2">
+<h2 class="anchored" data-anchor-id="forest-management-becomes-a-desk-job">“Forest Management Becomes a Desk Job”</h2>
+<p>This quote, which is the title of a section in Chapter 9 (“Clearcutting Returns,” p.&nbsp;237), stood out.</p>
+<p>After noting that environmental legislation introduced in the late 1970s required significant paperwork, Newfont raises an interesting point about the rise of computer technology in forestry:</p>
+<blockquote class="blockquote">
+<p>Computer analysis had become a fact of Forest Service life by the late 1970s, as personnel routinely used computer models to strategize forest management. Such models physically removed foresters from the ground to the office. The language computer models used also distanced foresters from trees. One example suffices to illustrate the pattern. “Linear program systems,” wrote one analyst in 1975, “will allow the planner to examine the effect of various decisions on the resource base (the forests) and the product output levels (e.g., timber, wildlife, and recreation).” This sentence transformed concrete specific entities […] – into abstract generalizations – the resource base, products outputs. it encouraged planners to distance themselves mentally as well as physically from the immensely complicated material web of a forest. [p.&nbsp;237]</p>
+</blockquote>
+<p>While I’m not sure abstraction itself is the main force (a good abstraction should go back and forth) driving this “distancing,” I agree that, combined with the detachment from everyday on-the-ground activity (and more), it fosters overly simplistic management practices.</p>
+<p>Later in the section, Newfont (through the voice of Bob Padgett, a recurring forester and source) notes that such “Linear Program Systems” encouraged even-aged management (think: one age group), as opposed to uneven-aged or all-aged management<sup>2</sup>. The former is simply easier for the programs to handle. It doesn’t require knowledge like “this makes a good picnic area,” or an attention to individual trees.</p>
+<blockquote class="blockquote">
+<p>“All a ranger of the future will need to do is punch his computer buttons to locate all stands of trees reaching age 80 that year, and schedule that timber for clearcutting,” Padgett explained. In managing the woods by computer, forestry become a desk job.</p>
+</blockquote>
+<p>At that point, you might even ask: why do we need a forester at all? (<a href="https://terra0.org/">Fun link, pre-AI</a>). A useful reminder that data and the models we build around it—are only one layer of a much more complex reality.</p>
+<p>If you are currently developing forest models, what are your thoughts on this?</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043975426/2021-08-25">https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043975426/2021-08-25</a>↩︎</p></li>
+<li id="fn2"><p>futaie irrégulière ou jardinée et oui ce n’est pas exactement la même chose.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>forest</category>
+  <category>book</category>
+  <category>enclosure</category>
+  <category>models</category>
+  <guid>https://branchtwigleaf.com/posts/2025-07-15_forest-desk-job/</guid>
+  <pubDate>Tue, 15 Jul 2025 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>QGIS Ricing!</title>
   <dc:creator>Olivier Leroy</dc:creator>

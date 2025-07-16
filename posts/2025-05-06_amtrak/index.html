@@ -9,7 +9,7 @@
 <meta name="author" content="Olivier Leroy">
 <meta name="dcterms.date" content="2025-05-06">
 
-<title>Amtrack: the Empire Builder – Olivier Leroy</title>
+<title>Amtrack: The Empire Builder – Olivier Leroy</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -103,35 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -191,8 +162,14 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Amtrack: the Empire Builder</h1>
-                      </div>
+      <h1 class="title">Amtrack: The Empire Builder</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">GIS</div>
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">sf</div>
+                <div class="quarto-category">OSM</div>
+              </div>
+                  </div>
   </div>
     
   
@@ -230,195 +207,188 @@ window.Quarto = {
 
 
 <p>The <a href="https://www.transit.wiki/Amtrak_Empire_Builder">Empire Builder</a> is a train that travel from Chicago to Seattle (or Portland). I was lucky to take it few years ago, never get time to blog about it, but recently <a href="https://mathstodon.xyz/@millerdl">David Lawrence Miller</a> made a really nice mastodon thread about it that nudged me to slowly collect back my notes and do this little post and spread more Amtrack love (or just train travel)!</p>
-<p>It takes two days and a half to do the trip. At that time you did not have WIFI (is it still the case?), perfect to relax with books, a computer and all the <code>man</code> pages that you never fully read or simply go to the scenic wagon to be amazed by the badlands, the Mississippi river, Montana’s moutains and a huge sample of a lot of backyards in this part of America.</p>
-<p>We were lucky to get a really good price on the small private “cabine”. If you can get one I highly recommend it. My only regret is that we did not know that you can take an Amtrack pass that allow you to stop somewhere and board on other next trains.</p>
-<p>I think it is a great way to discover a part of the US. I will try to do a bit of data analysis, visualization and share some pictures displaying the various landscapes and experiences you can get.</p>
+<p>It takes two days and a half to do the trip. At that time you did not have WIFI (is it still the case?), perfect to relax with books, a computer and all the <code>man</code> pages that you never fully read or simply go to the scenic wagon to be amazed by the badlands, the Mississippi river, Montana’s mountains and a huge sample of a lot of backyards in this part of America.</p>
+<p>We had the opportunity to get a really good price on the small private “cabine”. If you can get one I highly recommend it. My only regret is that we did not know that you can take an Amtrack pass that allow you to stop somewhere and board on other next trains.</p>
+<p>I think it is a great way to discover a big part of the US.</p>
+<p>Here, I will try to do a bit of data analysis, visualization and share some pictures displaying the various landscapes and experiences you can get.</p>
 <p>Nothing fancy, just some numbers and maps using good ol´base R.</p>
 <section id="amtrack-track-and-stations" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="amtrack-track-and-stations">Amtrack: track and stations</h2>
 <p>The fist step is to get the stops and the path that the train uses. I went with OpenStreetMap (OSM) because OSM contributors are awesome and I trust their data.</p>
-<p>If you explore a bit OSM, you can find the OSM’s <a href="https://wiki.openstreetmap.org/wiki/Relation">relation</a> for the Empire Builder - Chicago to Seattle <a href="https://www.openstreetmap.org/relation/1809794">Here</a>. I went with a classic <a href="https://overpass-turbo.eu/">overpass turbo</a> query. You need all the node and maybe way that are with that relation. I also wrote a bit about <a href="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/">overpass</a>. I used the export option from overpass since I failed to reproduce the export with <code>[osmtogeojson](https://github.com/tyrasd/osmtogeojson)</code> (OSM json uses an other way to represent data that geojson).</p>
+<p>If you explore a bit OSM, you can find the OSM’s <a href="https://wiki.openstreetmap.org/wiki/Relation">relation</a> for the Empire Builder: Chicago to Seattle <a href="https://www.openstreetmap.org/relation/1809794">Here</a>. I went with a classic <a href="https://overpass-turbo.eu/">overpass turbo</a> query. You need all the node and maybe way that are with that relation. I used the export option from overpass since I failed to reproduce the export with <a href="https://github.com/tyrasd/osmtogeojson"><code>osmtogeojson</code></a> (OSM json uses an other way to represent data than geojson).</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
-<p>I always need to read the doc of <a href="https://overpass-api.de/command_line.html">overpass API</a></p>
-</div></div><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[out:json][timeout:120]</span><span class="kw">;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">relation</span><span class="er">(</span><span class="ex">1809794</span><span class="kw">);</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">node</span><span class="er">(</span><span class="ex">r</span><span class="kw">);</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">way</span><span class="er">(</span><span class="ex">r</span><span class="kw">);</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">);</span></span>
+<p>I also wrote a bit about <a href="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/">overpass</a> since I am an huge fan but I always need to read the doc of <a href="https://overpass-api.de/command_line.html">overpass API</a></p>
+</div></div><div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>[out<span class="sc">:</span>json][timeout<span class="sc">:</span><span class="dv">120</span>];</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relation</span>(<span class="dv">1809794</span>);</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">node</span>(r);</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">way</span>(r);</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>);</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">out</span> body<span class="kw">;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span><span class="kw">;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">out</span> skel qt<span class="kw">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The geojson can be accessed here TODO.</p>
-<p>We have now a geometry collection with points and a multilinestring. I usually prefer to keep one geometry type per layer. I will split stations and the train track then put then in list, basically rebuilding a geometry collection but with a structure that I like. I will also remove some duplicated informations.</p>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>out body;</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>;</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>out skel qt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The geojson can be accessed in a personal R package <a href="https://codeberg.org/defuneste/btl.data">here</a>.</p>
+<p>We have now a geometry collection with points and a multilinestring. I usually prefer to keep one geometry type per layer. I will split stations and the train track then put then in list, basically “faking” a geometry collection in list instead of one table. I will also remove some duplicated information.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</code></pre>
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>read_wrangle <span class="ot">&lt;-</span> <span class="cf">function</span>(path_geosjon, <span class="at">quiet =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  empire_raw <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(path_geosjon, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sticky geometry and specify what I need</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  empire_slim <span class="ot">&lt;-</span> empire_raw[, <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"name"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"network"</span>, <span class="st">"public_transport"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"railway.ref"</span>)]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># store in list so each elements is a unique sf type</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  empire <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">track =</span> sf<span class="sc">::</span><span class="fu">st_collection_extract</span>(empire_slim, <span class="at">type =</span> <span class="st">"LINESTRING"</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">stations =</span> sf<span class="sc">::</span><span class="fu">st_collection_extract</span>(empire_slim, <span class="at">type =</span> <span class="st">"POINT"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>quiet) <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">"CRS is %s"</span>, sf<span class="sc">::</span><span class="fu">st_crs</span>(empire_raw)<span class="sc">$</span>input))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(empire)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="st">"data/raw.geojson"</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>read_wrangle <span class="ot">&lt;-</span> <span class="cf">function</span>(path_geosjon) {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  empire_raw <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(path_geosjon, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># X columns are duplicated, remove them </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  empire_raw<span class="sc">$</span>X.id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  empire_raw<span class="sc">$</span>X.relations <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># store in list </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  empire <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">track =</span> empire_raw[<span class="dv">1</span>,],</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">stations =</span> empire_raw[<span class="sc">-</span><span class="dv">1</span>,]</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">"CRS is %s"</span>, sf<span class="sc">::</span><span class="fu">st_crs</span>(empire_raw)<span class="sc">$</span>input))</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(empire)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>} </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>empire <span class="ot">&lt;-</span> <span class="fu">read_wrangle</span>(path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CRS is WGS 84</code></pre>
-</div>
+<p>To make my life a bit easier in this post I loaded that data set in a <a href="https://codeberg.org/defuneste/btl.data">small package</a>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"btl.data"</span>); <span class="fu">suppressMessages</span>(<span class="fu">library</span>(<span class="st">"sf"</span>)); <span class="fu">library</span>(<span class="st">"tmap"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>empire <span class="ot">&lt;-</span> btl.data<span class="sc">::</span>empire_builder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <section id="first-map-of-the-train-line-and-its-stations" class="level3">
 <h3 class="anchored" data-anchor-id="first-map-of-the-train-line-and-its-stations">First map of the train line and its stations</h3>
 <p>I like doing a quick map first:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(empire<span class="sc">$</span>track<span class="sc">$</span>geometry) <span class="co"># plot the line</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(empire<span class="sc">$</span>stations<span class="sc">$</span>geometry <span class="co"># plot each stops</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     , <span class="at">col =</span> <span class="st">"darkred"</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     , <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(empire<span class="sc">$</span>track<span class="sc">$</span>geometry) <span class="co"># plot the line</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(empire<span class="sc">$</span>stations<span class="sc">$</span>geometry <span class="co"># plot each stops</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>     , <span class="at">col =</span> <span class="st">"darkred"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     , <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>(<span class="at">which =</span> <span class="st">"figure"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/first_plot-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/first_plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This is not the greatest map but I like how it could look like a transect. Biogeographers since long time ago<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> used transect and I think it is an underused way of sampling!</p>
+<p>This is not the greatest map but I like how it could look like a transect. Biogeographers since long time ago<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> used transect and I think it is an underused way of sampling or doing some storytelling!</p>
 <p>We have 41 stations<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> for 3553.33 km.</p>
 </section>
+<section id="getting-administrative-layers" class="level3">
+<h3 class="anchored" data-anchor-id="getting-administrative-layers">Getting administrative layers:</h3>
+<section id="states" class="level4">
+<h4 class="anchored" data-anchor-id="states">States!</h4>
+<p>First let’s get some states layers and see if we can bring a bit of context. I used US Census data, directly with their old school FTP. GDAL is really amazing and the <a href="https://gdal.org/en/stable/user/virtual_file_systems.html">virtual file systems</a> that it provides really simplify a lot. <a href="https://r-spatial.github.io/sf/">{sf}</a> integrates quite well with it.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>state_zip <span class="ot">&lt;-</span> <span class="st">"/vsizip//vsicurl/https://www2.census.gov/geo/tiger/TIGER2024/STATE/tl_2024_us_state.zip"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># quick look: </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># system(sprintf("ogrinfo %s", state_zip))</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">"select </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">  REGION as region, </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">  DIVISION as division, </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">  STATEFP as geoid_st,</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">  NAME as name</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">from </span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">  tl_2024_us_state</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">order by STATEF`</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="st">  "</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>us_states <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">read_sf</span>(state_zip, <span class="at">query =</span> q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>For my convenience, I think I will re-use States boundaries and I want to avoid downloading the data every time quarto process the file I also stored that logic and the data in a package (the same mention above).</p>
+<p>Since I was interested in “continental” US I filtered US territories Hawaii and Alaska. I also tried <a href="https://r-tmap.github.io/tmap/">{tmap}</a> to change a bit. So far I am still a bit lost between the version 3 and 4 but I like end results.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>us_states <span class="ot">&lt;-</span> btl.data<span class="sc">::</span>us_states</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sorry Alaska, Hawaii and US territories (I will bring you back later) </span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>nop_states <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"02"</span>, <span class="st">"15"</span>, <span class="st">"60"</span>, <span class="st">"66"</span>, <span class="st">"69"</span>, <span class="st">"72"</span>, <span class="st">"78"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>quick_index <span class="ot">&lt;-</span> us_states<span class="sc">$</span>geoid_st <span class="sc">%in%</span> <span class="fu">setdiff</span>(us_states<span class="sc">$</span>geoid_st, nop_states)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>us_limited <span class="ot">&lt;-</span> us_states[quick_index,]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>us_limited_border <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_union</span>(us_limited<span class="sc">$</span>geometry)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># converting to the same CRS</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>NAD83 <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_crs</span>(us_states)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>rail.shp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_transform</span>(empire<span class="sc">$</span>track, NAD83)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>stations.shp <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_transform</span>(empire<span class="sc">$</span>station, NAD83)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># just the states crossed by the train</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>eb_states <span class="ot">&lt;-</span> us_limited[rail.shp,]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(us_limited_border) <span class="sc">+</span> <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(eb_states<span class="sc">$</span>geometry) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(rail.shp<span class="sc">$</span>geometry) <span class="sc">+</span> <span class="fu">tm_lines</span>() <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(stations.shp<span class="sc">$</span>geometry) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">shape =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">size =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_credits</span>(<span class="st">"Data source: US Census and OpenStreetMap Contributors"</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/getting_states_ct-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="administratives-layers" class="level1">
-<h1>Administrative’s layers</h1>
-<section id="getting-states-layers" class="level2">
-<h2 class="anchored" data-anchor-id="getting-states-layers">Getting States Layers</h2>
-<p>I don’t have any experience with US official data so it was also interesting to try them. Of course I could have also used OSM data (download <code>.pbf</code> store everything in a quick Postgres/Postgis DB and play with it) and used my previous experience with it in other countries but starting with official data is a bit less voluminous and are usually already organized in layers.</p>
-<p>[TODO give the link of the data provider]</p>
-<p>I downloaded way too much data here (some looks really interesting!) but for a background map I will just start with each states border:</p>
-<p>```r states_border # a list of every states crossed states_list &lt;- c(“Idaho”, “Illinois”, “North Dakota”, “Minnesota”, “Montana”, “Washington”, “Wisconsin”)</p>
+<section id="world-scale" class="level4">
+<h4 class="anchored" data-anchor-id="world-scale">World scale!</h4>
+<p>I also wanted to display that the Empire Builder in a “world perspective”! Yes this quite a long trip!</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>wrap_st_transform <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  my_proj <span class="ot">&lt;-</span> <span class="st">"+proj=laea +x_0=0 +y_0=0 +lon_0=-87 +lat_0=41.5 +ellps=WGS84 +no_defs"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(x, my_proj)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>w_filepath <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"shapes/world.gpkg"</span>, <span class="at">package =</span> <span class="st">"spData"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">read_sf</span>(w_filepath) <span class="sc">|&gt;</span> <span class="fu">wrap_st_transform</span>()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># I stole that code for the excellent: https://r.geocompx.org/reproj-geo-data#mapproj</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># I like it more than the graticule argument in plot method for sf</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>world_laea2_g <span class="ot">=</span> sf<span class="sc">::</span><span class="fu">st_graticule</span>(<span class="at">ndiscr =</span> <span class="dv">10000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">wrap_st_transform</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_geometry</span>()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(world$geom)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(world_laea2_g, col = "grey", add = TRUE) </span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(wrap_st_transform(rail.shp$geometry), col = "darkred", add = TRUE, lwd = 3)</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># box(which = "figure")</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(world<span class="sc">$</span>geom) <span class="sc">+</span> <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(world_laea2_g) <span class="sc">+</span> <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(<span class="fu">wrap_st_transform</span>(rail.shp<span class="sc">$</span>geometry)) <span class="sc">+</span> <span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_credits</span>(<span class="st">"Data source: OpenStreetMap Contributors"</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>, <span class="at">position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/world_map-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-</section>
-<section id="loading-few-states-or-territory-every-state-has-his-bordering-states" class="level1">
-<h1>loading few “States or Territory” every state has his bordering states</h1>
-<p>state &lt;- sf::read_sf(“data/data_raw/GU_StateOrTerritory.shp”) WI_states &lt;-sf::read_sf(“data/data_raw/WI_GU_StateOrTerritory.shp”) ND_states &lt;- sf::read_sf(“data/data_raw/ND_GU_StateOrTerritory.shp”)</p>
-</section>
-<section id="combining-them" class="level1">
-<h1>combining them</h1>
-<p>eb_states &lt;- rbind( state[state<span class="math inline">\(State_Name %in% states_list,]
-    , WI_states[WI_states\)</span>State_Name %in% states_list, ] , ND_states[ND_states$State_Name == “North Dakota”, ] )</p>
-<pre><code>
-### Improved a bit our Map
-
-We will have to use the same CRS. I decided to keep the one provided with official data, hoping they picked the best one. 
-
-```r map_with_stater_border
-# transfom with eb_states CRS
-rail.shp &lt;- sf::st_transform(rail.shp, st_crs(eb_states))
-stations.shp &lt;- sf::st_transform(stations.shp, st_crs(eb_states))
-
-plot(eb_states$geometry, border = "grey")
-plot(rail.shp$geometry, add = TRUE)
-plot(stations.shp$geometry
-     , col = "darkred"
-     , add = TRUE)</code></pre>
-<p><code>r removing_uneeded_added_init eb_states &lt;- eb_states[,c("State_FIPS","State_Name")] eb_states &lt;- eb_states[order(eb_states$State_FIPS),] eb_states$State_Short &lt;- c("ID", "IL", "MI", "MT", "ND", "WA", "WI") states_short &lt;- sf::st_centroid(eb_states)</code></p>
-<p>This is a bit better but it will require a bit more tuning later.</p>
-<section id="counties-and-some-demographics" class="level2">
-<h2 class="anchored" data-anchor-id="counties-and-some-demographics">Counties and some demographics</h2>
-<p>I feel this trip provided me with a lot of insight of what is the <em>“backyard of America”</em> (I stole that from one of the other passenger). But I wanted to see if I can get a bit more with basic counties’s data ? (I was inspired by [TODO link] carreyage but I will probably need mor time to (1) understand where does this data cone from and (2) find a smaller administrative unit).</p>
-<p><code>r empire_builder_counties # loading counties 2018 TODO see what is 500k counties_raw &lt;- sf::read_sf("data/data_raw/cb_2018_us_county_500k/cb_2018_us_county_500k.shp") # only keep the one on the Empire Builder eb_counties &lt;- counties_raw[rail.shp,] plot(eb_counties$geometry)</code></p>
-<p>The Empire Builder is crossing 7 States and 61 counties.</p>
-<p>```r empire_builer_list_counties eb_states_short &lt;- st_drop_geometry(eb_states) eb_counties.df &lt;- sf::st_drop_geometry(eb_counties) eb_counties.df &lt;- merge(eb_states_short, eb_counties.df, by.x = “State_FIPS”, by.y = “STATEFP”)</p>
-<p>DT::datatable(eb_counties.df)</p>
-<pre><code>
-## Adding a bit more to it 
-
-It look like `GEOID` is `State_FIPS` + `COUNTYFP` (and if COUNTYFP has only two digit you need to add 0).
-
-```r adding_census}
-## loading data
-counties_data &lt;- read.csv("data/data_raw/co-est2019-alldata.csv")
-
-# without metadata I am lost so I just keep basic columns
-small_counties_data &lt;- counties_data[,c("STATE", "COUNTY", "CTYNAME", "POPESTIMATE2019",  "CENSUS2010POP")]
-
-# I need GEOID to merge to spatial data
-small_counties_data$GEOID &lt;- (small_counties_data$STATE * 1000) + small_counties_data$COUNTY 
-# keeping only the counties crossed by the Empire Builder
-eb_counties_data &lt;- small_counties_data[small_counties_data$GEOID %in% eb_counties.df$GEOID, ]
-# merging with spatial data
-eb_counties &lt;- merge(eb_counties, eb_counties_data, by.x = "GEOID", by.y = "GEOID")
-
-# Census need to be density so we can compare them
-# units in this CRS was meter, so area are in square n then transform km2
-eb_counties$area_km2 &lt;- as.numeric(st_area(eb_counties)/1000000)
-# density
-eb_counties$density_hab_km2 &lt;- eb_counties$CENSUS2010POP/eb_counties$area_km2
-
-plot(eb_counties["density_hab_km2"])</code></pre>
-</section>
-<section id="amtrack" class="level2">
-<h2 class="anchored" data-anchor-id="amtrack">Amtrack!</h2>
-<section id="relations-with-networkamtrack" class="level3">
-<h3 class="anchored" data-anchor-id="relations-with-networkamtrack">Relations with network=“Amtrack”</h3>
-<p>The First step is collecting data about Amtrack. I went with a query that get all <a href="https://wiki.openstreetmap.org/wiki/Relation">relations</a>. A csv file with the relation id and name but without coordinates was enough because at first we just want to pinpoint the relation that we need without downloading too much from the server.</p>
-<p>I have tuned the request in overpass turbo then used cURL.</p>
-<p>I moved the csv in the <code>data/</code> repertory.</p>
-</section>
-<section id="cleaning-the-csv" class="level3">
-<h3 class="anchored" data-anchor-id="cleaning-the-csv">Cleaning the csv</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>relations_amtrack <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../Data/relation_amtrack.csv"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># we can drop relation and clean names</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(relations_amtrack) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"rel"</span>, <span class="st">"id"</span>, <span class="st">"name"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>relations_amtrack <span class="ot">&lt;-</span> relations_amtrack[, <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"name"</span>)]      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We just need the one with <code>=</code> in their name: “Amtrak Wolverine: Pontiac =&gt; Chicago”</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>relations_amtrack <span class="ot">&lt;-</span> relations_amtrack[<span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">"="</span>, relations_amtrack<span class="sc">$</span>name),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Better! But we are still facing some trouble:</p>
-<ul>
-<li><p>we have potential duplicates: see <code>Amtrak Keystone Service: Harrisburg =&gt; Philadelphia</code></p></li>
-<li><p>we have two way: see <code>Seattle =&gt; Chicago</code> and <code>Chicago =&gt; Seattle</code></p></li>
-</ul>
-<p>We need to understand why we have duplicates.</p>
-</section>
-<section id="identify-one-track-that-get-all-the-informations" class="level3">
-<h3 class="anchored" data-anchor-id="identify-one-track-that-get-all-the-informations">Identify one track that get all the informations</h3>
-<p>Let see how many distinct name we get:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>unique_track <span class="ot">&lt;-</span>  <span class="fu">aggregate</span>(<span class="at">data =</span> relations_amtrack,</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>          id <span class="sc">~</span> name,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">length</span>(<span class="fu">unique</span>(x)))</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>unique_track[<span class="fu">order</span>(unique_track<span class="sc">$</span>id, <span class="at">decreasing =</span> <span class="cn">TRUE</span>),]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( unique_track<span class="sc">$</span>id <span class="sc">&gt;</span> <span class="dv">1</span> ) <span class="co"># number of track that have more than one relation </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Start with one:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>relations_amtrack[relations_amtrack<span class="sc">$</span>name <span class="sc">==</span><span class="st">"Amtrak Keystone Service: Harrisburg =&gt; Philadelphia"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For each relation we will construct a query that just ask the number of elements linked to that relations. This creates a bunch of files but I failed to understand how the statistical count works in overpass APi.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>list_double <span class="ot">&lt;-</span> relations_amtrack<span class="sc">$</span>id[relations_amtrack<span class="sc">$</span>name <span class="sc">==</span><span class="st">"Amtrak Keystone Service: Harrisburg =&gt; Philadelphia"</span>]</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>my_path <span class="ot">&lt;-</span> <span class="st">"../Data/temp/"</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_double)) {</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeLines</span>(<span class="fu">paste0</span>(<span class="st">"[out:csv(::count)];relation("</span>,list_double[i], <span class="st">");&gt;;out count;"</span>), </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">paste0</span>(my_path, <span class="st">"query.osm"</span>))</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># besoin de wget</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">download.file</span>(<span class="st">"https://overpass-api.de/api/interpreter"</span>, <span class="at">method =</span> <span class="st">"wget"</span>,</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">destfile =</span> <span class="fu">paste0</span>(my_path, list_double[i], <span class="st">".osm"</span>) ,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">extra =</span> <span class="fu">paste0</span>(<span class="st">"--post-file="</span>,</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>                  my_path,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"query.osm"</span>))</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="counties-with-some-data" class="level4">
+<h4 class="anchored" data-anchor-id="counties-with-some-data">Counties with some data!</h4>
+<p>I feel this trip provided me with a lot of insight of what is the <em>“backyard of America”</em> (I stole that from one of the other passenger). But I wanted to see if I can get a bit more with basic counties’s data?</p>
 
 
 </section>
