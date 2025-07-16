@@ -34,12 +34,10 @@ Later in the section, Newfont (through the voice of Bob Padgett, a recurring for
 
 > "All a ranger of the future will need to do is punch his computer buttons to locate all stands of trees reaching age 80 that year, and schedule that timber for clearcutting," Padgett explained. In managing the woods by computer, forestry become a desk job.  
 
-At that point, you might even ask: why do we need a forester at all? ([Fun link, pre-AI](https://terra0.org/)). A useful reminder that data and the models we build around it—are only one layer of a much more complex reality. 
+At that point, you might even ask: why do we need a forester at all? ([Fun link, pre-AI](https://terra0.org/)). A useful reminder that data and the models we build around it, are only one layer of a much more complex reality. 
 
 If you are currently developing forest models, what are your thoughts on this?
 
-
-[^1]: Subtitle: Environmental Activism and Forest History in Western North Carolina 
 
 [^2]: [https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043975426/2021-08-25](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043975426/2021-08-25)
 
