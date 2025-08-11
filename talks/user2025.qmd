@@ -1,0 +1,14 @@
+---
+title: "UseR 2025"
+categories: [FCC, package, S3, DuckDB]
+author: "Olivier Leroy"
+date: "2025-08-09"
+---
+
+I was fortunate to present at the [UseR Conference](https://user2025.r-project.org/) (Raleigh, North Carolina). It was a great and fun conference so I would like to thanks all the organizers, sponsors and participants to make it that way! 
+
+My talks focus on why you should wrap [DuckDB](https://duckdb.org/) and [S3](https://aws.amazon.com/s3/) in a R package. I think it provides an unique way to curate, organize and simplify access to data that otherwise would be more difficult to obtain. 
+
+So far I have not see use case of this workflow and I think the benefits to implement it greatly out balance the slight cost of setting it up. Leveraging the R package ecosystem significantly enhances the experience of building and using it.   
+
+My presentation is available [HERE](https://defuneste.codeberg.page/useR_2025/)!
