@@ -3,6 +3,7 @@ title: 'Improving my default bash prompt'
 author: 'Olivier Leroy'
 categories: [shell, bash, linux, git, CLI]
 date: '2025-03-16'
+date-modified: '2025-10-12'
 ---
 
 Even though I am not a system admin, I work frequently in remote or virtual computers other than my desktop, and Ubuntu default terminal requires me to have my username, hostname, and full directory path in my prompt ... whiiich tends to be a bit lengthy!
@@ -111,6 +112,14 @@ return
 
 It displays the current branch and sends any error in a dark corner of `/dev/null/`.
 
+::: {.callout-tip}
+## Update 2025-10-12
+
+I found recently that `git` has a [small script](https://git-scm.com/book/id/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Bash) that produce a similar function but way better. 
+
+Use it! 
+:::
+
 Then I added some parenthesis to look a bit fancy, changed quotes and changed colors.
 
 ```bash
@@ -127,6 +136,19 @@ else
 fi
 ```
 
+My new version including git provided function is now: 
+
+```bash
+if [ "$color_prompt" = yes ]; then
+	PS1="${debian_chroot:+($debian_chroot)}\[\033[31;35m\]\$(__git_ps1 '(%s)')\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ "
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+
+```
+
+The function `__git_ps1` is taking an optional argument to format the returned string. I like `()`so I used that. 
+
 I now have:
 
 - in purple, surrounded by parenthesis, the git branch branch I am in
@@ -136,6 +158,8 @@ I now have:
 - the basename of the repository (still in blue)
 
 - `$ `
+
+
 
 # Other potential improvements
 
