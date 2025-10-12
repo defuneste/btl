@@ -382,6 +382,20 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">}</span></span></code></pre></div>
 <p>It displays the current branch and sends any error in a dark corner of <code>/dev/null/</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Update 2025-10-12
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I found recently that <code>git</code> has a <a href="https://git-scm.com/book/id/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Bash">small script</a> that produce a similar function but way better.</p>
+<p>Use it!</p>
+</div>
+</div>
 <p>Then I added some parenthesis to look a bit fancy, changed quotes and changed colors.</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -470,6 +484,70 @@ font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></sp
 background-color: null;
 font-weight: bold;
 font-style: inherit;">fi</span></span></code></pre></div>
+<p>My new version including git provided function is now:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">[</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$color_prompt</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> yes <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span></span>
+<span id="cb6-2">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${debian_chroot</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:+</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$debian_chroot</span>)<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\[\033[31;35m\]</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">(__git_ps1 '(%s)')\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\$</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> "</span></span>
+<span id="cb6-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span></span>
+<span id="cb6-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PS1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></span>
+<span id="cb6-5"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">fi</span></span></code></pre></div>
+<p>The function <code>__git_ps1</code> is taking an optional argument to format the returned string. I like <code>()</code>so I used that.</p>
 <p>I now have:</p>
 <ul>
 <li><p>in purple, surrounded by parenthesis, the git branch branch I am in</p></li>

@@ -190,6 +190,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
     </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">October 12, 2025</p>
+      </div>
+    </div>
       
     </div>
     
@@ -272,6 +278,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>It displays the current branch and sends any error in a dark corner of <code>/dev/null/</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Update 2025-10-12
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I found recently that <code>git</code> has a <a href="https://git-scm.com/book/id/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Bash">small script</a> that produce a similar function but way better.</p>
+<p>Use it!</p>
+</div>
+</div>
 <p>Then I added some parenthesis to look a bit fancy, changed quotes and changed colors.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git_branch_show_current ()</span> <span class="kw">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> branch <span class="dv">2</span><span class="op">&gt;</span> /dev/null <span class="at">--show-current</span></span>
@@ -284,6 +304,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>   <span class="va">PS1</span><span class="op">=</span><span class="st">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>My new version including git provided function is now:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$color_prompt</span><span class="st">"</span> <span class="ot">=</span> yes <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">PS1</span><span class="op">=</span><span class="st">"</span><span class="va">${debian_chroot</span><span class="op">:+</span>(<span class="va">$debian_chroot</span>)<span class="va">}</span><span class="st">\[\033[31;35m\]</span><span class="dt">\$</span><span class="st">(__git_ps1 '(%s)')\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]</span><span class="dt">\$</span><span class="st"> "</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">PS1</span><span class="op">=</span><span class="st">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The function <code>__git_ps1</code> is taking an optional argument to format the returned string. I like <code>()</code>so I used that.</p>
 <p>I now have:</p>
 <ul>
 <li><p>in purple, surrounded by parenthesis, the git branch branch I am in</p></li>
