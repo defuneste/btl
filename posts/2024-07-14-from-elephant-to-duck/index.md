@@ -12,4 +12,4 @@ With [John Hall](https://real-currents.com/dev/) we wrote a blog post about movi
 
 > There are a lot of conversations — understandably — on the use of Apache Parquet, Apache Arrow and DuckDB. [...] Let’s see an example of how they can be used to convert a table in a PostgresSQL database to a parquet file:
 
-You can find the post on CORI's Map and data analytics team [blog](https://ruralinnovation.github.io/blog/posts/pg_duckdb/). 
+You can find the post on CORI's Map and data analytics team [blog](https://ruralinnovation.github.io/blog/posts/06_pg_duckdb/). 
