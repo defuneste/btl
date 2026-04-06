@@ -9,8 +9,66 @@
 <link>https://branchtwigleaf.com/</link>
 <atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Message in a bottle for me</description>
-<generator>quarto-1.6.40</generator>
-<lastBuildDate>Tue, 15 Jul 2025 04:00:00 GMT</lastBuildDate>
+<generator>quarto-1.8.26</generator>
+<lastBuildDate>Sun, 04 Jan 2026 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Hello Guix!</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2026-01-04-hello-guix/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This post will be about my totally beginner test of Guix. I do not claim any particular skill in the domain and I could be wrong and/or have bad assumptions.</p>
+<section id="so-.." class="level2">
+<h2 class="anchored" data-anchor-id="so-..">So ..</h2>
+<section id="why-make-a-post" class="level3">
+<h3 class="anchored" data-anchor-id="why-make-a-post">.. why make a post?</h3>
+<p>Well, writing help me organize my though with multiple added bonus:</p>
+<ul>
+<li><p>Other can react to it and claryfied part of my assumptions/errors</p></li>
+<li><p>It can encourage other sharing their first step learning something new</p></li>
+</ul>
+</section>
+<section id="what-is-guix" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-guix">.. what is Guix?</h3>
+<p><a href="https://guix.gnu.org/">Guix</a> is a functional packages manager. The goal of a package manager is to maintain and build softwares.</p>
+<p>The claims of functional packages managers is that you can explicitly encapsulate all of the process to build a software in <em>functions</em> and get back an explicit environement. I am still one hundred percent not satisfied with that definition but I needed one to start!</p>
+<p>The advantage should be that you could have more easily multiple environements and share them. This is useful in reproducible research but even at my small scale I clearly see the benefit to have a declarative tool that will help me in developement.</p>
+<p>One aspiration goal should be to easily build GDAL and have environement pre and post the version 3.10.</p>
+<p>What are the difference and benefit versus docker (or podman) and/or virtual environement? All of that are good questions that are also in my mind. I just started grasping it and hopefully would be able to have clear awnsers later.</p>
+</section>
+<section id="why-not-using-nix-the-other-functional-package-manager" class="level3">
+<h3 class="anchored" data-anchor-id="why-not-using-nix-the-other-functional-package-manager">..why not using Nix (the other functional package manager)?</h3>
+<p>Since I am beginner I have no idea if that would have been better, you need to s tart somewhere. I picked Guix because of the Licence, the use of Guile a Scheme implementation and the fact that researchers are working on it (other researchers are probaly also working in Nix, it could be just that I am not aware of it).</p>
+</section>
+</section>
+<section id="hello-world" class="level2">
+<h2 class="anchored" data-anchor-id="hello-world">Hello World!</h2>
+</section>
+<section id="issue-i-had-on-ubunutu-24.4" class="level2">
+<h2 class="anchored" data-anchor-id="issue-i-had-on-ubunutu-24.4">Issue I had on ubunutu 24.4</h2>
+<p>apparmor was blocking guix <span class="citation" data-cites="baleine">@baleine</span> save me and I find this link: https://guix.gnu.org/manual/1.5.0/en/html_node/AppArmor-Support.html</p>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<p>https://learninglab.gitlabpages.inria.fr/mooc-rr/mooc-rr2-ressources/module2/seq6-functional_package_manager/unit1/unit1.1-lecture.html</p>
+<p>https://hpc.guix.info/blog/2022/12/cran-a-practical-example-for-being-reproducible-at-large-scale-using-gnu-guix/</p>
+<p>stuff for cURL: https://guix.gnu.org/manual/devel/en/html_node/X_002e509-Certificates.html</p>
+<p>I plan to continue exploring it and hopefully make more posts as I progress!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>scheme</category>
+  <category>guix</category>
+  <category>functional programming</category>
+  <guid>https://branchtwigleaf.com/posts/2026-01-04-hello-guix/</guid>
+  <pubDate>Sun, 04 Jan 2026 05:00:00 GMT</pubDate>
+</item>
 <item>
   <title>“Forest Management Becomes a Desk Job”</title>
   <dc:creator>Olivier Leroy</dc:creator>
@@ -86,7 +144,7 @@
 </figure>
 </div>
 <p>On Ubuntu, QGIS stores user profiles in:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">/home/defuneste/.local/share/QGIS/QGIS3/profiles</span></span>
 <span id="cb1-2"></span>
@@ -101,7 +159,7 @@ font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">whoami</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">)</span>/.local/share/QGIS/QGIS3/profiles</span></code></pre></div>
+font-style: inherit;">)</span>/.local/share/QGIS/QGIS3/profiles</span></code></pre></div></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -119,7 +177,7 @@ Tip
 <h2 class="anchored" data-anchor-id="create-a-new-profile-to-play-with">Create a new profile to play with:</h2>
 <p>You will automatically have a default profile folder (names <code>default</code>) containing plenty of goodies that you can experiment with.</p>
 <p>I recommend creating a new profile. You can do it with the GUI, but it is easier to write about it using command line example.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># remember to navigate to profiles/ or change path </span></span>
 <span id="cb2-2"><span class="fu" style="color: #4758AB;
@@ -129,13 +187,13 @@ background-color: null;
 font-style: inherit;">-R</span> default my_profile</span>
 <span id="cb2-3"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit;">cd</span> my_profiles/QGIS/</span></code></pre></div>
+font-style: inherit;">cd</span> my_profiles/QGIS/</span></code></pre></div></div>
 <p>You should just have a <code>QGIS.ini</code> file.</p>
 </section>
 <section id="get-that-fancy-image-and-store-it" class="level2">
 <h2 class="anchored" data-anchor-id="get-that-fancy-image-and-store-it">Get that fancy image and store it:</h2>
 <p>I create a repository to store the image. Feel free to adapt accordingly</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mkdir</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -145,12 +203,12 @@ background-color: null;
 font-style: inherit;">wget</span> https://raw.githubusercontent.com/webgeodatavore/qgis-splash-screens-birthday/refs/heads/master/original-size/qgis_version_0.3.png</span>
 <span id="cb3-3"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">mv</span> qgis_version_0.3.png ~/.config/qgis/splash.png</span></code></pre></div>
+font-style: inherit;">mv</span> qgis_version_0.3.png ~/.config/qgis/splash.png</span></code></pre></div></div>
 </section>
 <section id="customzied-it" class="level2">
 <h2 class="anchored" data-anchor-id="customzied-it">Customzied it!</h2>
 <p>We are going to create a <code>QGISCUSTOMIZATION3.ini</code> and specify our customization. I learned about it <a href="https://gis.stackexchange.com/questions/68988/customising-splash-image-of-qgis">here</a>.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -175,7 +233,7 @@ background-color: null;
 font-style: inherit;"># or use your favorite text editor</span></span>
 <span id="cb4-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># if you already have QGISCUSTOMIZATION3.ini it will overwrite it</span></span></code></pre></div>
+font-style: inherit;"># if you already have QGISCUSTOMIZATION3.ini it will overwrite it</span></span></code></pre></div></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -236,7 +294,7 @@ Tip
 <li><p>A <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html">script</a> to test colors on bash!</p></li>
 <li><p>a very nice way of using local variables in function to make it more readable:</p></li>
 </ul>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># [...] plenty of code above</span></span>
 <span id="cb1-2"><span class="bu" style="color: null;
@@ -250,7 +308,7 @@ background-color: null;
 font-style: inherit;">"\[\033[1;30m\]"</span></span>
 <span id="cb1-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># [...] then using $GRAY</span></span></code></pre></div>
+font-style: inherit;"># [...] then using $GRAY</span></span></code></pre></div></div>
 <ul>
 <li><p>Examples using PROMPT_COMMAND variables</p></li>
 <li><p>Using functions to switch prompt styles (happy_day_prompt /sad_day_prompt, anyone?)</p></li>
@@ -261,7 +319,7 @@ font-style: inherit;"># [...] then using $GRAY</span></span></code></pre></div>
 <h2 class="anchored" data-anchor-id="stuff-that-i-learned-and-that-i-am-going-to-use">Stuff that I learned and that I am going to use</h2>
 <p>In bash, <code>.bashrc</code> seems to be the place (I am deferring to Giles Orr here) to either <code>source</code> another script with your functions setting your prompt or to directly set your prompt.</p>
 <p>In Ubuntu it seems my <code>.bashrc</code> already had some lines of codes to handle the prompt (depending if my terminal can handle color or not):</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># color_prompt and debian_chroot are declare a bit above</span></span>
 <span id="cb2-2"><span class="cf" style="color: #003B4F;
@@ -307,10 +365,10 @@ font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></sp
 <span id="cb2-6"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">fi</span></span></code></pre></div>
+font-style: inherit;">fi</span></span></code></pre></div></div>
 <p>I think it is easier for a quick implementation to just modify those lines instead of sourcing a specific function.</p>
 <p>You can also do <code>echo $PS1</code>to check what is yours. If you want to play with it first before updating the file you should follow the same pattern provided by Giles Orr:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="va" style="color: #111111;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">SAVE</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -336,7 +394,7 @@ font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$SAVE</span> <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># back to the original</span></span></code></pre></div>
+font-style: inherit;"># back to the original</span></span></code></pre></div></div>
 <p>If, like me, you did not grow up with ASCII code and bash <a href="https://tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html">Prompt Escape Sequences</a> this is the one you need to understand:</p>
 <ul>
 <li><p><code>\033</code> is an ASCII escape character (it could probably be replaced by <code>\e</code> in bash)</p></li>
@@ -358,7 +416,7 @@ font-style: inherit;"># back to the original</span></span></code></pre></div>
 </ul>
 <p>As you see, an easy ways to change my prompt is to remove <code>:</code> the part before it up to the parts that are defined using <code>chroot</code> (on my setup this also could probably be removed, but I may log into places where chroot is specified and I am being restricted!) and<code>change</code>` for its uppercase version.</p>
 <p>For the git branch I wrote a quick function:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git_branch_show_current ()</span> <span class="kw" style="color: #003B4F;
 background-color: null;
@@ -380,7 +438,7 @@ font-style: inherit;">return</span></span>
 <span id="cb4-4"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 <p>It displays the current branch and sends any error in a dark corner of <code>/dev/null/</code>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -388,7 +446,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Update 2025-10-12
+<span class="screen-reader-only">Tip</span>Update 2025-10-12
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -397,7 +455,7 @@ Update 2025-10-12
 </div>
 </div>
 <p>Then I added some parenthesis to look a bit fancy, changed quotes and changed colors.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git_branch_show_current ()</span> <span class="kw" style="color: #003B4F;
 background-color: null;
@@ -483,9 +541,9 @@ font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></sp
 <span id="cb5-11"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">fi</span></span></code></pre></div>
+font-style: inherit;">fi</span></span></code></pre></div></div>
 <p>My new version including git provided function is now:</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
@@ -546,7 +604,7 @@ font-style: inherit;">'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</span></sp
 <span id="cb6-5"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">fi</span></span></code></pre></div>
+font-style: inherit;">fi</span></span></code></pre></div></div>
 <p>The function <code>__git_ps1</code> is taking an optional argument to format the returned string. I like <code>()</code>so I used that.</p>
 <p>I now have:</p>
 <ul>
@@ -611,7 +669,7 @@ View on Mastodon
 <ol start="2" type="1">
 <li>Update your <code>_quarto.yml</code> with a your take on:</li>
 </ol>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -637,7 +695,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> https://codeberg.org/defuneste</span></span></code></pre></div>
+font-style: inherit;"> https://codeberg.org/defuneste</span></span></code></pre></div></div>
 <div class="page-columns page-full"><p>Using <code>text</code> was not obvious but this <a href="https://github.com/quarto-dev/quarto-cli/discussions/7640">GH discussion</a> (sic) was helpful. Notice that I specified an absolute path. </p><div class="no-row-height column-margin column-container"><span class="margin-aside">Thanks! <span class="citation" data-cites="MickaelCanouil">@MickaelCanouil</span><span class="citation" data-cites="fosstodon.org">@fosstodon.org</span> and <span class="citation" data-cites="ellakaye">@ellakaye</span><span class="citation" data-cites="fosstodon.org">@fosstodon.org</span></span></div></div>
 <p>It should be good to go!</p>
 <p>Another, easier, option would be to replace <code>text: "![]your_link"</code> with <code>ìcon: git</code>.</p>
@@ -700,10 +758,10 @@ The primitive <code>car</code> is defined only for non-empty lists.</p>
 <p>Before building a function, the authors always define how the function should behave (with a series of questions). Now we would probably frame that as Test Driven Development.</p>
 <p>For example we want to create a function <em>firsts</em> that is taking a list <em>l</em> asan argument:</p>
 <p><code>(firsts l)</code> where <code>l</code> is:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb1-1">((apple peach pumpkin) </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb1-1">((apple peach pumpkin) </span>
 <span id="cb1-2"> (plum pear cherry)</span>
 <span id="cb1-3"> (grape raisin pea)</span>
-<span id="cb1-4"> (bean carrot eggplant))</span></code></pre></div>
+<span id="cb1-4"> (bean carrot eggplant))</span></code></pre></div></div>
 <p>Should return: <code>(apple plum grape bean)</code></p>
 <p>If the first S-expression of an internal list. is a list it should be returned and if the list is empty it should return an empty list (I am shortcuting you here 3 other questions/answers).</p>
 </section>
@@ -713,24 +771,24 @@ The primitive <code>car</code> is defined only for non-empty lists.</p>
 <p>Hence let’s see how we can define <code>firsts</code></p>
 <p>The first step when using a recursion is defining when we should stop it (see First Commandment). Here, we will stop when the list is empty (this also matches our special case as <code>(firsts ())</code> should return <code>()</code>). This is the called the <strong>termination condition</strong>, and describe in the Fourth Commandment: be sure where using a recursion to change an argument that will be tested to stop it.</p>
 <p>Then we need to build the <strong>typical element</strong>, ie what should be returned (in our previous example <code>apple</code> is one of them). In Scheme it looks like:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb2-1">(<span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb2-1">(<span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">car</span> (<span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">car</span> l))</span></code></pre></div>
+font-style: inherit;">car</span> l))</span></code></pre></div></div>
 <p><code>car</code> is a primitive function that returns the first S-expression of an non-empty list (<code>(car l)</code> would have returned <code>(apple peach pumpkin)</code>).</p>
 <p>After that we need to provide the rest of the list to our <code>firsts</code> function. LISP has an other primitive function called <code>cdr</code> used for that:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb3-1">(firsts (<span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb3-1">(firsts (<span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">cdr</span> l))</span></code></pre></div>
+font-style: inherit;">cdr</span> l))</span></code></pre></div></div>
 <p>In our example this would be <code>((plum pear cherry) (grape raisin pea) (bean carrot eggplant))</code> and this is called the <strong>natural recursion</strong>.</p>
 <p>The last piece is to patch them together and for that LISP use <code>cons</code> (see the Second Commandment).</p>
 <p><img src="https://latex.codecogs.com/png.latex?%20(cons%20%5Cunderbrace%7B(car%20(car%20%5Cquad%20l))%7D_%7Btypical%20%5Cquad%20element%7D%20%5Coverbrace%7B(firsts%20(cdr%20%5Cquad%20l))%7D%5E%7Bnatural%20%5Cquad%20recursion%7D)%20"></p>
 <p>Now we can write the function:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb4-1">(<span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode scheme code-with-copy"><code class="sourceCode scheme"><span id="cb4-1">(<span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">define</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -771,7 +829,7 @@ font-weight: bold;
 font-style: inherit;">cdr</span> l)) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;natural recursion</span></span>
-<span id="cb4-8">      )))))</span></code></pre></div>
+<span id="cb4-8">      )))))</span></code></pre></div></div>
 <p>That’s it!</p>
 <p>I still would like to highlight a few points:</p>
 <ul>
@@ -823,7 +881,7 @@ font-style: inherit;">;natural recursion</span></span>
 <p>To be able to access the DB, you need to provide some information (address, port, DB name, credentials, etc ..).</p>
 <p>Our connect DB function is very close to what Emily is advocating</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">get_database_conn <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">get_database_conn <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -879,12 +937,12 @@ font-style: inherit;">"port number here"</span></span>
 <span id="cb1-13"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">return</span>(conn)</span>
-<span id="cb1-14">}</span></code></pre></div>
+<span id="cb1-14">}</span></code></pre></div></div>
 </div>
 <p>The main difference (outside of drivers and slightly different default arguments related to our infrastructure) is that we are using the <code>options</code> argument from <code>dbConnect</code> to specify the search path, specifying that the first schema should be used. (see for PG’s documentation for more <a href="https://www.postgresql.org/docs/17/ddl-schemas.html#DDL-SCHEMAS-PATH">here</a>)</p>
 <p>Hence our function look like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">get_db_con <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">get_db_con <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -931,7 +989,7 @@ font-style: inherit;">"and_more_specific_stuff"</span>)))</span>
 background-color: null;
 font-style: inherit;">return</span>(con)</span>
 <span id="cb2-10"></span>
-<span id="cb2-11">}</span></code></pre></div>
+<span id="cb2-11">}</span></code></pre></div></div>
 </div>
 <p>Once you have your connection object, you can use it to read a table in memory (usually with a function derived from <code>DBI::dbReadTable</code>), write a table to the DB (<code>DBI::dbWriteTable</code>), get the result of a specific query (<code>DBI::dbGetQuery</code>) or even execute a statement (<code>DBI::dbExecute</code>). <a href="https://dbi.r-dbi.org/">DBI</a><sup>4</sup> is truly a work of art!</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -949,7 +1007,7 @@ Tip
 </div>
 <p>A typical workflow would be like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">con <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">con <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -994,7 +1052,7 @@ font-style: inherit;">"new_shiny_table"</span>, new_table)</span>
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">dbDisconnect</span>(con)</span></code></pre></div>
+font-style: inherit;">dbDisconnect</span>(con)</span></code></pre></div></div>
 </div>
 </section>
 <section id="first-step-code" class="level2">
@@ -1002,7 +1060,7 @@ font-style: inherit;">dbDisconnect</span>(con)</span></code></pre></div>
 <p>With few lines, it is not very problematic but “Do some cool stuff” can be hundreds of lines (or more), they can take more than one session to be made (it could be useful for the data to be cached). This means that code could be functionalized a bit and used in targeted pipeline.</p>
 <p>A first attempt look like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">get_table <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">get_table <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1074,7 +1132,7 @@ font-style: inherit;">dbdbWriteTable</span>(con, name, table, ...)</span>
 <span id="cb4-14">   <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">return</span>(dat)</span>
-<span id="cb4-15">}</span></code></pre></div>
+<span id="cb4-15">}</span></code></pre></div></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1091,7 +1149,7 @@ Note
 </div>
 <p>Those functions are a good start. Now we have:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">some_data <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">some_data <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1120,7 +1178,7 @@ font-style: inherit;">write_table</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"my_project_bill"</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></div>
+font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></div></div>
 </div>
 <p>From my experience, those functions will mostly be stored in <code>utility.R</code> files somewhere and “sourced”.</p>
 <p>By using a function we get some added benefit:</p>
@@ -1137,7 +1195,7 @@ font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></
 <p>The first is that <code>"my_project_bill"</code> is repeated a lot. We could be tempted to use some config file, but here I like to follow Miles McBain<sup>5</sup>’ advice and not do it. The other problem is that we probably have multiple projects that need to write and read tables then we will probably need to write or, worse, copy paste some variation of the same code and copy paste is like a virus (well I guess now we can say “I am <del>copy/pasting code</del> using AI”)</p>
 <p>Our need is to produce code that is generating functions so here it seems function factory would be nice:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># what is a nice naming convention for function factory</span></span>
 <span id="cb6-2">create_get_table <span class="ot" style="color: #003B4F;
@@ -1212,11 +1270,11 @@ font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">dbWriteTable</span>(con, table_name, dat)</span>
 <span id="cb6-17">    }</span>
-<span id="cb6-18">}</span></code></pre></div>
+<span id="cb6-18">}</span></code></pre></div></div>
 </div>
 <p>Now we can start our workflow like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">get_proj_bill_table <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">get_proj_bill_table <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1254,7 +1312,7 @@ font-style: inherit;"># Do some cool stuff with the data</span></span>
 background-color: null;
 font-style: inherit;">write_proj_bill_table</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></div>
+font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></div></div>
 </div>
 <p>We have:</p>
 <ul>
@@ -1299,7 +1357,7 @@ font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></
 <blockquote class="blockquote">
 <p>There are a lot of conversations — understandably — on the use of Apache Parquet, Apache Arrow and DuckDB. […] Let’s see an example of how they can be used to convert a table in a PostgresSQL database to a parquet file:</p>
 </blockquote>
-<p>You can find the post on CORI’s Map and data analytics team <a href="https://ruralinnovation.github.io/blog/posts/pg_duckdb/">blog</a>.</p>
+<p>You can find the post on CORI’s Map and data analytics team <a href="https://ruralinnovation.github.io/blog/posts/06_pg_duckdb/">blog</a>.</p>
 
 
 
@@ -1326,7 +1384,7 @@ font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></
 <blockquote class="blockquote">
 <p>If you are manipulating a lot of GeoJSON features/objects and want a quick CLI tool to filter and slice them, you should give jq a try! Since there are not many tutorials that exist on using jq to manage objects in the GeoJSON family, we hope that these few tricks will help you on your learning journey.</p>
 </blockquote>
-<p>You can find the post on CORI’s Map and data analytics team <a href="https://ruralinnovation.github.io/blog/posts/awesomejq/">blog</a>.</p>
+<p>You can find the post on CORI’s Map and data analytics team <a href="https://ruralinnovation.github.io/blog/posts/01_awesomejq/">blog</a>.</p>
 
 
 
@@ -1419,7 +1477,7 @@ font-style: inherit;">"new_shiny_table"</span>, new_table)</span></code></pre></
 <p>First we do a simple function:</p>
 <p><img src="https://latex.codecogs.com/png.latex?y%20=%20%5Csqrt%5B3%5D(1%20-%20x%5E2)"></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">simple_function <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">simple_function <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1469,7 +1527,7 @@ font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">5</span>)</span></code></pre></div>
+font-style: inherit;">5</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] -2.884499 -2.466212 -2.000000 -1.442250  0.000000  1.000000  0.000000
  [8] -1.442250 -2.000000 -2.466212 -2.884499</code></pre>
@@ -1480,7 +1538,7 @@ font-style: inherit;">5</span>)</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="vector-and-plot">Vector and plot:</h2>
 <p>Here this is simple we generate a sequence of values and apply our function on it.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">x <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">x <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1506,7 +1564,7 @@ font-style: inherit;">"b"</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">col =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2</span>)</span></code></pre></div>
+font-style: inherit;">2</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1514,7 +1572,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># if you prefer it can also go in data frame because both vectors have the same length</span></span>
 <span id="cb4-2"><span class="co" style="color: #5E5E5E;
@@ -1522,11 +1580,11 @@ background-color: null;
 font-style: inherit;">#df &lt;- data.frame(x = x,</span></span>
 <span id="cb4-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#                 y = simple_function(x))</span></span></code></pre></div>
+font-style: inherit;">#                 y = simple_function(x))</span></span></code></pre></div></div>
 </div>
 <p>This is good but if you pay attention you can see that using <code>type = "b"</code> we are basically plotting the point and connecting them with a straight line. What happens if this is not a straight line:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">x <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">x <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1560,7 +1618,7 @@ font-style: inherit;">"b"</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">col =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2</span>)</span></code></pre></div>
+font-style: inherit;">2</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1575,7 +1633,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="curve">curve!</h2>
 <p>The base-R package<code>graphics</code> provide us with a lot of very cool functions and one of it is <a href="https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html"><code>curve()</code></a>. It can take a function or an expression.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">curve</span>(simple_function, <span class="at" style="color: #657422;
 background-color: null;
@@ -1598,7 +1656,7 @@ font-style: inherit;">col =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span>) <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># some small tuning is still needed</span></span></code></pre></div>
+font-style: inherit;"># some small tuning is still needed</span></span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1613,7 +1671,7 @@ font-style: inherit;"># some small tuning is still needed</span></span></code></
 <h2 class="anchored" data-anchor-id="ggplot">ggplot!</h2>
 <p>Obviously, we can also do it with <a href="https://ggplot2.tidyverse.org/reference/geom_function.html"><code>ggplot::stat_function()</code></a>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(ggplot2)</span>
 <span id="cb7-2"><span class="co" style="color: #5E5E5E;
@@ -1643,7 +1701,7 @@ background-color: null;
 font-style: inherit;">+</span></span>
 <span id="cb7-5">    <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">theme_bw</span>()</span></code></pre></div>
+font-style: inherit;">theme_bw</span>()</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1853,7 +1911,7 @@ font-style: inherit;">theme_bw</span>()</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="compute-the-de-9im-relations-between-two-objects">Compute the DE-9IM relations between two objects</h2>
 <p>To have an easier time reading the pattern, let’s make a quick function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">pattern_de_9im <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">pattern_de_9im <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=</span>  <span class="st" style="color: #20794D;
 background-color: null;
@@ -1920,7 +1978,7 @@ font-style: inherit;">return</span>(matrix_de_9im)</span>
 <span id="cb1-10"></span>
 <span id="cb1-11"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">matrix_de_9im</span>(pattern_de_9im)</span></code></pre></div>
+font-style: inherit;">matrix_de_9im</span>(pattern_de_9im)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  I   B   E  
 I "2" "F" "F"
@@ -1930,13 +1988,13 @@ E "F" "F" "2"</code></pre>
 </div>
 <p>I will enhance an example from the <a href="https://r-spatial.github.io/sf/reference/st_relate.html">sf documentation</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(sf)</span></code></pre></div>
+font-style: inherit;">library</span>(sf)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</code></pre>
+<pre><code>Linking to GEOS 3.12.1, GDAL 3.8.2, PROJ 9.3.1; sf_use_s2() is TRUE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># 4 polygones to start </span></span>
 <span id="cb5-2">pol1 <span class="ot" style="color: #003B4F;
@@ -2068,7 +2126,7 @@ font-style: inherit;">st_sfc</span>(pol1, pol2, pol3, pol4))</span>
 <span id="cb5-10"></span>
 <span id="cb5-11"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">plot</span>(squares)</span></code></pre></div>
+font-style: inherit;">plot</span>(squares)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2079,7 +2137,7 @@ font-style: inherit;">plot</span>(squares)</span></code></pre></div>
 </div>
 <p>Here we can see how each square relates to the others:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">my_first_st_relate <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">my_first_st_relate <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=</span> sf<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -2100,7 +2158,7 @@ background-color: null;
 font-style: inherit;">=</span> squares<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>name</span>
-<span id="cb6-4">my_first_st_relate</span></code></pre></div>
+<span id="cb6-4">my_first_st_relate</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  A           B           C           D          
 A "2FFF1FFF2" "FF2F01212" "FF2FF1212" "FF2F11212"
@@ -2112,13 +2170,13 @@ D "FF2F11212" "FF2FF1212" "FF2FF1212" "2FFF1FFF2"</code></pre>
 <p>We are producing a symmetrical matrix and you just need to focus on half of it. The first column describes how the A square is related to the other squares.</p>
 <p>First line, first column [A,A] describes how the same square relates to itself:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix_de_9im</span>(my_first_st_relate[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"A"</span>,<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"A"</span>])</span></code></pre></div>
+font-style: inherit;">"A"</span>])</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  I   B   E  
 I "2" "F" "F"
@@ -2129,13 +2187,13 @@ E "F" "F" "2"</code></pre>
 <p>They share the same interior, same boundary and same exterior.</p>
 <p>Let’s see a more complicated case: square B with C:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix_de_9im</span>(my_first_st_relate[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"B"</span>,<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"C"</span>])</span></code></pre></div>
+font-style: inherit;">"C"</span>])</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  I   B   E  
 I "2" "1" "2"
@@ -2150,7 +2208,7 @@ E "2" "1" "2"</code></pre>
 <h2 class="anchored" data-anchor-id="check-matching-patterns">Check matching patterns</h2>
 <p>Now that we are familiar with the pattern, we can search the matrix for particular patterns. The fact that patterns are just strings allows us to also use regular expressions or other string tricks. Here, for example, we can return every pair-wise relation that shares a boundary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># . represent every single character </span></span>
 <span id="cb12-2"><span class="fu" style="color: #4758AB;
@@ -2170,7 +2228,7 @@ font-style: inherit;">4</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">byrow =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
-font-style: inherit;">TRUE</span>) </span></code></pre></div>
+font-style: inherit;">TRUE</span>) </span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      [,1]  [,2]  [,3]  [,4]
 [1,]  TRUE FALSE FALSE  TRUE
@@ -2182,7 +2240,7 @@ font-style: inherit;">TRUE</span>) </span></code></pre></div>
 <p>We can also translate spatial predicates with the DE-9IM pattern: see the Wikipedia page.</p>
 <p>We can achieve the same result thanks to the pattern argument of the <code>st_relate</code> function. The syntax of the pattern changes a bit, you need to replace <code>.</code> (that means every single character) with <code>*</code> to match DE-9IM rules.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">sf<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">sf<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2194,7 +2252,7 @@ font-style: inherit;">"****1****"</span>,  <span class="at" style="color: #65742
 background-color: null;
 font-style: inherit;">sparse =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
-font-style: inherit;">FALSE</span>)</span></code></pre></div>
+font-style: inherit;">FALSE</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      [,1]  [,2]  [,3]  [,4]
 [1,]  TRUE FALSE FALSE  TRUE
@@ -2205,7 +2263,7 @@ font-style: inherit;">FALSE</span>)</span></code></pre></div>
 </div>
 <p>With <code>sparse = FALSE</code> it will return the matrix. If you change it to <code>TRUE</code> you get a a sparse geometry binary predicate in the form of a list (cf.&nbsp;chapter 4 of <a href="https://geocompr.robinlovelace.net/spatial-operations.html">Geocomputation with R</a>)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">sf<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">sf<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2217,7 +2275,7 @@ font-style: inherit;">"****1****"</span>,  <span class="at" style="color: #65742
 background-color: null;
 font-style: inherit;">sparse =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
-font-style: inherit;">TRUE</span>)</span></code></pre></div>
+font-style: inherit;">TRUE</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sparse geometry binary predicate list of length 4, where the predicate
 was `relate_pattern'
@@ -2270,7 +2328,7 @@ was `relate_pattern'
 <p>You can divide the overpass turbo interface in 3 parts.</p>
 <p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/overpassturbo_tour.png" class="img-fluid"></p>
 <p>In <strong>A</strong> we have the <em>Editor</em> panel. In this picture, I used one from the tool examples. As I already said, I will not dive too deeply in Overpass Query Language (Overpass QL), but I’ll explain this one:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/*</span></span>
 <span id="cb1-2"><span class="co" style="color: #5E5E5E;
@@ -2305,7 +2363,7 @@ font-style: inherit;">// ";" -&gt; end of statement               </span></span>
 background-color: null;
 font-style: inherit;">;</span>                        <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">// Part 2: we take part 1 and display it  </span></span></code></pre></div>
+font-style: inherit;">// Part 2: we take part 1 and display it  </span></span></code></pre></div></div>
 <p><strong>B</strong> is the display panel. The result of your query can be displayed in the “Map” or directly in “Data” (top right corner). Here we are in XML because <code>out</code> wasn’t specified. To specify another output format, you need to add a setting (<code>[out:json]</code>) before <code>node</code> see <em>Settings</em> in Overpass QL <a href="https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL#Settings">wiki</a>.</p>
 <p><img src="https://branchtwigleaf.com/posts/2021-10-23-wonderfull-of-overpass-turbo/ql_result.png" class="img-fluid"></p>
 <p>Lastly we can find various menus (<strong>C</strong>) on the top:</p>
@@ -2333,7 +2391,7 @@ font-style: inherit;">// Part 2: we take part 1 and display it  </span></span></
 </div>
 <p>The wizard has built a first query. After a quick check, this query looks fine. I will just increase the time-out a bit from 25 to 360 (it is in seconds). I can do that because this query will be run in a local instance of Overpass API (on my computer), not on the public server. I will explain the limitations of public servers a bit later.</p>
 <p>This is the query:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/*</span></span>
 <span id="cb2-2"><span class="co" style="color: #5E5E5E;
@@ -2426,7 +2484,7 @@ background-color: null;
 font-style: inherit;">&gt;;</span></span>
 <span id="cb2-16">out skel qt<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span>                     </span></code></pre></div>
+font-style: inherit;">;</span>                     </span></code></pre></div></div>
 <p>As a result, I get 15323 nodes making 112 ways, 10 relations and 72 polygons. You can see that on the bottom right part of the Map panel. You can easily explore the data while moving around the map. If you are happy with the result, you can export it in a GeoJSON via the <code>Export</code> menu, then by selecting <code>Data</code> and here picking GeoJSON. Overpass Turbo offers two options: either download it or copy it to clipboard.</p>
 <p>Most of time you will need to improve the query to match your needs. For that, OSM wiki contains a lot of useful information. I checked the <code>river</code> <a href="https://wiki.openstreetmap.org/wiki/Rivers">entry</a> in it and discovered that the key <code>waterways</code> can be interesting to explore.</p>
 <section id="saving-our-bounding-box-bbox" class="level3">
@@ -2445,7 +2503,7 @@ font-style: inherit;">;</span>                     </span></code></pre></div>
 <p>The second option is to get the bbox from the <code>xml</code> or from the <code>QL</code>. You can get them from the same <code>Export</code> menu in the <code>Query</code> then you can pick convert to <code>Overpass-XML</code> or pick <code>OverpassQL</code> (compact or not). If you have downloaded Overpass API you can find this convert script in <code>cgi-bin/</code> directory of the program. Converting to a compact Overpass Query Language is very useful when you need to send multiple requests on an overpass api instance.</p>
 <p>I have made two quick R functions to retrieve this informations:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># from xml</span></span>
 <span id="cb3-2">bbox_from_xml <span class="ot" style="color: #003B4F;
@@ -2564,7 +2622,7 @@ background-color: null;
 font-style: inherit;">","</span>))) <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># round a bit </span></span>
-<span id="cb3-20">}</span></code></pre></div>
+<span id="cb3-20">}</span></code></pre></div></div>
 </div>
 <p><a href="https://wiki.openstreetmap.org/wiki/Bounding_Box">OSM bounding box</a> follows the “<em>min Longitude, min Latitude, max Longitude, max Latitude</em>” but that’s not the case of the overpass API which follows “<em>South, West, North East</em>” (<em>ie</em>: min Latitude, min Longitude, max Latitude, max Longitude). You start with south then go clockwise.</p>
 <p>You can use <a href="https://docs.ropensci.org/osmdata/reference/bbox_to_string.html"><code>osmdata::bbox_to_string</code></a> to convert it to a string. I also highly recommend that you use the <a href="https://docs.ropensci.org/osmdata/index.html">osmdata</a><sup>2</sup> package alongside Overpass Turbo, both work very well together.</p>
@@ -2644,7 +2702,7 @@ Note
 <p>While looking for how to make a regular sample in a line in a spatstat, I found <code>pointsOnLines</code> with this nice <a href="https://www.rdocumentation.org/packages/spatstat/versions/1.64-1/topics/pointsOnLines">documentation</a> page. This looks perfect for us. Let’s try it!</p>
 <p>The first line just creates some lines (“randomly”). The only difficulty is the <code>psp</code> function. This function creates an object of class <code>psp</code> or a <em>line segment pattern</em>. Spatstat uses its own objects and methods but it is easy to convert them as you can see in the second line where the <code>sf</code> package is used to write our dear friend shapefile. I commented the line because I didn’t want to run a new set of lines every time.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">some_lines <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">some_lines <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -2684,10 +2742,10 @@ font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_read</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"some_lines.shp"</span>)</span></code></pre></div>
+font-style: inherit;">"some_lines.shp"</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `some_lines' from data source 
-  `/home/defuneste/Documents/btl/posts/2021-03-01-sampling-allong-a-line/some_lines.shp' 
+  `/home/defuneste/projects/btl/posts/2021-03-01-sampling-allong-a-line/some_lines.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 20 features and 1 field
 Geometry type: LINESTRING
@@ -2697,7 +2755,7 @@ CRS:           NA</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#\ label: reading them back </span></span>
 <span id="cb3-2">some_lines <span class="ot" style="color: #003B4F;
@@ -2727,11 +2785,11 @@ font-style: inherit;">"Draw some lines"</span>, <span class="at" style="color: #
 background-color: null;
 font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"grey"</span>)</span></code></pre></div>
+font-style: inherit;">"grey"</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2739,7 +2797,7 @@ font-style: inherit;">"grey"</span>)</span></code></pre></div>
 <p>I admit that indexing with negative 1 (<code>[-1,]</code>) is a bit ugly, but if you want to use the almighty shapefile you can only use one type of geometry (no one is perfect!). That’s why you have to remove the polygon that is the bbox at the first line (or use some more hipster geo format). Finally, in the third line, we read it back. Spatstat works primarily in projected coordinates and this should be kept in mind (we don’t care too much about our lack of CRS here, which would not be the case in a real-world project which could fail if you use geographic coordinate systems).</p>
 <p>Now we can use the <code>pointsOnLines</code> function to create an object of <code>ppp</code> type (AKA <em>points pattern</em>) and plot the points. We just use two arguments, the first one is our lines and the second <code>eps</code> is Spacing between successive points. As stated in the details section of the documentation the spacing of <code>eps</code> is measured in coordinate units of X”. Here we used some numbers (20) from a uniform distribution with the default arguments (min = 0 and max = 1) so <code>eps = 0.1</code> was fine. I also liked to <code>shortok</code> default argument so I didn’t change it.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">sampling_points <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">sampling_points <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -2775,17 +2833,17 @@ font-style: inherit;">"+"</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"darkred"</span>)</span></code></pre></div>
+font-style: inherit;">"darkred"</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://branchtwigleaf.com/posts/2021-03-01-sampling-allong-a-line/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">sf<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">sf<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2801,7 +2859,7 @@ font-style: inherit;">1</span>,], <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"sampling_points.shp"</span>) <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># save them</span></span></code></pre></div>
+font-style: inherit;"># save them</span></span></code></pre></div></div>
 </div>
 </section>
 <section id="where-is-the-first-sample-placed-on" class="level2">
@@ -2809,7 +2867,7 @@ font-style: inherit;"># save them</span></span></code></pre></div>
 <p>One question remains! Where should the first point in a line be placed? This is trickier than it looks: what happens when the length of a lines is not a multiple of our spacing value? Where should we start placing points?</p>
 <p>We can start with a simple example : just one line. We didn’t set up any units but to make it simple, let’s use meters (m).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">fenetre <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">fenetre <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -2967,7 +3025,7 @@ font-style: inherit;">"darkred"</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
-font-style: inherit;">TRUE</span>)</span></code></pre></div>
+font-style: inherit;">TRUE</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2978,7 +3036,7 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div>
 </div>
 <p>Well this innocuous question bring us something unexpected. We expected 3 samples but we got 4 and it looks like the first sample, on both sides, is located at 1 m from the end/beginning of the line (in a circular line they will be 2 m apart) but something is staring to be problematic : the only spacing of 3 is between the second and third sample, other spacing is 2.5 m. If we take a longer line (25 m like below) we get the same pattern (1m, 2.5m then 3) but with more samples spaced with 3 m.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">fenetre <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">fenetre <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> spatstat.geom<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -3098,7 +3156,7 @@ font-style: inherit;">"darkred"</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
-font-style: inherit;">TRUE</span>)</span></code></pre></div>
+font-style: inherit;">TRUE</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3110,7 +3168,7 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div>
 <p>Let’s dive into the <a href="https://github.com/spatstat/spatstat.geom/blob/main/R/pointsonlines.R">code</a> (thx open source!). I will skip the part that defines the function, check what arguments are used, etc.. and do a first stop at L25-L32. This part is the code for what should be done if we have too lines that are too small (<code>length &lt;= spacing</code>) and <code>shortok == TRUE</code> (our setup). We can see that with this option, a sample point will be added at the middle of our small line.</p>
 <p>I will then move to the part for every other (i.e., non-small) line. We can also skip the loop and the bind part and just try with one line. Below I have just reproduced L36 and 47 :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># re using same example </span></span>
 <span id="cb8-2">fenetre <span class="ot" style="color: #003B4F;
@@ -3300,7 +3358,7 @@ font-style: inherit;">+</span> tp <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> (y1<span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-</span>y0))</span></code></pre></div>
+font-style: inherit;">-</span>y0))</span></code></pre></div></div>
 </div>
 <p>The authors have made some design choices. Instead of going for 3 points, they have gone with 4 and focused on their definition : <strong>“Given a line segment pattern, place a series of points at equal distances along each line segment.”</strong>. Points are not located at every <em>x</em> spacing but instead at equal distances: if we set 3 points they are not at the same distance anymore, so it seems they opted to make a compromise, as when (L9) adds a point and decreases the spacing a bit and when not doing so. I feel this is a correct choice when sampling and it remind me a lot of reflections about the all block quadra variance family and the importance of the starting point.</p>
 </section>
@@ -3377,7 +3435,7 @@ font-style: inherit;">-</span>y0))</span></code></pre></div>
 <p>After that, we specify the observed property that we’re interested in (<code>observedProperty=lday</code>) and response format (<code>responseFormat=text/plain</code>). Just as before, these two pieces of insight come from the GetCapabilities. As you may have noticed, we don’t need to add all observed property and procedure definitions, just the identifier is fine (lday vs urn:ogc:def:parameter:::noise:lday).</p>
 <p>Much more can and should be said (you can use bbox or aggregate in requests!) but let’s stop here. I hope that we can explore some ways to interact with http requests in R, soon!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">af01 <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">af01 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -3464,7 +3522,7 @@ background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">theme_bw</span>()</span>
-<span id="cb4-8">quickplot</span></code></pre></div>
+<span id="cb4-8">quickplot</span></code></pre></div></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3508,7 +3566,7 @@ Gabrys, Jennifer. 2020. <span>“Smart Forests and Data Practices: From the Inte
 <section id="guingamp" class="level2">
 <h2 class="anchored" data-anchor-id="guingamp">Guingamp</h2>
 <p>Typical lat/long in field.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">guingamp <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">guingamp <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> sf<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -3535,12 +3593,12 @@ font-style: inherit;">"latitude"</span>), <span class="at" style="color: #657422
 background-color: null;
 font-style: inherit;">crs =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">4326</span>)</span></code></pre></div>
+font-style: inherit;">4326</span>)</span></code></pre></div></div>
 </section>
 <section id="ecoline" class="level2">
 <h2 class="anchored" data-anchor-id="ecoline">Ecoline</h2>
 <p>Isolated trees are only the ones with “Arbre isolé” in <code>ele_txt</code> field.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">iau_ecoline <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">iau_ecoline <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> sf<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -3557,12 +3615,12 @@ font-style: inherit;">$</span>ele_txt <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Arbre isolé"</span>,]</span></code></pre></div>
+font-style: inherit;">"Arbre isolé"</span>,]</span></code></pre></div></div>
 </section>
 <section id="nancy-metropolis" class="level2">
 <h2 class="anchored" data-anchor-id="nancy-metropolis">Nancy metropolis</h2>
 <p>Nancy is a bit more tricky. Each city has a directory where you can found isolated trees (<code>ARBRE_ISOLE.shp</code>). Houdemont, one of the cities, has a file with a different number of columns so we needed to correct this.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">nancy <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">nancy <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -3666,7 +3724,7 @@ font-style: inherit;">sources/RESTITUTION_TOPO_3D_SHP/HOUDEMONT/ARBRE_ISOLE.shp<
 background-color: null;
 font-style: inherit;">`</span>) <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># adding Houdemont</span></span></code></pre></div>
+font-style: inherit;"># adding Houdemont</span></span></code></pre></div></div>
 </section>
 <section id="list-of-data-sets" class="level2">
 <h2 class="anchored" data-anchor-id="list-of-data-sets">List of data sets</h2>
