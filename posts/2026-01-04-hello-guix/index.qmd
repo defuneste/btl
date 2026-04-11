@@ -1,0 +1,65 @@
+---
+title: 'Hello Guix!'
+author: 'Olivier Leroy'
+date: '2026-01-04'
+categories: [scheme, guix, "functional programming"]
+draft: true
+---
+
+This post will be about my totally beginner test of Guix. I do not claim any particular skill in the domain and I could be wrong and/or have bad assumptions.
+
+## So .. 
+
+###  .. why make a post?
+
+Well, writing help me organize my though with multiple added bonus:
+
+* Other can react to it and claryfied part of my assumptions/errors
+
+* It can encourage other sharing their first step learning something new
+
+
+### .. what is Guix?
+
+[Guix](https://guix.gnu.org/) is a functional packages manager.
+The goal of a package manager is to maintain and build softwares.
+
+The claims of functional packages managers is that you can explicitly encapsulate all of the process to build a software in *functions* and get back an explicit environement.
+I am still one hundred percent not satisfied with that definition
+but I needed one to start!
+
+The advantage should be that you could have more easily multiple environements and share them.
+This is useful in reproducible research but even at my small scale I clearly see the benefit to have a declarative tool that will help me in developement.
+
+One aspiration goal should be to easily build GDAL and have environement pre and post the version 3.10. 
+
+What are the difference and benefit versus docker (or podman) and/or virtual environement? All of that are good questions that are also in my mind. I just started grasping it and hopefully would be able to have clear awnsers later.
+
+### ..why not using Nix (the other functional package manager)?
+
+Since I am beginner I have no idea if that would have been better, you need to s tart somewhere.
+I picked Guix because of the Licence, the use of Guile a Scheme implementation and the fact that researchers are working on it (other researchers are probaly also working in Nix, it could be just that I am not aware of it).
+
+## Hello World!
+
+
+## Issue I had on ubunutu 24.4
+
+apparmor was blocking guix @baleine save me and I find this link:  https://guix.gnu.org/manual/1.5.0/en/html_node/AppArmor-Support.html 
+
+
+
+## Resources
+
+https://learninglab.gitlabpages.inria.fr/mooc-rr/mooc-rr2-ressources/module2/seq6-functional_package_manager/unit1/unit1.1-lecture.html
+
+https://hpc.guix.info/blog/2022/12/cran-a-practical-example-for-being-reproducible-at-large-scale-using-gnu-guix/
+
+stuff for cURL: https://guix.gnu.org/manual/devel/en/html_node/X_002e509-Certificates.html
+
+
+I plan to continue exploring it and hopefully make more posts as I progress!
+
+
+
+
