@@ -10,65 +10,7 @@
 <atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Message in a bottle for me</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Sun, 04 Jan 2026 05:00:00 GMT</lastBuildDate>
-<item>
-  <title>Hello Guix!</title>
-  <dc:creator>Olivier Leroy</dc:creator>
-  <link>https://branchtwigleaf.com/posts/2026-01-04-hello-guix/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This post will be about my totally beginner test of Guix. I do not claim any particular skill in the domain and I could be wrong and/or have bad assumptions.</p>
-<section id="so-.." class="level2">
-<h2 class="anchored" data-anchor-id="so-..">So ..</h2>
-<section id="why-make-a-post" class="level3">
-<h3 class="anchored" data-anchor-id="why-make-a-post">.. why make a post?</h3>
-<p>Well, writing help me organize my though with multiple added bonus:</p>
-<ul>
-<li><p>Other can react to it and claryfied part of my assumptions/errors</p></li>
-<li><p>It can encourage other sharing their first step learning something new</p></li>
-</ul>
-</section>
-<section id="what-is-guix" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-guix">.. what is Guix?</h3>
-<p><a href="https://guix.gnu.org/">Guix</a> is a functional packages manager. The goal of a package manager is to maintain and build softwares.</p>
-<p>The claims of functional packages managers is that you can explicitly encapsulate all of the process to build a software in <em>functions</em> and get back an explicit environement. I am still one hundred percent not satisfied with that definition but I needed one to start!</p>
-<p>The advantage should be that you could have more easily multiple environements and share them. This is useful in reproducible research but even at my small scale I clearly see the benefit to have a declarative tool that will help me in developement.</p>
-<p>One aspiration goal should be to easily build GDAL and have environement pre and post the version 3.10.</p>
-<p>What are the difference and benefit versus docker (or podman) and/or virtual environement? All of that are good questions that are also in my mind. I just started grasping it and hopefully would be able to have clear awnsers later.</p>
-</section>
-<section id="why-not-using-nix-the-other-functional-package-manager" class="level3">
-<h3 class="anchored" data-anchor-id="why-not-using-nix-the-other-functional-package-manager">..why not using Nix (the other functional package manager)?</h3>
-<p>Since I am beginner I have no idea if that would have been better, you need to s tart somewhere. I picked Guix because of the Licence, the use of Guile a Scheme implementation and the fact that researchers are working on it (other researchers are probaly also working in Nix, it could be just that I am not aware of it).</p>
-</section>
-</section>
-<section id="hello-world" class="level2">
-<h2 class="anchored" data-anchor-id="hello-world">Hello World!</h2>
-</section>
-<section id="issue-i-had-on-ubunutu-24.4" class="level2">
-<h2 class="anchored" data-anchor-id="issue-i-had-on-ubunutu-24.4">Issue I had on ubunutu 24.4</h2>
-<p>apparmor was blocking guix <span class="citation" data-cites="baleine">@baleine</span> save me and I find this link: https://guix.gnu.org/manual/1.5.0/en/html_node/AppArmor-Support.html</p>
-</section>
-<section id="resources" class="level2">
-<h2 class="anchored" data-anchor-id="resources">Resources</h2>
-<p>https://learninglab.gitlabpages.inria.fr/mooc-rr/mooc-rr2-ressources/module2/seq6-functional_package_manager/unit1/unit1.1-lecture.html</p>
-<p>https://hpc.guix.info/blog/2022/12/cran-a-practical-example-for-being-reproducible-at-large-scale-using-gnu-guix/</p>
-<p>stuff for cURL: https://guix.gnu.org/manual/devel/en/html_node/X_002e509-Certificates.html</p>
-<p>I plan to continue exploring it and hopefully make more posts as I progress!</p>
-
-
-</section>
-
- ]]></description>
-  <category>scheme</category>
-  <category>guix</category>
-  <category>functional programming</category>
-  <guid>https://branchtwigleaf.com/posts/2026-01-04-hello-guix/</guid>
-  <pubDate>Sun, 04 Jan 2026 05:00:00 GMT</pubDate>
-</item>
+<lastBuildDate>Tue, 15 Jul 2025 04:00:00 GMT</lastBuildDate>
 <item>
   <title>“Forest Management Becomes a Desk Job”</title>
   <dc:creator>Olivier Leroy</dc:creator>
