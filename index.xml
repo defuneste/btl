@@ -10,7 +10,184 @@
 <atom:link href="https://branchtwigleaf.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Message in a bottle for me</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Tue, 15 Jul 2025 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 25 Jun 2026 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>US Census Frames</title>
+  <dc:creator>Olivier Leroy</dc:creator>
+  <link>https://branchtwigleaf.com/posts/2026-06-01-frames/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://branchtwigleaf.com/posts/2026-06-01-frames/Kasia_Ozga_Spiderwebs_2018.jpg" class="img-fluid figure-img" alt="three wooden frames wrapped with red ropes around each one of them on a white wall"></p>
+<figcaption>Kasia Ozga, Spiderwebs, 2018.</figcaption>
+</figure>
+</div>
+<p>I was watching <a href="https://www.fedgeo.us/">fedgeoday 2026</a> when a speaker from one of my favorite and trusted data source in the US, the “US Census Bureau”, introduced a change in their data infrastructure called “Frames”. Everyone seems to be aware of it but not me!</p>
+<p>To bridge my lack of understanding I went to the US Census website and searched for Frames.</p>
+<p>On the section “What is a Frame” <sup>1</sup> I got this sentence:</p>
+<blockquote class="blockquote">
+<p>The frames program defines “frame” as any foundational datasets that form the basis for much of the work we do at the Census Bureau.</p>
+</blockquote>
+<p>If you are a bit lost, well you are not alone. Still it sounded like important.</p>
+<p>After reading a list of some promised benefits to the program I was watched a short video (4 min ish) about it. The video is helpful; you have an address linked to a business linked to employees. I eventually got the message that the video was trying to convey but I was definitely lost my first time watching and felt it was a bit “dry”, potentially cool but still dry.</p>
+<p>Luckily this page also link to a <a href="www.youtube.com/watch?v= 2NqU0FZJdDw">video</a> on the Youtube platform: one hour and forty minutes, four “likes” (one is mine, what are we doing if we are not “liking” US Census Bureau!!!) and 350 views at the time I watched it.</p>
+<p>Giving the relative obscurity of it and the attention span required (an hybrid of a zoom meeting and movie, a “zoovie” I guess) I tough it will be nice for myself and maybe other to provides an opinionated summary.</p>
+<section id="frames-what" class="level1">
+<h1>Frames, what?</h1>
+<section id="currently-an-internal-project" class="level2">
+<h2 class="anchored" data-anchor-id="currently-an-internal-project">“Currently, an internal project”</h2>
+<p>The first and maybe more important part about “frames” is that it is “currently an internal use only project”. If you only care of US Census External products you can stop reading and come back in few years.</p>
+<p>I was able to find a <a href="https://www.gao.gov/products/gao-26-107689">timeline</a> of the project in the US Government Accountability Office (GAO).</p>
+<p>Instead, if you are thinking that it is important to understand how the data is actually produced: follow the guide.</p>
+</section>
+<section id="video-plan-and-structure" class="level2">
+<h2 class="anchored" data-anchor-id="video-plan-and-structure">Video plan and structure</h2>
+<p>This is a recording of a meeting with multiple speakers presenting slide decks (yeah fun!). It can be divided in two parts. The first part introduces the Frame program and the frames within it. The second part introduces how can the program help US Census Bureau to produce new products or can by used by existing ones. It also shows some of early benchmarks. I will focus on the first part but may dabble for some other topics from the second part.</p>
+</section>
+</section>
+<section id="frame-a-summary" class="level1">
+<h1>Frame, a summary</h1>
+<section id="at-the-core-of-a-bigger-modernizing-project" class="level2">
+<h2 class="anchored" data-anchor-id="at-the-core-of-a-bigger-modernizing-project">At the core of a bigger “modernizing project”</h2>
+<p>Frames will be part of a bigger ecosystem that aim to “modernize the Census Bureau’s statistical foundation.”</p>
+<p>They will be included in what the Census is calling their “Entreprise Data Lake (EDL)”<sup>2</sup>. It seems fair to describe it like an organizational components where frames are being built and used.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    DICE[DICE] --&gt; P
+    I --&gt; DICE
+    subgraph EDL 
+        P[Process and Planning] --&gt; F[Frames]
+        F &lt;--&gt; D[Other datasets]
+        F --&gt; I[Internal Products]
+        D --&gt; I
+    end
+    subgraph CEDSCI
+        Ex[External Products]
+    end
+    I --&gt;  Ex
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>I find it interesting that those 3 components have “entreprise”<sup>3</sup> in their names. In the same idea Frames in the EDL are called “Entreprise Frames”. I am assuming this is to differentiate them with “Sampling frames” that also exist as “internal data”. Like everyone in the video when I will referring to “frame” it will be for the “Entreprise Frame”.</p>
+<p>Frames appears to be central in the EDL. They are partially producing from a team called DICE (“Data Ingest and Collection for Entreprise”) and after being processed, and fed internal products they will be used to generate external products.</p>
+</section>
+<section id="four-foundational-units" class="level2">
+<h2 class="anchored" data-anchor-id="four-foundational-units">Four Foundational Units</h2>
+<blockquote class="blockquote">
+<p>A frame refers to a collection of datasets organized around one of four foundational units: Persons [<strong>Demographic</strong><sup>4</sup>], Business, Location and Job.</p>
+</blockquote>
+<p>They all have their own specific teams. Three of them seems to focus on enhancing existing datasets.</p>
+<ul>
+<li><p>MAF/TIGER<sup>5</sup> -&gt; Location Frame</p></li>
+<li><p>Business Register (BR) -&gt; Business Frame</p></li>
+<li><p>LEHD<sup>6</sup> -&gt; Job Frame</p></li>
+</ul>
+<p>The demographic Frame seems to be new and under construction but you could “smell” a lot of relations with US Census ACS (American Community Survey) and Census Decennial.</p>
+<p>A frame is not just datasets but also “a collection of standards, methods, codes, processes documentation and subject matter expertise”. This seems obvious but it is worth repeating again and again: without all of that any data is nothing more than dead bits.</p>
+<p>At that point you may ask yourself is it just a renaming/rebranding exercice? First, if you know a bit about BR and LEHD you may knows that they are both including “administrative data” and it seems Frames are going more and more to rely on that kind of sources. Second it seems that the goal of the frames is to be linked together and being accessible in a common environment, the EDL.</p>
+</section>
+<section id="frames-linking-datasets-breaking-silos" class="level2">
+<h2 class="anchored" data-anchor-id="frames-linking-datasets-breaking-silos">Frames: linking datasets, breaking silos</h2>
+<p>It appears that a lot of Census Products were introduced progressively with various objectives and can be difficult to link. The Frames project aims to provide unique identifiers and keys that allow linking between frames.</p>
+<p>A location, an address, will be available for each person, job and business records. A person can be linked to jobs records. Jobs records should be linked to business.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+l[Locaction]
+p[Person]
+j[Job]
+b[Business]
+l &lt;--&gt; p
+p &lt;--&gt; j 
+l &lt;--&gt; j 
+l &lt;--&gt; b 
+b &lt;--&gt; j
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>While this make an easy diagram it is way harder to implement and present many questions.</p>
+<p>First, even if it is an “internal projet only” it raises serious concern on data security and privacy. You are basically having a Residence Candidate File on steroids.</p>
+<p>Second, it seems that a frame should contains the whole universe of what they are trying to a represent, at least at one point in time. For someone that used to count trees it seems that we are reversing the clock back from sampling to full surveys! How will we determine how confident we are on those metrics and how that will be communicated to the external products users?</p>
+<p>Third, it may sound too early but how these unique identifiers (ID) will handle change over time. It is important that an ID can link to other frames but it is equally important to be linked to past versions of itself. Expanding on that how the frame will be linked to previous non-frame version of US Census products? In the example of, say an address change will it be linked to the previous “version” and how? The same questions, or variant of it, exist for job and business frames identifiers.</p>
+</section>
+<section id="dice-data-ingest-and-collection-for-the-enterprise" class="level2">
+<h2 class="anchored" data-anchor-id="dice-data-ingest-and-collection-for-the-enterprise">DICE (Data Ingest and Collection for the Enterprise)</h2>
+<p>I have to be careful here and avoid the topic of sources of data but, giving what was shared, it seems that processing and ingesting data will be shared between DICE and each frames team.</p>
+<p>The data will come from:</p>
+<ul>
+<li><p>Administrative records</p></li>
+<li><p>Public records</p></li>
+<li><p>Census / surveys</p></li>
+<li><p>Third parties</p></li>
+</ul>
+<p>There is not much information on what each of those categories may contains. The US Census bureau is pursuing some of what was started from the last ACS and is already discussed across other Census bureau around the world<sup>7</sup>.</p>
+</section>
+</section>
+<section id="some-frames-spoilers" class="level1">
+<h1>Some Frames Spoilers!</h1>
+<p>The video discussed some (potential?) features of each frame (and later how they will serve products). It is hard to say how they will be implemented and how they will percolate to externals products.</p>
+<section id="geospatial-frame" class="level2">
+<h2 class="anchored" data-anchor-id="geospatial-frame">Geospatial Frame:</h2>
+<p>It is definitely the one I am more interested and excited about. It will leverage both the MAF and TIGER multiple data sets; supposedly enhancing them and providing better link between them.</p>
+<p>On the MAF front the goal is to introduce more categories for each address: instead of having them just labeled “Residential”and “Non Residential” they will be also labeled “Business” or “Mixed-use”. A MAF identifier (MAFID) and geocodes (lat/long) will also be added.</p>
+<p>The release of the MAF would also be more frequent.</p>
+</section>
+<section id="other-frames" class="level2">
+<h2 class="anchored" data-anchor-id="other-frames">Other Frames</h2>
+<p>For now I am less interested by them (albeit I recently used LEHD data a bit).</p>
+<p>The business frame mention includes a longitudinal business data and a better integration with the MAF.</p>
+<p>The job frame seems to cover and extend the LEHD. More Administrative data should help cover missing self-employment jobs. The LEHD is using the “Employer Characteristic File (ECF)” that could be replaced, and improved by the business frame. Similarly it is using a “Residence Candidate File” that also could be replaced by the geospatial frame. I have took less notes on the demographic/person frames: it seems improvement will derive from integrating more administrative data, trend that was already started in recent ACS and decennial.</p>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>What seems to be matter (for now):</p>
+<ul>
+<li><p>Mainly an Internal product!</p></li>
+<li><p>A lot of the improvement seems to come from integrating and linking the frames. Overall, as a regular user of the US Census, that seems great.</p></li>
+<li><p>More use of administrative and third party data. Here I am mostly curious and will be happy to read what actual researchers will think about it!</p></li>
+</ul>
+<p>I am still unsure how the frame are being build to handle drifting schema and how they will be used to revised (or not) or be linked with past products (or not)!</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://www.census.gov/about/what/transformation/maximizing-operational-efficiency/data-centric-business-ecosystem/frames-overview/frames.html" class="uri">https://www.census.gov/about/what/transformation/maximizing-operational-efficiency/data-centric-business-ecosystem/frames-overview/frames.html</a> accessed 2026-06-01↩︎</p></li>
+<li id="fn2"><p>So far it seems the term “Data Lake” does not relate to a specific architecture, more like an analogy where the census move from “ponds” (siloed data) to a “lake” (unified data)↩︎</p></li>
+<li id="fn3"><p>It seems a “Entreprise system” is a concept in government IT with the goal to mimic what is perceive to be done in corporate IT. I have not been able to find a clear reference on it. If you have one, please share!↩︎</p></li>
+<li id="fn4"><p>I am the one who add and link demographic to “Persons” here.↩︎</p></li>
+<li id="fn5"><p>MAF stands for Master Address File and TIGER for Topologically Integrated Geographic Encoding and Referencing↩︎</p></li>
+<li id="fn6"><p>LEHD stands for Longitudinal Employer-Household Dynamics↩︎</p></li>
+<li id="fn7"><p>https://unece.org/statistics/publications/CensusAdminQuality↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Survey</category>
+  <category>US Census</category>
+  <guid>https://branchtwigleaf.com/posts/2026-06-01-frames/</guid>
+  <pubDate>Thu, 25 Jun 2026 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>“Forest Management Becomes a Desk Job”</title>
   <dc:creator>Olivier Leroy</dc:creator>
